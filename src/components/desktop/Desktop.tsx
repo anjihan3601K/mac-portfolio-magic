@@ -104,15 +104,15 @@ export const Desktop = () => {
               ref={portfolioTextRef}
               className="text-5xl md:text-7xl tracking-tight flex items-center justify-center"
             >
-              <span className="portfolio-char text-foreground/50 font-light">p</span>
-              <span className="portfolio-char text-foreground/50 font-light">o</span>
-              <span className="portfolio-char text-foreground/50 font-light">r</span>
-              <span className="portfolio-char text-foreground/50 font-light">t</span>
+              <span className="portfolio-char text-foreground font-bold">p</span>
+              <span className="portfolio-char text-foreground font-bold">o</span>
+              <span className="portfolio-char text-foreground font-bold">r</span>
+              <span className="portfolio-char text-foreground font-bold">t</span>
               <span className="portfolio-char text-foreground font-bold">f</span>
               <span className="portfolio-char text-foreground font-bold">o</span>
               <span className="portfolio-char text-foreground font-bold">l</span>
               <span className="portfolio-char text-foreground font-bold">i</span>
-              <span className="portfolio-char text-foreground/50 font-light">o</span>
+              <span className="portfolio-char text-foreground font-bold">o</span>
               <span className="portfolio-char text-foreground/50 font-light">.</span>
             </h1>
           </div>
