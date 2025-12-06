@@ -1,60 +1,65 @@
 import { WindowWrapper } from '@/components/desktop/WindowWrapper';
-import { Mail, Github, Linkedin, MapPin } from 'lucide-react';
+import { Github, Linkedin, Globe, User } from 'lucide-react';
 
 const socialLinks = [
-  { name: 'GitHub', icon: Github, url: 'https://github.com/anjihan3601K', color: 'hover:text-foreground' },
-  { name: 'LinkedIn', icon: Linkedin, url: 'https://www.linkedin.com/in/anjani-kumar-kanamarlapudi-3b5a002b9', color: 'hover:text-blue-500' },
+  { 
+    name: 'Github', 
+    icon: Github, 
+    url: 'https://github.com/anjihan3601K', 
+    bgColor: 'bg-emerald-500 hover:bg-emerald-600' 
+  },
+  { 
+    name: 'Portfolio', 
+    icon: Globe, 
+    url: '#', 
+    bgColor: 'bg-red-500 hover:bg-red-600' 
+  },
+  { 
+    name: 'Kaggle', 
+    icon: User, 
+    url: 'https://kaggle.com', 
+    bgColor: 'bg-sky-500 hover:bg-sky-600' 
+  },
+  { 
+    name: 'LinkedIn', 
+    icon: Linkedin, 
+    url: 'https://www.linkedin.com/in/anjani-kumar-kanamarlapudi-3b5a002b9', 
+    bgColor: 'bg-blue-600 hover:bg-blue-700' 
+  },
 ];
 
 export const ContactWindow = () => {
   return (
-    <WindowWrapper id="contact" title="Contact" width={450} height={500}>
-      <div className="h-full bg-card p-8 flex flex-col items-center">
-        {/* Avatar */}
-        <div className="w-28 h-28 rounded-full bg-gradient-to-br from-primary to-accent flex items-center justify-center mb-6 shadow-lg">
-          <span className="text-4xl font-bold text-primary-foreground">AK</span>
+    <WindowWrapper id="contact" title="Contact Me" width={420} height={320}>
+      <div className="h-full bg-card p-6 flex flex-col">
+        {/* Header with Avatar */}
+        <div className="flex items-start gap-3 mb-4">
+          <div className="w-12 h-12 rounded-full bg-gradient-to-br from-orange-400 to-yellow-400 flex items-center justify-center shadow-md overflow-hidden">
+            <span className="text-lg font-bold text-white">AK</span>
+          </div>
         </div>
 
-        {/* Name */}
-        <h2 className="text-2xl font-bold text-foreground mb-1">Anjani Kumar Kanamarlapudi</h2>
-        <p className="text-muted-foreground mb-4">AI Developer & Data Scientist</p>
+        {/* Let's Connect */}
+        <h2 className="text-xl font-bold text-foreground mb-2">Let's Connect</h2>
+        <p className="text-sm text-muted-foreground mb-6">
+          Got an idea? A bug to squash? Or just wanna talk tech? I'm in.
+        </p>
 
-        {/* Location */}
-        <div className="flex items-center gap-2 text-muted-foreground text-sm mb-8">
-          <MapPin className="w-4 h-4" />
-          <span>India</span>
-        </div>
-
-        {/* Connect Message */}
-        <div className="w-full p-4 rounded-lg bg-secondary/50 mb-8">
-          <p className="text-sm text-center text-foreground/80">
-            I'm always open to discussing new projects, creative ideas, or opportunities to be part of your vision.
-          </p>
-        </div>
-
-        {/* Social Links */}
-        <div className="flex items-center gap-4 mb-8">
+        {/* Social Links Grid */}
+        <div className="grid grid-cols-4 gap-3">
           {socialLinks.map((link) => (
             <a
               key={link.name}
               href={link.url}
               target="_blank"
               rel="noopener noreferrer"
-              className={`w-12 h-12 rounded-xl bg-secondary flex items-center justify-center text-muted-foreground transition-all ${link.color} hover:scale-110`}
+              className={`flex flex-col items-center gap-2 p-4 rounded-xl ${link.bgColor} text-white transition-all hover:scale-105 shadow-md`}
             >
-              <link.icon className="w-5 h-5" />
+              <link.icon className="w-6 h-6" />
+              <span className="text-xs font-medium">{link.name}</span>
             </a>
           ))}
         </div>
-
-        {/* Email Button */}
-        <a
-          href="mailto:anjani.kanamarlapudi@gmail.com"
-          className="w-full py-3 rounded-lg bg-primary text-primary-foreground font-medium flex items-center justify-center gap-2 hover:bg-primary/90 transition-colors"
-        >
-          <Mail className="w-4 h-4" />
-          <span>Contact Me</span>
-        </a>
       </div>
     </WindowWrapper>
   );
