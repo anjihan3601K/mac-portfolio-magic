@@ -1,28 +1,29 @@
 import { useRef, useState, useCallback } from 'react';
 import { Tooltip } from 'react-tooltip';
 import { useWindowStore, WindowId } from '@/stores/windowStore';
-import { 
-  Terminal, 
-  Folder, 
-  Mail, 
-  User, 
-  Globe, 
-  FileText 
-} from 'lucide-react';
+
+// Import dock icons
+import finderIcon from '@/assets/dock-icons/finder.png';
+import safariIcon from '@/assets/dock-icons/safari.png';
+import terminalIcon from '@/assets/dock-icons/terminal.png';
+import notesIcon from '@/assets/dock-icons/notes.png';
+import contactsIcon from '@/assets/dock-icons/contacts.png';
+import mailIcon from '@/assets/dock-icons/mail.png';
+import aboutIcon from '@/assets/dock-icons/about.png';
 
 interface DockItem {
   id: WindowId;
   name: string;
-  icon: React.ReactNode;
+  icon: string;
 }
 
 const dockItems: DockItem[] = [
-  { id: 'finder', name: 'Finder', icon: <Folder className="w-8 h-8" /> },
-  { id: 'terminal', name: 'Terminal', icon: <Terminal className="w-8 h-8" /> },
-  { id: 'safari', name: 'Safari', icon: <Globe className="w-8 h-8" /> },
-  { id: 'notes', name: 'Notes', icon: <FileText className="w-8 h-8" /> },
-  { id: 'contact', name: 'Contact', icon: <Mail className="w-8 h-8" /> },
-  { id: 'about', name: 'About', icon: <User className="w-8 h-8" /> },
+  { id: 'finder', name: 'Finder', icon: finderIcon },
+  { id: 'terminal', name: 'Terminal', icon: terminalIcon },
+  { id: 'safari', name: 'Safari', icon: safariIcon },
+  { id: 'notes', name: 'Notes', icon: notesIcon },
+  { id: 'contact', name: 'Contact', icon: mailIcon },
+  { id: 'about', name: 'About', icon: aboutIcon },
 ];
 
 export const Dock = () => {
@@ -102,9 +103,11 @@ export const Dock = () => {
                 transformOrigin: 'bottom center',
               }}
             >
-              <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-secondary to-muted flex items-center justify-center text-foreground shadow-lg">
-                {item.icon}
-              </div>
+              <img 
+                src={item.icon} 
+                alt={item.name} 
+                className="w-12 h-12 rounded-xl shadow-lg"
+              />
               {isOpen && (
                 <div className="absolute -bottom-1 w-1 h-1 rounded-full bg-foreground/80" />
               )}
