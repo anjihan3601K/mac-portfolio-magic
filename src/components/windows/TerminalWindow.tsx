@@ -1,18 +1,28 @@
 import { useState, useEffect } from 'react';
 import { WindowWrapper } from '@/components/desktop/WindowWrapper';
 
-interface TechCategory {
+interface SkillCategory {
   name: string;
   items: string[];
 }
 
-const techStack: TechCategory[] = [
-  { name: 'Programming', items: ['Python', 'SQL', 'R', 'JavaScript'] },
-  { name: 'ML/DL Frameworks', items: ['TensorFlow', 'PyTorch', 'Scikit-learn', 'Keras'] },
-  { name: 'Data Science', items: ['Pandas', 'NumPy', 'Matplotlib', 'Seaborn'] },
-  { name: 'GenAI & LLMs', items: ['OpenAI API', 'LangChain', 'Hugging Face', 'Prompt Engineering'] },
-  { name: 'Cloud & Tools', items: ['AWS', 'Docker', 'Git', 'Jupyter'] },
-  { name: 'Databases', items: ['MongoDB', 'PostgreSQL', 'MySQL'] },
+const skills: SkillCategory[] = [
+  { name: 'Languages', items: ['Python', 'SQL', 'R', 'JavaScript', 'TypeScript'] },
+  { name: 'ML/DL', items: ['TensorFlow', 'PyTorch', 'Scikit-learn', 'Keras', 'XGBoost'] },
+  { name: 'Data Science', items: ['Pandas', 'NumPy', 'Matplotlib', 'Seaborn', 'Plotly'] },
+  { name: 'GenAI/LLMs', items: ['OpenAI API', 'LangChain', 'Hugging Face', 'RAG', 'Prompt Engineering'] },
+  { name: 'Cloud/DevOps', items: ['AWS', 'Docker', 'Git', 'MLflow', 'Jupyter'] },
+  { name: 'Databases', items: ['PostgreSQL', 'MongoDB', 'MySQL', 'Redis', 'Vector DBs'] },
+  { name: 'Web Dev', items: ['FastAPI', 'Flask', 'React', 'REST APIs', 'Streamlit'] },
+];
+
+const projects = [
+  'Healthcare AI Prediction System',
+  'AI Resume Analyzer',
+  'Sentiment Analysis Dashboard',
+  'Stock Price Forecasting',
+  'Customer Churn Prediction',
+  'RAG-based Document QA',
 ];
 
 export const TerminalWindow = () => {
@@ -21,18 +31,24 @@ export const TerminalWindow = () => {
 
   const allLines = [
     '> whoami',
-    'anjani@ai-portfolio ~ %',
+    'anjani@ai-dev ~ % Anjani Kumar Kanamarlapudi',
+    '> cat role.txt',
+    '  AI Developer | Data Scientist | ML Engineer',
     '',
-    '> cat tech_stack.txt',
+    '> ls skills/',
     '',
-    ...techStack.flatMap((category) => [
+    ...skills.flatMap((category) => [
       `┌─── ${category.name} ───`,
-      ...category.items.map((item) => `│  ◉ ${item}`),
-      '└────────────────',
+      `│  ${category.items.join(' • ')}`,
+      '└' + '─'.repeat(40),
       '',
     ]),
-    '> echo "Building AI solutions for real-world impact!"',
-    'Building AI solutions for real-world impact!',
+    '> ls projects/',
+    '',
+    ...projects.map((p, i) => `  ${i + 1}. ${p}`),
+    '',
+    '> echo $MISSION',
+    '  "Building AI solutions that solve real-world problems"',
     '',
     '> _',
   ];
@@ -42,22 +58,24 @@ export const TerminalWindow = () => {
       const timer = setTimeout(() => {
         setDisplayedLines((prev) => [...prev, allLines[currentLineIndex]]);
         setCurrentLineIndex((prev) => prev + 1);
-      }, 80);
+      }, 60);
       return () => clearTimeout(timer);
     }
   }, [currentLineIndex, allLines]);
 
   return (
-    <WindowWrapper id="terminal" title="Terminal — zsh" width={600} height={450}>
+    <WindowWrapper id="terminal" title="Terminal — zsh" width={650} height={500}>
       <div className="h-full bg-terminal-bg p-4 font-mono text-sm overflow-auto">
         {displayedLines.map((line, index) => (
           <div
             key={index}
-            className={`whitespace-pre ${
+            className={`whitespace-pre-wrap ${
               line.startsWith('>')
                 ? 'text-terminal-prompt'
                 : line.startsWith('┌') || line.startsWith('│') || line.startsWith('└')
                 ? 'text-terminal-green'
+                : line.startsWith('  ') && /^\s+\d\./.test(line)
+                ? 'text-sky-400'
                 : 'text-foreground/80'
             }`}
           >
