@@ -7,13 +7,14 @@ interface WelcomeScreenProps {
 
 export const WelcomeScreen = ({ onComplete }: WelcomeScreenProps) => {
   const containerRef = useRef<HTMLDivElement>(null);
-  const titleRef = useRef<HTMLHeadingElement>(null);
-  const subtitleRef = useRef<HTMLParagraphElement>(null);
+  const greetingRef = useRef<HTMLParagraphElement>(null);
+  const portfolioRef = useRef<HTMLHeadingElement>(null);
   const [isAnimating, setIsAnimating] = useState(true);
 
   useEffect(() => {
     const tl = gsap.timeline({
       onComplete: () => {
+        setIsAnimating(false);
         setTimeout(() => {
           gsap.to(containerRef.current, {
             opacity: 0,
@@ -25,15 +26,26 @@ export const WelcomeScreen = ({ onComplete }: WelcomeScreenProps) => {
       },
     });
 
-    // Split title into characters
-    if (titleRef.current) {
-      const text = titleRef.current.textContent || '';
-      titleRef.current.innerHTML = text
+    // Animate greeting first
+    tl.fromTo(
+      greetingRef.current,
+      { opacity: 0, y: 30 },
+      { opacity: 1, y: 0, duration: 0.8, ease: 'power2.out' }
+    );
+
+    // Split portfolio into characters for animation
+    if (portfolioRef.current) {
+      const text = 'portfolio.';
+      portfolioRef.current.innerHTML = text
         .split('')
-        .map((char) => `<span class="inline-block">${char === ' ' ? '&nbsp;' : char}</span>`)
+        .map((char, i) => {
+          // "folio" part (index 4-8) gets different styling
+          const isHighlighted = i >= 4 && i <= 7;
+          return `<span class="inline-block ${isHighlighted ? 'text-foreground font-bold' : 'text-foreground/60 font-light'}">${char}</span>`;
+        })
         .join('');
 
-      const chars = titleRef.current.querySelectorAll('span');
+      const chars = portfolioRef.current.querySelectorAll('span');
 
       tl.fromTo(
         chars,
@@ -42,72 +54,38 @@ export const WelcomeScreen = ({ onComplete }: WelcomeScreenProps) => {
           opacity: 1,
           y: 0,
           rotateX: 0,
-          duration: 0.8,
-          stagger: 0.05,
+          duration: 0.6,
+          stagger: 0.08,
           ease: 'back.out(1.7)',
-        }
+        },
+        '-=0.3'
       );
     }
-
-    tl.fromTo(
-      subtitleRef.current,
-      { opacity: 0, y: 20 },
-      { opacity: 1, y: 0, duration: 0.6, ease: 'power2.out' },
-      '-=0.3'
-    );
 
     return () => {
       tl.kill();
     };
   }, [onComplete]);
 
-  const handleCharHover = (e: React.MouseEvent<HTMLSpanElement>) => {
-    if (!isAnimating) {
-      gsap.to(e.currentTarget, {
-        fontWeight: 700,
-        duration: 0.2,
-        ease: 'power2.out',
-      });
-    }
-  };
-
-  const handleCharLeave = (e: React.MouseEvent<HTMLSpanElement>) => {
-    if (!isAnimating) {
-      gsap.to(e.currentTarget, {
-        fontWeight: 400,
-        duration: 0.4,
-        ease: 'power2.out',
-      });
-    }
-  };
-
   return (
     <div
       ref={containerRef}
-      className="fixed inset-0 z-[10000] flex items-center justify-center bg-background"
+      className="fixed inset-0 z-[10000] flex items-center justify-center"
+      style={{ background: 'transparent' }}
     >
       <div className="text-center">
-        <h1
-          ref={titleRef}
-          className="text-6xl md:text-8xl font-light text-foreground mb-6 tracking-tight"
-          onMouseOver={(e) => {
-            const target = e.target as HTMLElement;
-            if (target.tagName === 'SPAN') {
-              handleCharHover(e as unknown as React.MouseEvent<HTMLSpanElement>);
-            }
-          }}
-          onMouseOut={(e) => {
-            const target = e.target as HTMLElement;
-            if (target.tagName === 'SPAN') {
-              handleCharLeave(e as unknown as React.MouseEvent<HTMLSpanElement>);
-            }
-          }}
+        <p
+          ref={greetingRef}
+          className="text-xl md:text-2xl text-foreground/70 mb-4 font-light tracking-wide"
         >
-          Anjani Kumar
-        </h1>
-        <p ref={subtitleRef} className="text-xl md:text-2xl text-muted-foreground">
-          AI Developer & Data Scientist
+          Hey, I'm Anjani! welcome to my
         </p>
+        <h1
+          ref={portfolioRef}
+          className="text-6xl md:text-8xl tracking-tight"
+        >
+          portfolio.
+        </h1>
       </div>
     </div>
   );
