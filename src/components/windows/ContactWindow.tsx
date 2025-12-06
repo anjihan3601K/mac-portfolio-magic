@@ -1,10 +1,9 @@
 import { WindowWrapper } from '@/components/desktop/WindowWrapper';
-import { Mail, Github, Linkedin, Twitter, MapPin } from 'lucide-react';
+import { Mail, Github, Linkedin, MapPin } from 'lucide-react';
 
 const socialLinks = [
-  { name: 'GitHub', icon: Github, url: 'https://github.com', color: 'hover:text-foreground' },
-  { name: 'LinkedIn', icon: Linkedin, url: 'https://linkedin.com', color: 'hover:text-blue-500' },
-  { name: 'Twitter', icon: Twitter, url: 'https://twitter.com', color: 'hover:text-sky-500' },
+  { name: 'GitHub', icon: Github, url: 'https://github.com/anjihan3601K', color: 'hover:text-foreground' },
+  { name: 'LinkedIn', icon: Linkedin, url: 'https://www.linkedin.com/in/anjani-kumar-kanamarlapudi-3b5a002b9', color: 'hover:text-blue-500' },
 ];
 
 export const ContactWindow = () => {
@@ -13,17 +12,17 @@ export const ContactWindow = () => {
       <div className="h-full bg-card p-8 flex flex-col items-center">
         {/* Avatar */}
         <div className="w-28 h-28 rounded-full bg-gradient-to-br from-primary to-accent flex items-center justify-center mb-6 shadow-lg">
-          <span className="text-4xl font-bold text-primary-foreground">JD</span>
+          <span className="text-4xl font-bold text-primary-foreground">AK</span>
         </div>
 
         {/* Name */}
-        <h2 className="text-2xl font-bold text-foreground mb-1">John Doe</h2>
-        <p className="text-muted-foreground mb-4">Full Stack Developer</p>
+        <h2 className="text-2xl font-bold text-foreground mb-1">Anjani Kumar Kanamarlapudi</h2>
+        <p className="text-muted-foreground mb-4">AI Developer & Data Scientist</p>
 
         {/* Location */}
         <div className="flex items-center gap-2 text-muted-foreground text-sm mb-8">
           <MapPin className="w-4 h-4" />
-          <span>San Francisco, CA</span>
+          <span>India</span>
         </div>
 
         {/* Connect Message */}
@@ -50,11 +49,11 @@ export const ContactWindow = () => {
 
         {/* Email Button */}
         <a
-          href="mailto:hello@johndoe.com"
+          href="mailto:anjani.kanamarlapudi@gmail.com"
           className="w-full py-3 rounded-lg bg-primary text-primary-foreground font-medium flex items-center justify-center gap-2 hover:bg-primary/90 transition-colors"
         >
           <Mail className="w-4 h-4" />
-          <span>hello@johndoe.com</span>
+          <span>Contact Me</span>
         </a>
       </div>
     </WindowWrapper>
