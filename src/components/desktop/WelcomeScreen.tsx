@@ -103,10 +103,10 @@ export const WelcomeScreen = ({ onComplete }: WelcomeScreenProps) => {
             }
           }}
         >
-          John Doe
+          Anjani Kumar
         </h1>
         <p ref={subtitleRef} className="text-xl md:text-2xl text-muted-foreground">
-          Full Stack Developer
+          AI Developer & Data Scientist
         </p>
       </div>
     </div>

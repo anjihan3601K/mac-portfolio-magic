@@ -7,10 +7,12 @@ interface TechCategory {
 }
 
 const techStack: TechCategory[] = [
-  { name: 'Frontend', items: ['React', 'TypeScript', 'Tailwind CSS', 'Next.js', 'Vue.js'] },
-  { name: 'Backend', items: ['Node.js', 'Python', 'Go', 'PostgreSQL', 'MongoDB'] },
-  { name: 'DevOps', items: ['Docker', 'Kubernetes', 'AWS', 'CI/CD', 'Terraform'] },
-  { name: 'Tools', items: ['Git', 'VS Code', 'Figma', 'Postman', 'Jest'] },
+  { name: 'Programming', items: ['Python', 'SQL', 'R', 'JavaScript'] },
+  { name: 'ML/DL Frameworks', items: ['TensorFlow', 'PyTorch', 'Scikit-learn', 'Keras'] },
+  { name: 'Data Science', items: ['Pandas', 'NumPy', 'Matplotlib', 'Seaborn'] },
+  { name: 'GenAI & LLMs', items: ['OpenAI API', 'LangChain', 'Hugging Face', 'Prompt Engineering'] },
+  { name: 'Cloud & Tools', items: ['AWS', 'Docker', 'Git', 'Jupyter'] },
+  { name: 'Databases', items: ['MongoDB', 'PostgreSQL', 'MySQL'] },
 ];
 
 export const TerminalWindow = () => {
@@ -19,7 +21,7 @@ export const TerminalWindow = () => {
 
   const allLines = [
     '> whoami',
-    'developer@portfolio ~ %',
+    'anjani@ai-portfolio ~ %',
     '',
     '> cat tech_stack.txt',
     '',
@@ -29,8 +31,8 @@ export const TerminalWindow = () => {
       '└────────────────',
       '',
     ]),
-    '> echo "Thanks for visiting!"',
-    'Thanks for visiting!',
+    '> echo "Building AI solutions for real-world impact!"',
+    'Building AI solutions for real-world impact!',
     '',
     '> _',
   ];

@@ -1,22 +1,32 @@
 import { WindowWrapper } from '@/components/desktop/WindowWrapper';
-import { Code2, Palette, Rocket, Heart } from 'lucide-react';
+import { Brain, Database, Cloud, Code2 } from 'lucide-react';
 
 const highlights = [
-  { icon: Code2, title: '5+ Years', subtitle: 'Experience' },
-  { icon: Palette, title: '50+', subtitle: 'Projects' },
-  { icon: Rocket, title: '30+', subtitle: 'Clients' },
-  { icon: Heart, title: '100%', subtitle: 'Passion' },
+  { icon: Brain, title: 'ML/AI', subtitle: 'Expert' },
+  { icon: Database, title: 'Data Science', subtitle: 'Specialist' },
+  { icon: Cloud, title: 'GenAI', subtitle: 'Builder' },
+  { icon: Code2, title: 'Full Stack', subtitle: 'Developer' },
+];
+
+const skillCategories = [
+  { name: 'Programming', skills: ['Python', 'SQL', 'R', 'JavaScript'] },
+  { name: 'ML/DL Frameworks', skills: ['TensorFlow', 'PyTorch', 'Scikit-learn', 'Keras'] },
+  { name: 'Data Science', skills: ['Pandas', 'NumPy', 'Matplotlib', 'Seaborn'] },
+  { name: 'GenAI & LLMs', skills: ['OpenAI API', 'LangChain', 'Hugging Face'] },
+  { name: 'Cloud & Tools', skills: ['AWS', 'Docker', 'Git', 'Jupyter'] },
+  { name: 'Databases', skills: ['MongoDB', 'PostgreSQL', 'MySQL'] },
+  { name: 'Web Development', skills: ['FastAPI', 'Flask', 'React', 'REST APIs'] },
 ];
 
 export const AboutWindow = () => {
   return (
-    <WindowWrapper id="about" title="About Me" width={600} height={550}>
+    <WindowWrapper id="about" title="About Me" width={700} height={650}>
       <div className="h-full bg-card p-8 overflow-auto">
         {/* Header */}
         <div className="text-center mb-8">
-          <h1 className="text-3xl font-bold gradient-text mb-3">Hello, I'm John</h1>
+          <h1 className="text-3xl font-bold gradient-text mb-3">Hello! I'm Anjani Kumar Kanamarlapudi</h1>
           <p className="text-lg text-muted-foreground">
-            A passionate developer creating digital experiences
+            AI Developer & Data Scientist
           </p>
         </div>
 
@@ -35,34 +45,34 @@ export const AboutWindow = () => {
         </div>
 
         {/* Bio */}
-        <div className="space-y-4 text-foreground/80">
+        <div className="space-y-4 text-foreground/80 mb-8">
           <p>
-            I'm a full-stack developer with a passion for creating beautiful, functional, and user-centered digital experiences. With 5+ years of experience in the field, I am always looking for new and innovative ways to bring my clients' visions to life.
+            Passionate AI Developer and Data Scientist with expertise in machine learning, deep learning, and data analytics. Experienced in building predictive models, GenAI applications, and data-driven solutions across healthcare, finance, and various domains.
           </p>
           <p>
-            I specialize in building modern web applications using React, TypeScript, and Node.js. I have a keen eye for design and believe that great software is not just about functionality—it's about crafting experiences that delight users.
-          </p>
-          <p>
-            When I'm not coding, you can find me exploring new technologies, contributing to open-source projects, or enjoying a good cup of coffee while reading about the latest in tech.
+            With a strong foundation in mathematics, statistics, and computer science, I create data-driven solutions that solve real-world problems. From healthcare AI to financial forecasting, my work spans diverse domains with a focus on practical impact and innovation.
           </p>
         </div>
 
-        {/* Skills Tags */}
-        <div className="mt-8">
-          <h3 className="text-sm font-semibold text-muted-foreground uppercase tracking-wider mb-3">
-            Current Focus
-          </h3>
-          <div className="flex flex-wrap gap-2">
-            {['React', 'TypeScript', 'Node.js', 'PostgreSQL', 'Tailwind', 'AWS', 'Docker'].map(
-              (skill) => (
-                <span
-                  key={skill}
-                  className="px-3 py-1 rounded-full bg-primary/10 text-primary text-sm font-medium"
-                >
-                  {skill}
-                </span>
-              )
-            )}
+        {/* Technical Skills */}
+        <div>
+          <h3 className="text-lg font-semibold text-primary mb-4">Technical Skills</h3>
+          <div className="grid grid-cols-2 gap-4">
+            {skillCategories.map((category) => (
+              <div key={category.name} className="p-3 rounded-lg bg-secondary/30">
+                <h4 className="text-sm font-semibold text-foreground mb-2">{category.name}</h4>
+                <div className="flex flex-wrap gap-1.5">
+                  {category.skills.map((skill) => (
+                    <span
+                      key={skill}
+                      className="px-2 py-0.5 rounded-full bg-background/50 text-muted-foreground text-xs"
+                    >
+                      {skill}
+                    </span>
+                  ))}
+                </div>
+              </div>
+            ))}
           </div>
         </div>
       </div>
