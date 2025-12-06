@@ -90,11 +90,11 @@ export const Desktop = () => {
       {/* Welcome Screen with transparent bg */}
       {showWelcome && <WelcomeScreen onComplete={() => setShowWelcome(false)} />}
 
-      {/* Welcome Message on Desktop (persistent after animation) */}
+      {/* Welcome Message on Desktop (persistent after animation) - z-0 so windows appear above */}
       {!showWelcome && (
         <div 
           ref={heroRef}
-          className="absolute inset-0 flex items-center justify-center pointer-events-none z-10"
+          className="absolute inset-0 flex items-center justify-center pointer-events-none z-0"
         >
           <div className="text-center">
             <p className="text-xl md:text-2xl text-foreground/50 mb-4 font-light tracking-wide animate-fade-in">
