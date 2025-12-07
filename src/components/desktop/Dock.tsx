@@ -82,7 +82,7 @@ export const Dock = () => {
     <>
       <div
         ref={dockRef}
-        className="dock-glass fixed bottom-3 left-1/2 -translate-x-1/2 px-2 py-1.5 flex items-end gap-1 z-[9998]"
+        className="dock-container dock-glass fixed bottom-3 left-1/2 -translate-x-1/2 px-2 py-1.5 flex items-end gap-1 z-[9998]"
         onMouseMove={handleMouseMove}
         onMouseLeave={handleMouseLeave}
       >
