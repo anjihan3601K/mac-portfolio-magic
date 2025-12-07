@@ -73,19 +73,39 @@ export const WindowWrapper = ({
     };
   }, [windowState.isOpen, id, focusWindow, updatePosition]);
 
+  // Genie effect for macOS-style minimize/close animation
   const handleClose = () => {
     if (!windowRef.current) {
       closeWindow(id);
       return;
     }
 
+    // Get dock position for genie effect target
+    const dock = document.querySelector('.dock-container');
+    const dockRect = dock?.getBoundingClientRect();
+    const windowRect = windowRef.current.getBoundingClientRect();
+    
+    const targetX = dockRect 
+      ? dockRect.left + dockRect.width / 2 - windowRect.left - windowRect.width / 2
+      : 0;
+    const targetY = dockRect 
+      ? dockRect.top - windowRect.top
+      : window.innerHeight;
+
+    // Genie effect animation
     gsap.to(windowRef.current, {
-      scale: 0.95,
+      scaleX: 0.1,
+      scaleY: 0.05,
+      x: targetX,
+      y: targetY,
       opacity: 0,
-      y: 20,
-      duration: 0.2,
-      ease: 'power2.in',
-      onComplete: () => closeWindow(id),
+      transformOrigin: 'bottom center',
+      duration: 0.4,
+      ease: 'power3.in',
+      onComplete: () => {
+        gsap.set(windowRef.current, { clearProps: 'all' });
+        closeWindow(id);
+      },
     });
   };
 

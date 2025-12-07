@@ -17,17 +17,17 @@ interface AppItem {
 }
 
 const apps: AppItem[] = [
-  { id: 'finder', name: 'Projects', icon: finderIcon },
+  { id: 'finder', name: 'Finder', icon: finderIcon },
   { id: 'terminal', name: 'Terminal', icon: terminalIcon },
-  { id: 'safari', name: 'Safari', icon: safariIcon },
+  { id: 'safari', name: 'Blog', icon: safariIcon },
   { id: 'notes', name: 'Notes', icon: notesIcon },
   { id: 'contact', name: 'Contact', icon: contactsIcon },
   { id: 'about', name: 'About Me', icon: aboutIcon },
 ];
 
 const dockApps: AppItem[] = [
-  { id: 'terminal', name: 'Terminal', icon: terminalIcon },
-  { id: 'safari', name: 'Safari', icon: safariIcon },
+  { id: 'finder', name: 'Finder', icon: finderIcon },
+  { id: 'safari', name: 'Blog', icon: safariIcon },
   { id: 'contact', name: 'Contact', icon: contactsIcon },
   { id: 'notes', name: 'Notes', icon: notesIcon },
 ];
@@ -44,7 +44,7 @@ export const MobileHomeScreen = () => {
   };
 
   return (
-    <div className="relative w-full h-screen overflow-hidden bg-gradient-to-br from-[#1a1a3e] via-[#2d1b4e] to-[#0f1629]">
+    <div className="relative w-full h-screen flex flex-col overflow-hidden bg-gradient-to-br from-[#1a1a3e] via-[#2d1b4e] to-[#0f1629]">
       {/* iOS Background */}
       <div className="absolute inset-0 overflow-hidden">
         <div 
@@ -63,7 +63,7 @@ export const MobileHomeScreen = () => {
       </div>
 
       {/* iOS Status Bar */}
-      <div className="relative z-50 flex items-center justify-between px-6 pt-3 pb-2">
+      <div className="relative z-50 flex items-center justify-between px-6 pt-3 pb-2 shrink-0">
         <span className="text-sm font-semibold text-foreground">{currentTime}</span>
         <div className="absolute left-1/2 -translate-x-1/2 w-28 h-7 bg-black rounded-full" /> {/* Dynamic Island */}
         <div className="flex items-center gap-1">
@@ -74,15 +74,15 @@ export const MobileHomeScreen = () => {
       </div>
 
       {/* Welcome Message */}
-      <div className="relative z-10 px-6 pt-8 pb-6 text-center">
+      <div className="relative z-10 px-6 pt-6 pb-4 text-center shrink-0">
         <p className="text-sm text-foreground/60 mb-1">Hey, I'm Anjani!</p>
         <h1 className="text-2xl font-bold text-foreground">
           portfolio<span className="text-foreground/50 font-light">.</span>
         </h1>
       </div>
 
-      {/* App Grid - iOS Style */}
-      <div className="relative z-10 flex-1 px-6">
+      {/* App Grid - iOS Style (takes remaining space) */}
+      <div className="relative z-10 flex-1 px-6 overflow-auto">
         <div className="grid grid-cols-4 gap-4 gap-y-6">
           {apps.map((app) => (
             <button
@@ -106,14 +106,14 @@ export const MobileHomeScreen = () => {
       </div>
 
       {/* Page Indicators */}
-      <div className="relative z-10 flex justify-center gap-1.5 py-4">
+      <div className="relative z-10 flex justify-center gap-1.5 py-3 shrink-0">
         <div className="w-2 h-2 rounded-full bg-foreground" />
         <div className="w-2 h-2 rounded-full bg-foreground/30" />
         <div className="w-2 h-2 rounded-full bg-foreground/30" />
       </div>
 
-      {/* iOS Dock */}
-      <div className="relative z-10 px-4 pb-8">
+      {/* iOS Dock - Fixed at bottom */}
+      <div className="relative z-10 px-4 pb-6 shrink-0">
         <div className="bg-foreground/10 backdrop-blur-xl rounded-[28px] p-3 mx-auto max-w-xs">
           <div className="flex justify-around items-center">
             {dockApps.map((app) => (
@@ -134,7 +134,7 @@ export const MobileHomeScreen = () => {
       </div>
 
       {/* Home Indicator */}
-      <div className="absolute bottom-2 left-1/2 -translate-x-1/2 w-32 h-1 bg-foreground/50 rounded-full" />
+      <div className="absolute bottom-2 left-1/2 -translate-x-1/2 w-32 h-1 bg-foreground/50 rounded-full z-20" />
     </div>
   );
 };
