@@ -8,7 +8,10 @@ import { ContactWindow } from '@/components/windows/ContactWindow';
 import { AboutWindow } from '@/components/windows/AboutWindow';
 import { SafariWindow } from '@/components/windows/SafariWindow';
 import { NotesWindow } from '@/components/windows/NotesWindow';
+import { MobileHomeScreen } from '@/components/mobile/MobileHomeScreen';
+import { MobileWindowSheet } from '@/components/mobile/MobileWindowSheet';
 import { useWindowStore } from '@/stores/windowStore';
+import { useIsMobile } from '@/hooks/use-mobile';
 import { Folder } from 'lucide-react';
 import { gsap } from 'gsap';
 import { Draggable } from 'gsap/Draggable';
@@ -24,13 +27,14 @@ const desktopFolders = [
 export const Desktop = () => {
   const [showWelcome, setShowWelcome] = useState(true);
   const { openWindow } = useWindowStore();
+  const isMobile = useIsMobile();
   const folderRefs = useRef<(HTMLButtonElement | null)[]>([]);
   const heroRef = useRef<HTMLDivElement>(null);
   const portfolioTextRef = useRef<HTMLHeadingElement>(null);
 
   // Initialize draggable folders
   useEffect(() => {
-    if (!showWelcome) {
+    if (!showWelcome && !isMobile) {
       folderRefs.current.forEach((folder) => {
         if (folder) {
           Draggable.create(folder, {
@@ -43,11 +47,11 @@ export const Desktop = () => {
         }
       });
     }
-  }, [showWelcome]);
+  }, [showWelcome, isMobile]);
 
   // Animate hero text
   useEffect(() => {
-    if (!showWelcome && portfolioTextRef.current) {
+    if (!showWelcome && portfolioTextRef.current && !isMobile) {
       const chars = portfolioTextRef.current.querySelectorAll('.portfolio-char');
       
       // Continuous subtle floating animation
@@ -62,12 +66,23 @@ export const Desktop = () => {
         },
       });
     }
-  }, [showWelcome]);
+  }, [showWelcome, isMobile]);
 
   const handleFolderDoubleClick = (id: string) => {
     openWindow('finder');
   };
 
+  // Mobile iOS view
+  if (isMobile) {
+    return (
+      <>
+        <MobileHomeScreen />
+        <MobileWindowSheet />
+      </>
+    );
+  }
+
+  // Desktop/Tablet macOS view
   return (
     <div className="relative w-full h-screen overflow-hidden bg-gradient-to-br from-[#1a1a3e] via-[#2d1b4e] to-[#0f1629]">
       {/* Animated Background - macOS Sonoma style waves */}
