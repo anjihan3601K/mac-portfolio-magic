@@ -1,6 +1,7 @@
 import { WindowWrapper } from '@/components/desktop/WindowWrapper';
 import { useLocationStore, fileSystem, FileItem } from '@/stores/locationStore';
-import { 
+import { useWindowStore } from '@/stores/windowStore';
+import {
   Folder, 
   FileText, 
   File, 
@@ -55,18 +56,10 @@ export const FinderWindow = () => {
       navigateTo(item.name);
     } else if (item.type === 'link' && item.url) {
       window.open(item.url, '_blank');
-    } else if (item.type === 'pdf' && item.url) {
-      if (item.isDownload) {
-        // Trigger download
-        const link = document.createElement('a');
-        link.href = item.url;
-        link.download = 'Resume_Anjani_Kumar.pdf';
-        document.body.appendChild(link);
-        link.click();
-        document.body.removeChild(link);
-      } else {
-        window.open(item.url, '_blank');
-      }
+    } else if (item.type === 'pdf') {
+      // Open resume in the resume viewer window
+      const { openWindow } = useWindowStore.getState();
+      openWindow('resume');
     }
   };
 
