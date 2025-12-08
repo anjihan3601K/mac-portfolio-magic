@@ -8,6 +8,7 @@ import { ContactWindow } from '@/components/windows/ContactWindow';
 import { AboutWindow } from '@/components/windows/AboutWindow';
 import { SafariWindow } from '@/components/windows/SafariWindow';
 import { NotesWindow } from '@/components/windows/NotesWindow';
+import { ResumeViewer } from '@/components/windows/ResumeViewer';
 import { MobileHomeScreen } from '@/components/mobile/MobileHomeScreen';
 import { MobileWindowSheet } from '@/components/mobile/MobileWindowSheet';
 import { MobileWelcomeScreen } from '@/components/mobile/MobileWelcomeScreen';
@@ -175,6 +176,7 @@ export const Desktop = () => {
       <AboutWindow />
       <SafariWindow />
       <NotesWindow />
+      <ResumeViewer />
 
       {/* Dock */}
       {!showWelcome && <Dock />}

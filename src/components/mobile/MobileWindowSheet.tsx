@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { useWindowStore, WindowId } from '@/stores/windowStore';
-import { X, ChevronLeft, ExternalLink, Calendar, Download, FileText } from 'lucide-react';
+import { X, ChevronLeft, ExternalLink, Calendar, Download, FileText, Briefcase, GraduationCap, Code2, Brain, Database, Cloud } from 'lucide-react';
 
 const windowTitles: Record<WindowId, string> = {
   terminal: 'Terminal',
@@ -9,10 +9,11 @@ const windowTitles: Record<WindowId, string> = {
   about: 'About Me',
   safari: 'Developer Blog',
   notes: 'Notes',
+  resume: 'Resume',
 };
 
 export const MobileWindowSheet = () => {
-  const { windows, closeWindow } = useWindowStore();
+  const { windows, closeWindow, openWindow } = useWindowStore();
   
   // Get the topmost open window by zIndex
   const openWindowsList = Object.values(windows).filter(w => w.isOpen);
@@ -27,7 +28,7 @@ export const MobileWindowSheet = () => {
       case 'terminal':
         return <MobileTerminalContent />;
       case 'finder':
-        return <MobileFinderContent onClose={() => closeWindow(activeWindow)} />;
+        return <MobileFinderContent onClose={() => closeWindow(activeWindow)} onOpenResume={() => { closeWindow('finder'); openWindow('resume'); }} />;
       case 'contact':
         return <MobileContactContent />;
       case 'about':
@@ -36,6 +37,8 @@ export const MobileWindowSheet = () => {
         return <MobileSafariContent />;
       case 'notes':
         return <MobileNotesContent />;
+      case 'resume':
+        return <MobileResumeContent />;
       default:
         return null;
     }
@@ -99,21 +102,30 @@ const MobileTerminalContent = () => (
 interface FolderItem {
   id: string;
   name: string;
-  type: 'folder' | 'link';
+  type: 'folder' | 'link' | 'resume';
   url?: string;
   isDownload?: boolean;
   children?: FolderItem[];
+  category?: string;
+  description?: string;
+  tech?: string[];
 }
 
 const finderData: FolderItem[] = [
   {
     id: 'work',
-    name: 'Work',
+    name: 'Projects',
     type: 'folder',
     children: [
-      { id: 'healthcare', name: 'Healthcare AI Prediction', type: 'link', url: 'https://github.com/anjani3601K' },
-      { id: 'resume-analyzer', name: 'AI Resume Analyzer', type: 'link', url: 'https://github.com/anjani3601K' },
-      { id: 'sentiment', name: 'Sentiment Analysis Dashboard', type: 'link', url: 'https://github.com/anjani3601K' },
+      { id: 'pneumonia', name: 'Pneumonia Prediction', type: 'link', url: 'https://github.com/anjani3601K', category: 'Healthcare AI' },
+      { id: 'genai', name: 'GenAI Application', type: 'link', url: 'https://github.com/anjani3601K', category: 'Generative AI' },
+      { id: 'stock-pred', name: 'Stock Price Prediction', type: 'link', url: 'https://github.com/anjani3601K', category: 'Financial AI' },
+      { id: 'stock-analyzer', name: 'Stock Analyzer', type: 'link', url: 'https://github.com/anjani3601K', category: 'Financial AI' },
+      { id: 'privacy-chat', name: 'Privacy Chat', type: 'link', url: 'https://github.com/anjani3601K', category: 'Security' },
+      { id: 'car-price', name: 'Car Price Predictor', type: 'link', url: 'https://github.com/anjani3601K', category: 'Predictive Analytics' },
+      { id: 'dynamic-pricing', name: 'Dynamic Pricing', type: 'link', url: 'https://github.com/anjani3601K', category: 'Business Intelligence' },
+      { id: 'disaster', name: 'Disaster Management', type: 'link', url: 'https://github.com/anjani3601K', category: 'Social Impact' },
+      { id: 'suraksha', name: 'Suraksha ML Models', type: 'link', url: 'https://github.com/anjani3601K', category: 'Security' },
     ]
   },
   {
@@ -123,6 +135,7 @@ const finderData: FolderItem[] = [
     children: [
       { id: 'linkedin', name: 'LinkedIn Profile', type: 'link', url: 'https://www.linkedin.com/in/anjani-kumar-kanamarlapudi-3b5a002b9' },
       { id: 'github', name: 'GitHub Profile', type: 'link', url: 'https://github.com/anjani3601K' },
+      { id: 'kaggle', name: 'Kaggle Profile', type: 'link', url: 'https://kaggle.com' },
     ]
   },
   {
@@ -130,15 +143,13 @@ const finderData: FolderItem[] = [
     name: 'Resume',
     type: 'folder',
     children: [
-      { id: 'view-resume', name: 'View Resume', type: 'link', url: '/resume/Resume_Data_Scientist.pdf' },
-      { id: 'download-resume', name: 'Download PDF', type: 'link', url: '/resume/Resume_Data_Scientist.pdf', isDownload: true },
+      { id: 'view-resume', name: 'View Resume', type: 'resume' },
     ]
   },
 ];
 
-const MobileFinderContent = ({ onClose }: { onClose: () => void }) => {
+const MobileFinderContent = ({ onClose, onOpenResume }: { onClose: () => void; onOpenResume: () => void }) => {
   const [currentPath, setCurrentPath] = useState<string[]>([]);
-  const [currentFolder, setCurrentFolder] = useState<FolderItem[] | null>(null);
 
   const getCurrentItems = (): FolderItem[] => {
     if (currentPath.length === 0) return finderData;
@@ -157,17 +168,9 @@ const MobileFinderContent = ({ onClose }: { onClose: () => void }) => {
     if (folder.type === 'folder' && folder.children) {
       setCurrentPath([...currentPath, folder.id]);
     } else if (folder.type === 'link' && folder.url) {
-      if (folder.isDownload) {
-        // Download the file
-        const link = document.createElement('a');
-        link.href = folder.url;
-        link.download = 'Resume_Anjani_Kumar.pdf';
-        document.body.appendChild(link);
-        link.click();
-        document.body.removeChild(link);
-      } else {
-        window.open(folder.url, '_blank');
-      }
+      window.open(folder.url, '_blank');
+    } else if (folder.type === 'resume') {
+      onOpenResume();
     }
   };
 
@@ -180,24 +183,27 @@ const MobileFinderContent = ({ onClose }: { onClose: () => void }) => {
   };
 
   const currentItems = getCurrentItems();
-  const currentTitle = currentPath.length === 0 
-    ? 'Portfolio' 
-    : finderData.find(f => f.id === currentPath[currentPath.length - 1])?.name || 'Portfolio';
+  const getTitle = (): string => {
+    if (currentPath.length === 0) return 'Portfolio';
+    const lastPath = currentPath[currentPath.length - 1];
+    const folder = finderData.find(f => f.id === lastPath);
+    return folder?.name || 'Portfolio';
+  };
 
   return (
-    <div className="min-h-full bg-white">
+    <div className="min-h-full bg-white dark:bg-gray-900">
       {/* iOS Navigation Header */}
-      <div className="sticky top-0 z-10 bg-white/95 backdrop-blur-sm border-b border-gray-200">
+      <div className="sticky top-0 z-10 bg-white/95 dark:bg-gray-900/95 backdrop-blur-sm border-b border-gray-200 dark:border-gray-800">
         <div className="flex items-center px-4 py-3">
           <button 
             onClick={navigateBack}
             className="flex items-center text-blue-500 -ml-2"
           >
             <ChevronLeft className="w-6 h-6" />
-            <span className="text-base">Go Back</span>
+            <span className="text-base">Back</span>
           </button>
-          <span className="flex-1 text-center font-semibold text-gray-900 -ml-8">
-            {currentTitle}
+          <span className="flex-1 text-center font-semibold text-gray-900 dark:text-white -ml-8">
+            {getTitle()}
           </span>
         </div>
       </div>
@@ -215,49 +221,34 @@ const MobileFinderContent = ({ onClose }: { onClose: () => void }) => {
                 <div className="w-20 h-16 relative">
                   <svg viewBox="0 0 100 80" className="w-full h-full drop-shadow-md">
                     <defs>
-                      <linearGradient id={`folderGradient-${item.id}`} x1="0%" y1="0%" x2="0%" y2="100%">
+                      <linearGradient id={`folderGrad-${item.id}`} x1="0%" y1="0%" x2="0%" y2="100%">
                         <stop offset="0%" stopColor="#7DD3FC" />
                         <stop offset="100%" stopColor="#38BDF8" />
-                      </linearGradient>
-                      <linearGradient id={`folderTabGradient-${item.id}`} x1="0%" y1="0%" x2="0%" y2="100%">
-                        <stop offset="0%" stopColor="#38BDF8" />
-                        <stop offset="100%" stopColor="#0EA5E9" />
                       </linearGradient>
                     </defs>
                     <path 
                       d="M5 20 L5 70 Q5 75 10 75 L90 75 Q95 75 95 70 L95 25 Q95 20 90 20 L40 20 L35 12 Q33 10 30 10 L10 10 Q5 10 5 15 Z" 
-                      fill={`url(#folderGradient-${item.id})`}
-                    />
-                    <path 
-                      d="M5 15 Q5 10 10 10 L30 10 Q33 10 35 12 L40 20 L5 20 Z" 
-                      fill={`url(#folderTabGradient-${item.id})`}
-                    />
-                    <path 
-                      d="M5 25 L95 25 L95 70 Q95 75 90 75 L10 75 Q5 75 5 70 Z" 
-                      fill="rgba(0,0,0,0.1)"
-                    />
-                    <path 
-                      d="M5 28 L95 28 L95 70 Q95 75 90 75 L10 75 Q5 75 5 70 Z" 
-                      fill={`url(#folderGradient-${item.id})`}
+                      fill={`url(#folderGrad-${item.id})`}
                     />
                   </svg>
                 </div>
-              ) : item.isDownload ? (
-                <div className="w-16 h-16 rounded-xl bg-green-100 flex items-center justify-center">
-                  <Download className="w-8 h-8 text-green-600" />
-                </div>
-              ) : item.id === 'view-resume' ? (
-                <div className="w-16 h-16 rounded-xl bg-red-100 flex items-center justify-center">
+              ) : item.type === 'resume' ? (
+                <div className="w-16 h-16 rounded-xl bg-red-100 dark:bg-red-900/30 flex items-center justify-center">
                   <FileText className="w-8 h-8 text-red-500" />
                 </div>
               ) : (
-                <div className="w-16 h-16 rounded-xl bg-gray-100 flex items-center justify-center">
+                <div className="w-16 h-16 rounded-xl bg-gray-100 dark:bg-gray-800 flex items-center justify-center">
                   <ExternalLink className="w-8 h-8 text-gray-500" />
                 </div>
               )}
-              <span className="text-xs text-gray-800 font-medium text-center leading-tight max-w-[80px]">
+              <span className="text-xs text-gray-800 dark:text-gray-200 font-medium text-center leading-tight max-w-[80px]">
                 {item.name}
               </span>
+              {item.category && (
+                <span className="text-[10px] text-blue-500 dark:text-blue-400 bg-blue-50 dark:bg-blue-900/30 px-2 py-0.5 rounded-full">
+                  {item.category}
+                </span>
+              )}
             </button>
           ))}
         </div>
@@ -294,22 +285,112 @@ const MobileContactContent = () => (
   </div>
 );
 
+// Enhanced About content matching desktop
+const skillCategories = [
+  { name: 'Programming', skills: ['Python', 'SQL', 'R', 'JavaScript'], color: 'from-pink-500 to-rose-500' },
+  { name: 'ML/DL', skills: ['TensorFlow', 'PyTorch', 'Scikit-learn', 'Keras'], color: 'from-cyan-500 to-teal-500' },
+  { name: 'Data Science', skills: ['Pandas', 'NumPy', 'Matplotlib'], color: 'from-blue-500 to-indigo-500' },
+  { name: 'GenAI & LLMs', skills: ['OpenAI API', 'LangChain', 'Hugging Face'], color: 'from-purple-500 to-violet-500' },
+  { name: 'Cloud & Tools', skills: ['AWS', 'Docker', 'Git'], color: 'from-teal-500 to-cyan-500' },
+  { name: 'Databases', skills: ['MongoDB', 'PostgreSQL', 'MySQL'], color: 'from-blue-500 to-sky-500' },
+];
+
+const experiences = [
+  { title: 'BCG Internship', company: 'Boston Consulting Group', skills: ['Python', 'Data Analytics', 'ML'] },
+  { title: 'Community Service', company: 'Social Impact Project', skills: ['Python', 'ML', 'Data Science'] },
+];
+
 const MobileAboutContent = () => (
-  <div className="p-6 min-h-full bg-background">
-    <h2 className="text-xl font-bold text-foreground mb-4">About Me</h2>
-    <p className="text-foreground/80 leading-relaxed">
-      I'm a passionate AI/ML engineer focused on building intelligent systems 
-      that solve real-world problems. With expertise in deep learning, 
-      natural language processing, and computer vision.
-    </p>
-    <div className="mt-6 space-y-3">
-      <div className="p-3 rounded-xl bg-foreground/5">
-        <span className="text-sm text-foreground/60">Experience</span>
-        <p className="font-medium text-foreground">3+ Years</p>
+  <div className="p-4 min-h-full bg-background overflow-auto">
+    {/* Hero */}
+    <div className="flex flex-col items-center mb-6">
+      <div className="w-24 h-32 rounded-2xl bg-gradient-to-br from-primary/20 to-purple-600/20 border-2 border-primary/30 flex items-center justify-center mb-4">
+        <span className="text-4xl font-bold gradient-text">AK</span>
       </div>
-      <div className="p-3 rounded-xl bg-foreground/5">
-        <span className="text-sm text-foreground/60">Focus</span>
-        <p className="font-medium text-foreground">AI/ML, Deep Learning</p>
+      <h2 className="text-xl font-bold text-primary text-center">Anjani Kumar Kanamarlapudi</h2>
+      <p className="text-sm text-foreground/60">AI Developer & Data Scientist</p>
+    </div>
+
+    {/* Bio */}
+    <div className="p-4 rounded-xl bg-foreground/5 mb-6">
+      <p className="text-sm text-foreground/80 leading-relaxed">
+        Passionate AI Developer with expertise in machine learning, deep learning, and data analytics. Experienced in building predictive models, GenAI applications, and data-driven solutions.
+      </p>
+    </div>
+
+    {/* Stats */}
+    <div className="grid grid-cols-4 gap-2 mb-6">
+      {[
+        { icon: Brain, title: 'ML/AI' },
+        { icon: Database, title: 'Data' },
+        { icon: Cloud, title: 'GenAI' },
+        { icon: Code2, title: 'Dev' },
+      ].map((item, index) => (
+        <div key={index} className="p-3 rounded-xl bg-secondary/50 text-center">
+          <item.icon className="w-5 h-5 mx-auto mb-1 text-primary" />
+          <div className="text-xs font-medium text-foreground">{item.title}</div>
+        </div>
+      ))}
+    </div>
+
+    {/* Skills */}
+    <h3 className="text-sm font-semibold text-primary mb-3">Technical Skills</h3>
+    <div className="space-y-3 mb-6">
+      {skillCategories.map((category) => (
+        <div key={category.name} className="p-3 rounded-xl border border-border/50 bg-background/20">
+          <div className="flex items-center gap-2 mb-2">
+            <div className={`w-6 h-6 rounded-lg bg-gradient-to-br ${category.color} flex items-center justify-center`}>
+              <Code2 className="w-3 h-3 text-white" />
+            </div>
+            <h4 className="text-xs font-semibold text-foreground">{category.name}</h4>
+          </div>
+          <div className="flex flex-wrap gap-1">
+            {category.skills.map((skill) => (
+              <span key={skill} className="px-2 py-0.5 rounded-full bg-secondary/80 text-foreground/80 text-[10px]">
+                {skill}
+              </span>
+            ))}
+          </div>
+        </div>
+      ))}
+    </div>
+
+    {/* Experience */}
+    <h3 className="text-sm font-semibold text-orange-400 mb-3">Experience</h3>
+    <div className="space-y-3 mb-6">
+      {experiences.map((exp, index) => (
+        <div key={index} className="p-3 rounded-xl border border-orange-500/30 bg-orange-500/5">
+          <div className="flex items-start gap-2">
+            <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-orange-500 to-amber-500 flex items-center justify-center flex-shrink-0">
+              <Briefcase className="w-4 h-4 text-white" />
+            </div>
+            <div className="flex-1">
+              <h4 className="text-sm font-semibold text-foreground">{exp.title}</h4>
+              <p className="text-xs text-primary">{exp.company}</p>
+              <div className="flex flex-wrap gap-1 mt-2">
+                {exp.skills.map((skill) => (
+                  <span key={skill} className="px-1.5 py-0.5 rounded-full bg-primary/20 text-primary text-[10px]">
+                    {skill}
+                  </span>
+                ))}
+              </div>
+            </div>
+          </div>
+        </div>
+      ))}
+    </div>
+
+    {/* Education */}
+    <h3 className="text-sm font-semibold text-orange-400 mb-3">Education</h3>
+    <div className="p-3 rounded-xl border border-orange-500/30 bg-orange-500/5">
+      <div className="flex items-start gap-2">
+        <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-blue-500 to-cyan-500 flex items-center justify-center flex-shrink-0">
+          <GraduationCap className="w-4 h-4 text-white" />
+        </div>
+        <div>
+          <h4 className="text-sm font-semibold text-foreground">B.Tech in Computer Science</h4>
+          <p className="text-xs text-primary">University | Expected Graduation</p>
+        </div>
       </div>
     </div>
   </div>
@@ -406,3 +487,42 @@ const MobileNotesContent = () => (
     </div>
   </div>
 );
+
+// Mobile Resume Viewer
+const MobileResumeContent = () => {
+  const resumeUrl = '/resume/Resume_Data_Scientist.pdf';
+
+  const handleDownload = () => {
+    const link = document.createElement('a');
+    link.href = resumeUrl;
+    link.download = 'Resume_Anjani_Kumar.pdf';
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+  };
+
+  return (
+    <div className="flex flex-col h-full bg-background">
+      {/* Toolbar */}
+      <div className="flex items-center justify-between px-4 py-3 bg-secondary/30 border-b border-border">
+        <span className="text-sm font-medium text-foreground">Resume_Anjani_Kumar.pdf</span>
+        <button
+          onClick={handleDownload}
+          className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-primary hover:bg-primary/80 text-primary-foreground text-sm transition-colors"
+        >
+          <Download className="w-4 h-4" />
+          Download
+        </button>
+      </div>
+      
+      {/* PDF Viewer */}
+      <div className="flex-1 overflow-hidden">
+        <iframe
+          src={`${resumeUrl}#toolbar=0`}
+          className="w-full h-full border-0"
+          title="Resume PDF"
+        />
+      </div>
+    </div>
+  );
+};
