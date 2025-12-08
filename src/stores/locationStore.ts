@@ -9,6 +9,7 @@ export interface FileItem {
   content?: string;
   url?: string;
   image?: string;
+  isDownload?: boolean;
 }
 
 interface LocationStore {
@@ -84,7 +85,8 @@ export const fileSystem: FileItem[] = [
     id: 'resume',
     name: 'Resume.pdf',
     type: 'pdf',
-    url: '#',
+    url: '/resume/Resume_Data_Scientist.pdf',
+    isDownload: true,
   },
   {
     id: 'links',

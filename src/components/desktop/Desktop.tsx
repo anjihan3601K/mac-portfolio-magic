@@ -10,6 +10,7 @@ import { SafariWindow } from '@/components/windows/SafariWindow';
 import { NotesWindow } from '@/components/windows/NotesWindow';
 import { MobileHomeScreen } from '@/components/mobile/MobileHomeScreen';
 import { MobileWindowSheet } from '@/components/mobile/MobileWindowSheet';
+import { MobileWelcomeScreen } from '@/components/mobile/MobileWelcomeScreen';
 import { useWindowStore } from '@/stores/windowStore';
 import { useIsMobile } from '@/hooks/use-mobile';
 import { Folder } from 'lucide-react';
@@ -76,8 +77,13 @@ export const Desktop = () => {
   if (isMobile) {
     return (
       <>
-        <MobileHomeScreen />
-        <MobileWindowSheet />
+        {showWelcome && <MobileWelcomeScreen onComplete={() => setShowWelcome(false)} />}
+        {!showWelcome && (
+          <>
+            <MobileHomeScreen />
+            <MobileWindowSheet />
+          </>
+        )}
       </>
     );
   }
