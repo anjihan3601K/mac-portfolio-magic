@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { useWindowStore, WindowId } from '@/stores/windowStore';
-import { X, ChevronLeft, ExternalLink, Calendar, Folder } from 'lucide-react';
+import { X, ChevronLeft, ExternalLink, Calendar, Download, FileText } from 'lucide-react';
 
 const windowTitles: Record<WindowId, string> = {
   terminal: 'Terminal',
@@ -101,6 +101,7 @@ interface FolderItem {
   name: string;
   type: 'folder' | 'link';
   url?: string;
+  isDownload?: boolean;
   children?: FolderItem[];
 }
 
@@ -129,8 +130,8 @@ const finderData: FolderItem[] = [
     name: 'Resume',
     type: 'folder',
     children: [
-      { id: 'view-resume', name: 'View Resume', type: 'link', url: '#' },
-      { id: 'download-resume', name: 'Download PDF', type: 'link', url: '#' },
+      { id: 'view-resume', name: 'View Resume', type: 'link', url: '/resume/Resume_Data_Scientist.pdf' },
+      { id: 'download-resume', name: 'Download PDF', type: 'link', url: '/resume/Resume_Data_Scientist.pdf', isDownload: true },
     ]
   },
 ];
@@ -156,7 +157,17 @@ const MobileFinderContent = ({ onClose }: { onClose: () => void }) => {
     if (folder.type === 'folder' && folder.children) {
       setCurrentPath([...currentPath, folder.id]);
     } else if (folder.type === 'link' && folder.url) {
-      window.open(folder.url, '_blank');
+      if (folder.isDownload) {
+        // Download the file
+        const link = document.createElement('a');
+        link.href = folder.url;
+        link.download = 'Resume_Anjani_Kumar.pdf';
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
+      } else {
+        window.open(folder.url, '_blank');
+      }
     }
   };
 
@@ -204,36 +215,40 @@ const MobileFinderContent = ({ onClose }: { onClose: () => void }) => {
                 <div className="w-20 h-16 relative">
                   <svg viewBox="0 0 100 80" className="w-full h-full drop-shadow-md">
                     <defs>
-                      <linearGradient id="folderGradient" x1="0%" y1="0%" x2="0%" y2="100%">
+                      <linearGradient id={`folderGradient-${item.id}`} x1="0%" y1="0%" x2="0%" y2="100%">
                         <stop offset="0%" stopColor="#7DD3FC" />
                         <stop offset="100%" stopColor="#38BDF8" />
                       </linearGradient>
-                      <linearGradient id="folderTabGradient" x1="0%" y1="0%" x2="0%" y2="100%">
+                      <linearGradient id={`folderTabGradient-${item.id}`} x1="0%" y1="0%" x2="0%" y2="100%">
                         <stop offset="0%" stopColor="#38BDF8" />
                         <stop offset="100%" stopColor="#0EA5E9" />
                       </linearGradient>
                     </defs>
-                    {/* Folder back */}
                     <path 
                       d="M5 20 L5 70 Q5 75 10 75 L90 75 Q95 75 95 70 L95 25 Q95 20 90 20 L40 20 L35 12 Q33 10 30 10 L10 10 Q5 10 5 15 Z" 
-                      fill="url(#folderGradient)"
+                      fill={`url(#folderGradient-${item.id})`}
                     />
-                    {/* Folder tab */}
                     <path 
                       d="M5 15 Q5 10 10 10 L30 10 Q33 10 35 12 L40 20 L5 20 Z" 
-                      fill="url(#folderTabGradient)"
+                      fill={`url(#folderTabGradient-${item.id})`}
                     />
-                    {/* Folder front shadow */}
                     <path 
                       d="M5 25 L95 25 L95 70 Q95 75 90 75 L10 75 Q5 75 5 70 Z" 
                       fill="rgba(0,0,0,0.1)"
                     />
-                    {/* Folder front */}
                     <path 
                       d="M5 28 L95 28 L95 70 Q95 75 90 75 L10 75 Q5 75 5 70 Z" 
-                      fill="url(#folderGradient)"
+                      fill={`url(#folderGradient-${item.id})`}
                     />
                   </svg>
+                </div>
+              ) : item.isDownload ? (
+                <div className="w-16 h-16 rounded-xl bg-green-100 flex items-center justify-center">
+                  <Download className="w-8 h-8 text-green-600" />
+                </div>
+              ) : item.id === 'view-resume' ? (
+                <div className="w-16 h-16 rounded-xl bg-red-100 flex items-center justify-center">
+                  <FileText className="w-8 h-8 text-red-500" />
                 </div>
               ) : (
                 <div className="w-16 h-16 rounded-xl bg-gray-100 flex items-center justify-center">

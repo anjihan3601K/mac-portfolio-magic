@@ -55,6 +55,18 @@ export const FinderWindow = () => {
       navigateTo(item.name);
     } else if (item.type === 'link' && item.url) {
       window.open(item.url, '_blank');
+    } else if (item.type === 'pdf' && item.url) {
+      if (item.isDownload) {
+        // Trigger download
+        const link = document.createElement('a');
+        link.href = item.url;
+        link.download = 'Resume_Anjani_Kumar.pdf';
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
+      } else {
+        window.open(item.url, '_blank');
+      }
     }
   };
 
