@@ -2,13 +2,6 @@ import { WindowWrapper } from '@/components/desktop/WindowWrapper';
 import { Brain, Database, Cloud, Code2, Briefcase, GraduationCap, MapPin, Mail, Linkedin, Github } from 'lucide-react';
 import profilePhoto from '@/assets/profile-photo.png';
 
-const highlights = [
-  { icon: Brain, title: 'ML/AI', subtitle: 'Expert' },
-  { icon: Database, title: 'Data Science', subtitle: 'Specialist' },
-  { icon: Cloud, title: 'GenAI', subtitle: 'Builder' },
-  { icon: Code2, title: 'Full Stack', subtitle: 'Developer' },
-];
-
 const skillCategories = [
   { name: 'Languages', skills: ['Python', 'SQL', 'R', 'JavaScript'] },
   { name: 'ML/DL', skills: ['TensorFlow', 'PyTorch', 'Scikit-learn', 'Keras'] },
@@ -33,150 +26,133 @@ const experiences = [
 
 export const AboutWindow = () => {
   return (
-    <WindowWrapper id="about" title="About Me — Notes" width={700} height={650}>
-      <div className="h-full flex bg-[#1e1e1e]">
-        {/* Notes Sidebar */}
-        <div className="w-48 bg-[#252526] border-r border-[#3c3c3c] flex flex-col">
-          <div className="p-3 border-b border-[#3c3c3c]">
-            <div className="text-xs text-[#858585] font-medium uppercase tracking-wider">Notes</div>
-          </div>
-          <div className="flex-1 p-2">
-            <div className="p-2 rounded-md bg-[#37373d] text-[#cccccc] text-sm font-medium">
-              📝 About Anjani
-            </div>
-          </div>
-          <div className="p-3 border-t border-[#3c3c3c] text-xs text-[#858585]">
-            1 Note
+    <WindowWrapper id="about" title="About Me.txt — TextEdit" width={650} height={600}>
+      <div className="h-full bg-[#fefefe] dark:bg-[#1e1e1e] overflow-auto">
+        {/* TextEdit Toolbar */}
+        <div className="h-9 bg-gradient-to-b from-[#f6f6f6] to-[#ebebeb] dark:from-[#3c3c3c] dark:to-[#323232] border-b border-[#c8c8c8] dark:border-[#2a2a2a] px-3 flex items-center gap-2">
+          <div className="flex items-center gap-1 text-[10px] text-[#666] dark:text-[#999]">
+            <span className="px-1.5 py-0.5 bg-[#fff] dark:bg-[#2d2d2d] border border-[#ccc] dark:border-[#4a4a4a] rounded text-[9px]">
+              Plain Text
+            </span>
           </div>
         </div>
 
-        {/* Note Content */}
-        <div className="flex-1 overflow-auto">
-          <div className="p-6 space-y-6">
-            {/* Header with Profile */}
-            <div className="flex gap-5 items-start">
-              <img 
-                src={profilePhoto} 
-                alt="Anjani Kumar" 
-                className="w-28 h-36 rounded-xl object-cover shadow-lg border-2 border-[#3c3c3c]"
-              />
-              <div className="flex-1 pt-1">
-                <h1 className="text-2xl font-bold text-[#e0e0e0] mb-1">Anjani Kumar Kanamarlapudi</h1>
-                <p className="text-[#569cd6] font-medium mb-3">AI Developer & Data Scientist</p>
-                <div className="space-y-1.5 text-sm text-[#9cdcfe]">
-                  <div className="flex items-center gap-2">
-                    <MapPin className="w-3.5 h-3.5 text-[#858585]" />
-                    <span>India</span>
-                  </div>
-                  <div className="flex items-center gap-2">
-                    <Mail className="w-3.5 h-3.5 text-[#858585]" />
-                    <span>anjani.kanamarlapudi@gmail.com</span>
-                  </div>
-                </div>
-              </div>
-            </div>
-
-            {/* Divider */}
-            <div className="h-px bg-[#3c3c3c]" />
-
-            {/* Bio */}
+        {/* Document Content */}
+        <div className="p-6 font-mono text-sm leading-relaxed text-[#333] dark:text-[#d4d4d4]">
+          {/* Header */}
+          <div className="flex gap-5 mb-6">
+            <img 
+              src={profilePhoto} 
+              alt="Anjani Kumar" 
+              className="w-24 h-32 rounded-lg object-cover border border-[#ddd] dark:border-[#444]"
+            />
             <div>
-              <h2 className="text-lg font-semibold text-[#dcdcaa] mb-2">👋 About Me</h2>
-              <p className="text-[#d4d4d4] leading-relaxed text-sm">
-                Passionate AI Developer and Data Scientist with expertise in machine learning, deep learning, and data analytics. Experienced in building predictive models, GenAI applications, and data-driven solutions across healthcare, finance, and various domains.
+              <h1 className="text-xl font-bold text-[#000] dark:text-[#fff] mb-1">
+                Anjani Kumar Kanamarlapudi
+              </h1>
+              <p className="text-[#0066cc] dark:text-[#569cd6] font-medium mb-2">
+                AI Developer & Data Scientist
               </p>
-            </div>
-
-            {/* Highlights Grid */}
-            <div className="grid grid-cols-4 gap-2">
-              {highlights.map((item, index) => (
-                <div
-                  key={index}
-                  className="p-3 rounded-lg bg-[#2d2d30] border border-[#3c3c3c] text-center"
-                >
-                  <item.icon className="w-5 h-5 mx-auto mb-1.5 text-[#569cd6]" />
-                  <div className="text-xs font-semibold text-[#e0e0e0]">{item.title}</div>
-                  <div className="text-[10px] text-[#858585]">{item.subtitle}</div>
+              <div className="text-xs space-y-1 text-[#666] dark:text-[#999]">
+                <div className="flex items-center gap-1.5">
+                  <MapPin className="w-3 h-3" /> India
                 </div>
-              ))}
-            </div>
-
-            {/* Skills */}
-            <div>
-              <h2 className="text-lg font-semibold text-[#dcdcaa] mb-3">🛠️ Technical Skills</h2>
-              <div className="space-y-2">
-                {skillCategories.map((category) => (
-                  <div key={category.name} className="flex items-start gap-3">
-                    <span className="text-xs font-medium text-[#858585] w-20 pt-1 shrink-0">{category.name}:</span>
-                    <div className="flex flex-wrap gap-1.5">
-                      {category.skills.map((skill) => (
-                        <span
-                          key={skill}
-                          className="px-2 py-0.5 rounded bg-[#264f78] text-[#9cdcfe] text-xs"
-                        >
-                          {skill}
-                        </span>
-                      ))}
-                    </div>
-                  </div>
-                ))}
-              </div>
-            </div>
-
-            {/* Experience */}
-            <div>
-              <h2 className="text-lg font-semibold text-[#dcdcaa] mb-3">💼 Experience</h2>
-              <div className="space-y-3">
-                {experiences.map((exp, index) => (
-                  <div key={index} className="p-3 rounded-lg bg-[#2d2d30] border border-[#3c3c3c]">
-                    <div className="flex items-center gap-2 mb-1">
-                      <Briefcase className="w-4 h-4 text-[#ce9178]" />
-                      <span className="font-medium text-[#e0e0e0] text-sm">{exp.title}</span>
-                    </div>
-                    <p className="text-xs text-[#569cd6] mb-1">{exp.company}</p>
-                    <p className="text-xs text-[#d4d4d4]">{exp.description}</p>
-                  </div>
-                ))}
-              </div>
-            </div>
-
-            {/* Education */}
-            <div>
-              <h2 className="text-lg font-semibold text-[#dcdcaa] mb-3">🎓 Education</h2>
-              <div className="p-3 rounded-lg bg-[#2d2d30] border border-[#3c3c3c]">
-                <div className="flex items-center gap-2 mb-1">
-                  <GraduationCap className="w-4 h-4 text-[#4ec9b0]" />
-                  <span className="font-medium text-[#e0e0e0] text-sm">B.Tech in Computer Science</span>
+                <div className="flex items-center gap-1.5">
+                  <Mail className="w-3 h-3" /> anjani.kanamarlapudi@gmail.com
                 </div>
-                <p className="text-xs text-[#569cd6]">Currently Pursuing</p>
-              </div>
-            </div>
-
-            {/* Connect */}
-            <div>
-              <h2 className="text-lg font-semibold text-[#dcdcaa] mb-3">🔗 Connect</h2>
-              <div className="flex gap-3">
-                <a 
-                  href="https://github.com/anjihan3601K" 
-                  target="_blank" 
-                  rel="noopener noreferrer"
-                  className="flex items-center gap-2 px-3 py-2 rounded-lg bg-[#2d2d30] border border-[#3c3c3c] hover:bg-[#37373d] transition-colors"
-                >
-                  <Github className="w-4 h-4 text-[#e0e0e0]" />
-                  <span className="text-xs text-[#d4d4d4]">GitHub</span>
-                </a>
-                <a 
-                  href="https://www.linkedin.com/in/anjani-kumar-kanamarlapudi-3b5a002b9" 
-                  target="_blank" 
-                  rel="noopener noreferrer"
-                  className="flex items-center gap-2 px-3 py-2 rounded-lg bg-[#2d2d30] border border-[#3c3c3c] hover:bg-[#37373d] transition-colors"
-                >
-                  <Linkedin className="w-4 h-4 text-[#569cd6]" />
-                  <span className="text-xs text-[#d4d4d4]">LinkedIn</span>
-                </a>
               </div>
             </div>
           </div>
+
+          <div className="border-t border-[#eee] dark:border-[#3c3c3c] my-4" />
+
+          {/* About Section */}
+          <div className="mb-5">
+            <h2 className="text-base font-bold text-[#000] dark:text-[#dcdcaa] mb-2">
+              ## ABOUT ME
+            </h2>
+            <p className="text-[#444] dark:text-[#d4d4d4]">
+              Passionate AI Developer and Data Scientist with expertise in machine learning, 
+              deep learning, and data analytics. Experienced in building predictive models, 
+              GenAI applications, and data-driven solutions across healthcare, finance, 
+              and various domains.
+            </p>
+          </div>
+
+          {/* Skills Section */}
+          <div className="mb-5">
+            <h2 className="text-base font-bold text-[#000] dark:text-[#dcdcaa] mb-2">
+              ## TECHNICAL SKILLS
+            </h2>
+            <div className="space-y-1.5">
+              {skillCategories.map((category) => (
+                <div key={category.name} className="flex">
+                  <span className="w-24 text-[#888] dark:text-[#858585] shrink-0">{category.name}:</span>
+                  <span className="text-[#444] dark:text-[#9cdcfe]">{category.skills.join(', ')}</span>
+                </div>
+              ))}
+            </div>
+          </div>
+
+          {/* Experience Section */}
+          <div className="mb-5">
+            <h2 className="text-base font-bold text-[#000] dark:text-[#dcdcaa] mb-2">
+              ## EXPERIENCE
+            </h2>
+            {experiences.map((exp, index) => (
+              <div key={index} className="mb-3">
+                <div className="flex items-center gap-2">
+                  <Briefcase className="w-3.5 h-3.5 text-[#888] dark:text-[#ce9178]" />
+                  <span className="font-semibold text-[#333] dark:text-[#e0e0e0]">{exp.title}</span>
+                </div>
+                <p className="text-[#0066cc] dark:text-[#569cd6] text-xs ml-5">{exp.company}</p>
+                <p className="text-[#666] dark:text-[#999] text-xs ml-5 mt-0.5">{exp.description}</p>
+              </div>
+            ))}
+          </div>
+
+          {/* Education Section */}
+          <div className="mb-5">
+            <h2 className="text-base font-bold text-[#000] dark:text-[#dcdcaa] mb-2">
+              ## EDUCATION
+            </h2>
+            <div className="flex items-center gap-2">
+              <GraduationCap className="w-3.5 h-3.5 text-[#888] dark:text-[#4ec9b0]" />
+              <span className="font-semibold text-[#333] dark:text-[#e0e0e0]">B.Tech in Computer Science</span>
+            </div>
+            <p className="text-[#0066cc] dark:text-[#569cd6] text-xs ml-5">Currently Pursuing</p>
+          </div>
+
+          {/* Links Section */}
+          <div>
+            <h2 className="text-base font-bold text-[#000] dark:text-[#dcdcaa] mb-2">
+              ## CONNECT
+            </h2>
+            <div className="flex gap-4 ml-1">
+              <a 
+                href="https://github.com/anjihan3601K" 
+                target="_blank" 
+                rel="noopener noreferrer"
+                className="flex items-center gap-1.5 text-[#0066cc] dark:text-[#569cd6] hover:underline text-xs"
+              >
+                <Github className="w-3.5 h-3.5" /> GitHub
+              </a>
+              <a 
+                href="https://www.linkedin.com/in/anjani-kumar-kanamarlapudi-3b5a002b9" 
+                target="_blank" 
+                rel="noopener noreferrer"
+                className="flex items-center gap-1.5 text-[#0066cc] dark:text-[#569cd6] hover:underline text-xs"
+              >
+                <Linkedin className="w-3.5 h-3.5" /> LinkedIn
+              </a>
+            </div>
+          </div>
+
+          <div className="border-t border-[#eee] dark:border-[#3c3c3c] my-4" />
+          
+          <p className="text-[10px] text-[#999] dark:text-[#666] text-center">
+            — End of Document —
+          </p>
         </div>
       </div>
     </WindowWrapper>

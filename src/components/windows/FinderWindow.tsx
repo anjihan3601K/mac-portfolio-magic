@@ -60,6 +60,10 @@ export const FinderWindow = () => {
       // Open resume in the resume viewer window
       const { openWindow } = useWindowStore.getState();
       openWindow('resume');
+    } else if (item.type === 'file' && item.id === 'about') {
+      // Open about me in the about window
+      const { openWindow } = useWindowStore.getState();
+      openWindow('about');
     }
   };
 
