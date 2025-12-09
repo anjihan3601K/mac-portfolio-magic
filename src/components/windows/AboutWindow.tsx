@@ -1,5 +1,6 @@
 import { WindowWrapper } from '@/components/desktop/WindowWrapper';
-import { Brain, Database, Cloud, Code2, Briefcase, GraduationCap } from 'lucide-react';
+import { Brain, Database, Cloud, Code2, Briefcase, GraduationCap, MapPin, Mail, Linkedin, Github } from 'lucide-react';
+import profilePhoto from '@/assets/profile-photo.png';
 
 const highlights = [
   { icon: Brain, title: 'ML/AI', subtitle: 'Expert' },
@@ -9,147 +10,170 @@ const highlights = [
 ];
 
 const skillCategories = [
-  { name: 'Programming Languages', skills: ['Python', 'SQL', 'R', 'JavaScript'], color: 'from-pink-500 to-rose-500' },
-  { name: 'ML/DL Frameworks', skills: ['TensorFlow', 'PyTorch', 'Scikit-learn', 'Keras'], color: 'from-cyan-500 to-teal-500' },
-  { name: 'Data Science', skills: ['Pandas', 'NumPy', 'Matplotlib', 'Seaborn'], color: 'from-blue-500 to-indigo-500' },
-  { name: 'GenAI & LLMs', skills: ['OpenAI API', 'LangChain', 'Hugging Face', 'Prompt Engineering'], color: 'from-purple-500 to-violet-500' },
-  { name: 'Cloud & Tools', skills: ['AWS', 'Docker', 'Git', 'Jupyter'], color: 'from-teal-500 to-cyan-500' },
-  { name: 'Databases', skills: ['MongoDB', 'PostgreSQL', 'MySQL'], color: 'from-blue-500 to-sky-500' },
-  { name: 'Web Development', skills: ['FastAPI', 'Flask', 'React', 'REST APIs'], color: 'from-violet-500 to-purple-500' },
+  { name: 'Languages', skills: ['Python', 'SQL', 'R', 'JavaScript'] },
+  { name: 'ML/DL', skills: ['TensorFlow', 'PyTorch', 'Scikit-learn', 'Keras'] },
+  { name: 'Data Science', skills: ['Pandas', 'NumPy', 'Matplotlib', 'Seaborn'] },
+  { name: 'GenAI', skills: ['OpenAI API', 'LangChain', 'Hugging Face'] },
+  { name: 'Cloud', skills: ['AWS', 'Docker', 'Git'] },
+  { name: 'Web', skills: ['FastAPI', 'Flask', 'React'] },
 ];
 
 const experiences = [
   {
     title: 'BCG Internship',
     company: 'Boston Consulting Group',
-    period: 'Recent',
-    description: 'Worked on data analytics and machine learning projects, contributing to business intelligence solutions.',
-    skills: ['Python', 'Data Analytics', 'ML'],
-    color: 'from-orange-500 to-amber-500',
+    description: 'Data analytics and machine learning projects for business intelligence.',
   },
   {
     title: 'Community Service Internship',
     company: 'Social Impact Project',
-    period: 'Recent',
-    description: 'Developed ML solutions for community welfare and social impact applications.',
-    skills: ['Python', 'ML', 'Data Science'],
-    color: 'from-orange-600 to-red-500',
+    description: 'ML solutions for community welfare and social impact applications.',
   },
 ];
 
-const education = {
-  degree: "Bachelor's in Computer Science / Data Science",
-  university: 'University',
-  period: 'Expected Graduation',
-  color: 'from-blue-500 to-cyan-500',
-};
-
 export const AboutWindow = () => {
   return (
-    <WindowWrapper id="about" title="About Me" width={800} height={700}>
-      <div className="h-full bg-card overflow-auto">
-        {/* Hero Section */}
-        <div className="p-8 flex flex-col md:flex-row gap-8 items-center border-b border-border">
-          {/* Profile Image Placeholder */}
-          <div className="w-48 h-60 rounded-2xl bg-gradient-to-br from-primary/20 to-purple-600/20 border-2 border-primary/30 flex items-center justify-center relative overflow-hidden">
-            <div className="absolute inset-0 bg-gradient-to-br from-primary/5 to-purple-600/5" />
-            <span className="text-6xl font-bold gradient-text">AK</span>
+    <WindowWrapper id="about" title="About Me — Notes" width={700} height={650}>
+      <div className="h-full flex bg-[#1e1e1e]">
+        {/* Notes Sidebar */}
+        <div className="w-48 bg-[#252526] border-r border-[#3c3c3c] flex flex-col">
+          <div className="p-3 border-b border-[#3c3c3c]">
+            <div className="text-xs text-[#858585] font-medium uppercase tracking-wider">Notes</div>
           </div>
-          
-          {/* Bio */}
-          <div className="flex-1 p-6 rounded-2xl border border-border/50 bg-background/30">
-            <h1 className="text-2xl font-bold text-primary mb-4">Hello! I'm Anjani Kumar Kanamarlapudi</h1>
-            <p className="text-foreground/80 leading-relaxed mb-4">
-              Passionate AI Developer and Data Scientist with expertise in machine learning, deep learning, and data analytics. Experienced in building predictive models, GenAI applications, and data-driven solutions across healthcare, finance, and various domains.
-            </p>
-            <p className="text-foreground/70 leading-relaxed">
-              With a strong foundation in mathematics, statistics, and computer science, I create data-driven solutions that solve real-world problems. From healthcare AI to financial forecasting, my work spans diverse domains with a focus on practical impact and innovation.
-            </p>
+          <div className="flex-1 p-2">
+            <div className="p-2 rounded-md bg-[#37373d] text-[#cccccc] text-sm font-medium">
+              📝 About Anjani
+            </div>
+          </div>
+          <div className="p-3 border-t border-[#3c3c3c] text-xs text-[#858585]">
+            1 Note
           </div>
         </div>
 
-        {/* Stats */}
-        <div className="p-6 border-b border-border">
-          <div className="grid grid-cols-4 gap-4">
-            {highlights.map((item, index) => (
-              <div
-                key={index}
-                className="p-4 rounded-xl bg-secondary/50 text-center hover:bg-secondary transition-colors"
-              >
-                <item.icon className="w-6 h-6 mx-auto mb-2 text-primary" />
-                <div className="text-lg font-bold text-foreground">{item.title}</div>
-                <div className="text-xs text-muted-foreground">{item.subtitle}</div>
-              </div>
-            ))}
-          </div>
-        </div>
-
-        {/* Technical Skills */}
-        <div className="p-6 border-b border-border">
-          <h3 className="text-xl font-bold text-primary mb-6 text-center">Technical Skills</h3>
-          <div className="grid grid-cols-2 lg:grid-cols-3 gap-4">
-            {skillCategories.map((category) => (
-              <div key={category.name} className="p-4 rounded-xl border border-border/50 bg-background/20">
-                <div className="flex items-center gap-2 mb-3">
-                  <div className={`w-8 h-8 rounded-lg bg-gradient-to-br ${category.color} flex items-center justify-center`}>
-                    <Code2 className="w-4 h-4 text-white" />
+        {/* Note Content */}
+        <div className="flex-1 overflow-auto">
+          <div className="p-6 space-y-6">
+            {/* Header with Profile */}
+            <div className="flex gap-5 items-start">
+              <img 
+                src={profilePhoto} 
+                alt="Anjani Kumar" 
+                className="w-28 h-36 rounded-xl object-cover shadow-lg border-2 border-[#3c3c3c]"
+              />
+              <div className="flex-1 pt-1">
+                <h1 className="text-2xl font-bold text-[#e0e0e0] mb-1">Anjani Kumar Kanamarlapudi</h1>
+                <p className="text-[#569cd6] font-medium mb-3">AI Developer & Data Scientist</p>
+                <div className="space-y-1.5 text-sm text-[#9cdcfe]">
+                  <div className="flex items-center gap-2">
+                    <MapPin className="w-3.5 h-3.5 text-[#858585]" />
+                    <span>India</span>
                   </div>
-                  <h4 className="text-sm font-semibold text-foreground">{category.name}</h4>
-                </div>
-                <div className="flex flex-wrap gap-1.5">
-                  {category.skills.map((skill) => (
-                    <span
-                      key={skill}
-                      className="px-2.5 py-1 rounded-full bg-secondary/80 text-foreground/80 text-xs"
-                    >
-                      {skill}
-                    </span>
-                  ))}
+                  <div className="flex items-center gap-2">
+                    <Mail className="w-3.5 h-3.5 text-[#858585]" />
+                    <span>anjani.kanamarlapudi@gmail.com</span>
+                  </div>
                 </div>
               </div>
-            ))}
-          </div>
-        </div>
+            </div>
 
-        {/* Experience */}
-        <div className="p-6 border-b border-border">
-          <h3 className="text-xl font-bold text-orange-400 mb-6 text-center">Experience</h3>
-          <div className="space-y-4">
-            {experiences.map((exp, index) => (
-              <div key={index} className="p-4 rounded-xl border border-orange-500/30 bg-orange-500/5">
-                <div className="flex items-start gap-3">
-                  <div className={`w-10 h-10 rounded-xl bg-gradient-to-br ${exp.color} flex items-center justify-center flex-shrink-0`}>
-                    <Briefcase className="w-5 h-5 text-white" />
-                  </div>
-                  <div className="flex-1">
-                    <h4 className="font-semibold text-foreground">{exp.title}</h4>
-                    <p className="text-sm text-primary">{exp.company} | {exp.period}</p>
-                    <p className="text-sm text-foreground/70 mt-2">{exp.description}</p>
-                    <div className="flex flex-wrap gap-1.5 mt-3">
-                      {exp.skills.map((skill) => (
-                        <span key={skill} className="px-2 py-0.5 rounded-full bg-primary/20 text-primary text-xs">
+            {/* Divider */}
+            <div className="h-px bg-[#3c3c3c]" />
+
+            {/* Bio */}
+            <div>
+              <h2 className="text-lg font-semibold text-[#dcdcaa] mb-2">👋 About Me</h2>
+              <p className="text-[#d4d4d4] leading-relaxed text-sm">
+                Passionate AI Developer and Data Scientist with expertise in machine learning, deep learning, and data analytics. Experienced in building predictive models, GenAI applications, and data-driven solutions across healthcare, finance, and various domains.
+              </p>
+            </div>
+
+            {/* Highlights Grid */}
+            <div className="grid grid-cols-4 gap-2">
+              {highlights.map((item, index) => (
+                <div
+                  key={index}
+                  className="p-3 rounded-lg bg-[#2d2d30] border border-[#3c3c3c] text-center"
+                >
+                  <item.icon className="w-5 h-5 mx-auto mb-1.5 text-[#569cd6]" />
+                  <div className="text-xs font-semibold text-[#e0e0e0]">{item.title}</div>
+                  <div className="text-[10px] text-[#858585]">{item.subtitle}</div>
+                </div>
+              ))}
+            </div>
+
+            {/* Skills */}
+            <div>
+              <h2 className="text-lg font-semibold text-[#dcdcaa] mb-3">🛠️ Technical Skills</h2>
+              <div className="space-y-2">
+                {skillCategories.map((category) => (
+                  <div key={category.name} className="flex items-start gap-3">
+                    <span className="text-xs font-medium text-[#858585] w-20 pt-1 shrink-0">{category.name}:</span>
+                    <div className="flex flex-wrap gap-1.5">
+                      {category.skills.map((skill) => (
+                        <span
+                          key={skill}
+                          className="px-2 py-0.5 rounded bg-[#264f78] text-[#9cdcfe] text-xs"
+                        >
                           {skill}
                         </span>
                       ))}
                     </div>
                   </div>
-                </div>
+                ))}
               </div>
-            ))}
-          </div>
-        </div>
+            </div>
 
-        {/* Education */}
-        <div className="p-6">
-          <h3 className="text-xl font-bold text-orange-400 mb-6 text-center">Education</h3>
-          <div className="p-4 rounded-xl border border-orange-500/30 bg-orange-500/5">
-            <div className="flex items-start gap-3">
-              <div className={`w-10 h-10 rounded-xl bg-gradient-to-br ${education.color} flex items-center justify-center flex-shrink-0`}>
-                <GraduationCap className="w-5 h-5 text-white" />
+            {/* Experience */}
+            <div>
+              <h2 className="text-lg font-semibold text-[#dcdcaa] mb-3">💼 Experience</h2>
+              <div className="space-y-3">
+                {experiences.map((exp, index) => (
+                  <div key={index} className="p-3 rounded-lg bg-[#2d2d30] border border-[#3c3c3c]">
+                    <div className="flex items-center gap-2 mb-1">
+                      <Briefcase className="w-4 h-4 text-[#ce9178]" />
+                      <span className="font-medium text-[#e0e0e0] text-sm">{exp.title}</span>
+                    </div>
+                    <p className="text-xs text-[#569cd6] mb-1">{exp.company}</p>
+                    <p className="text-xs text-[#d4d4d4]">{exp.description}</p>
+                  </div>
+                ))}
               </div>
-              <div>
-                <h4 className="font-semibold text-foreground">{education.degree}</h4>
-                <p className="text-sm text-primary">{education.university} | {education.period}</p>
+            </div>
+
+            {/* Education */}
+            <div>
+              <h2 className="text-lg font-semibold text-[#dcdcaa] mb-3">🎓 Education</h2>
+              <div className="p-3 rounded-lg bg-[#2d2d30] border border-[#3c3c3c]">
+                <div className="flex items-center gap-2 mb-1">
+                  <GraduationCap className="w-4 h-4 text-[#4ec9b0]" />
+                  <span className="font-medium text-[#e0e0e0] text-sm">B.Tech in Computer Science</span>
+                </div>
+                <p className="text-xs text-[#569cd6]">Currently Pursuing</p>
+              </div>
+            </div>
+
+            {/* Connect */}
+            <div>
+              <h2 className="text-lg font-semibold text-[#dcdcaa] mb-3">🔗 Connect</h2>
+              <div className="flex gap-3">
+                <a 
+                  href="https://github.com/anjihan3601K" 
+                  target="_blank" 
+                  rel="noopener noreferrer"
+                  className="flex items-center gap-2 px-3 py-2 rounded-lg bg-[#2d2d30] border border-[#3c3c3c] hover:bg-[#37373d] transition-colors"
+                >
+                  <Github className="w-4 h-4 text-[#e0e0e0]" />
+                  <span className="text-xs text-[#d4d4d4]">GitHub</span>
+                </a>
+                <a 
+                  href="https://www.linkedin.com/in/anjani-kumar-kanamarlapudi-3b5a002b9" 
+                  target="_blank" 
+                  rel="noopener noreferrer"
+                  className="flex items-center gap-2 px-3 py-2 rounded-lg bg-[#2d2d30] border border-[#3c3c3c] hover:bg-[#37373d] transition-colors"
+                >
+                  <Linkedin className="w-4 h-4 text-[#569cd6]" />
+                  <span className="text-xs text-[#d4d4d4]">LinkedIn</span>
+                </a>
               </div>
             </div>
           </div>
