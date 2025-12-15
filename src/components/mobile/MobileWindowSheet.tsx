@@ -1,7 +1,8 @@
 import { useState } from 'react';
 import { useWindowStore, WindowId } from '@/stores/windowStore';
-import { X, ChevronLeft, ExternalLink, Calendar, Download, FileText, Briefcase, GraduationCap, Code2, Brain, Database, Cloud, MapPin, Mail, Github, Linkedin } from 'lucide-react';
+import { X, ChevronLeft, ExternalLink, Calendar, Download, FileText, Briefcase, GraduationCap, Code2, Brain, Database, Cloud, MapPin, Mail, Github, Linkedin, Image } from 'lucide-react';
 import profilePhoto from '@/assets/profile-photo.png';
+import { haptics } from '@/lib/haptics';
 
 const windowTitles: Record<WindowId, string> = {
   terminal: 'Terminal',
@@ -141,6 +142,17 @@ const finderData: FolderItem[] = [
     ]
   },
   {
+    id: 'images',
+    name: 'Images',
+    type: 'folder',
+    children: [
+      { id: 'profile', name: 'Profile Photo.jpg', type: 'link', url: '' },
+      { id: 'hackathon', name: 'Hackathon Winner.jpg', type: 'link', url: '' },
+      { id: 'ai-competition', name: 'AI Competition 2024.jpg', type: 'link', url: '' },
+      { id: 'conference', name: 'Tech Conference.jpg', type: 'link', url: '' },
+    ]
+  },
+  {
     id: 'resume',
     name: 'Resume',
     type: 'folder',
@@ -167,11 +179,11 @@ const MobileFinderContent = ({ onClose, onOpenResume, onOpenAbout }: { onClose: 
   };
 
   const navigateToFolder = (folder: FolderItem) => {
+    haptics.selection();
     if (folder.type === 'folder' && folder.children) {
       setCurrentPath([...currentPath, folder.id]);
     } else if (folder.type === 'link' && folder.url) {
       window.open(folder.url, '_blank');
-    } else if (folder.type === 'resume') {
       onOpenResume();
     } else if (folder.type === 'aboutfile') {
       onOpenAbout();
@@ -281,9 +293,11 @@ const MobileContactContent = () => {
   return (
     <div className="p-5 flex flex-col min-h-full bg-background">
       <div className="flex flex-col items-center mb-4">
-        <div className="w-20 h-20 rounded-full bg-gradient-to-br from-primary to-purple-600 flex items-center justify-center mb-3">
-          <span className="text-2xl font-bold text-white">AK</span>
-        </div>
+        <img 
+          src={profilePhoto} 
+          alt="Anjani Kumar"
+          className="w-20 h-20 rounded-full object-cover mb-3 shadow-lg"
+        />
         <h2 className="text-lg font-bold text-foreground">Anjani Kumar</h2>
         <p className="text-foreground/60 text-sm">AI/ML Engineer</p>
       </div>

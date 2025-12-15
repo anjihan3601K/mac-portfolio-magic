@@ -1,8 +1,10 @@
+import { useState } from 'react';
 import { WindowWrapper } from '@/components/desktop/WindowWrapper';
-import { Download, ExternalLink } from 'lucide-react';
+import { Download, ExternalLink, FileText } from 'lucide-react';
 
 export const ResumeViewer = () => {
   const resumeUrl = '/resume/Resume_Data_Scientist.pdf';
+  const [pdfError, setPdfError] = useState(false);
 
   const handleDownload = () => {
     const link = document.createElement('a');
@@ -41,13 +43,65 @@ export const ResumeViewer = () => {
           </div>
         </div>
         
-        {/* PDF Viewer */}
-        <div className="flex-1 overflow-hidden">
-          <iframe
-            src={`${resumeUrl}#toolbar=0`}
-            className="w-full h-full border-0"
-            title="Resume PDF"
-          />
+        {/* PDF Viewer with fallback */}
+        <div className="flex-1 overflow-hidden relative">
+          {!pdfError ? (
+            <object
+              data={resumeUrl}
+              type="application/pdf"
+              className="w-full h-full"
+              onError={() => setPdfError(true)}
+            >
+              {/* Fallback for browsers that can't display PDF */}
+              <div className="absolute inset-0 flex flex-col items-center justify-center bg-secondary/20 p-8 text-center">
+                <FileText className="w-16 h-16 text-primary mb-4" />
+                <h3 className="text-lg font-semibold text-foreground mb-2">Resume Preview</h3>
+                <p className="text-muted-foreground mb-6 max-w-sm">
+                  Your browser doesn't support PDF preview. Click below to view or download.
+                </p>
+                <div className="flex gap-3">
+                  <button
+                    onClick={handleOpenInNewTab}
+                    className="flex items-center gap-2 px-4 py-2 rounded-lg bg-secondary text-foreground"
+                  >
+                    <ExternalLink className="w-4 h-4" />
+                    Open in New Tab
+                  </button>
+                  <button
+                    onClick={handleDownload}
+                    className="flex items-center gap-2 px-4 py-2 rounded-lg bg-primary text-primary-foreground"
+                  >
+                    <Download className="w-4 h-4" />
+                    Download PDF
+                  </button>
+                </div>
+              </div>
+            </object>
+          ) : (
+            <div className="absolute inset-0 flex flex-col items-center justify-center bg-secondary/20 p-8 text-center">
+              <FileText className="w-16 h-16 text-primary mb-4" />
+              <h3 className="text-lg font-semibold text-foreground mb-2">Resume Preview</h3>
+              <p className="text-muted-foreground mb-6 max-w-sm">
+                Click below to view or download the resume.
+              </p>
+              <div className="flex gap-3">
+                <button
+                  onClick={handleOpenInNewTab}
+                  className="flex items-center gap-2 px-4 py-2 rounded-lg bg-secondary text-foreground"
+                >
+                  <ExternalLink className="w-4 h-4" />
+                  Open in New Tab
+                </button>
+                <button
+                  onClick={handleDownload}
+                  className="flex items-center gap-2 px-4 py-2 rounded-lg bg-primary text-primary-foreground"
+                >
+                  <Download className="w-4 h-4" />
+                  Download PDF
+                </button>
+              </div>
+            </div>
+          )}
         </div>
       </div>
     </WindowWrapper>

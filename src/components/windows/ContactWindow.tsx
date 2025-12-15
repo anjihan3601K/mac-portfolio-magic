@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { WindowWrapper } from '@/components/desktop/WindowWrapper';
 import { Github, Linkedin, Globe, User, Mail, Send } from 'lucide-react';
 import { useToast } from '@/hooks/use-toast';
+import profilePhoto from '@/assets/profile-photo.png';
 
 const socialLinks = [
   { 
@@ -60,11 +61,13 @@ export const ContactWindow = () => {
   return (
     <WindowWrapper id="contact" title="Contact Me" width={450} height={480}>
       <div className="h-full bg-card p-5 flex flex-col overflow-auto">
-        {/* Header with Avatar */}
+        {/* Header with Profile Photo */}
         <div className="flex items-start gap-3 mb-3">
-          <div className="w-12 h-12 rounded-full bg-gradient-to-br from-orange-400 to-yellow-400 flex items-center justify-center shadow-md overflow-hidden">
-            <span className="text-lg font-bold text-white">AK</span>
-          </div>
+          <img 
+            src={profilePhoto} 
+            alt="Anjani Kumar"
+            className="w-12 h-12 rounded-full object-cover shadow-md"
+          />
         </div>
 
         {/* Let's Connect */}
