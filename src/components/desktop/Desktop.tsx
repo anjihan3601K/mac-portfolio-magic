@@ -146,13 +146,13 @@ export const Desktop = () => {
 
       {/* Desktop Area with Folders */}
       {!showWelcome && (
-        <div className="desktop-area absolute inset-0 pt-10 pb-24 animate-fade-in">
+        <div className="desktop-area absolute inset-0 pt-10 pb-24 animate-fade-in z-10">
           {desktopFolders.map((folder, index) => (
             <button
               key={folder.id}
               ref={(el) => (folderRefs.current[index] = el)}
               onDoubleClick={() => handleFolderDoubleClick(folder.id)}
-              className="absolute p-3 flex flex-col items-center gap-1 rounded-lg hover:bg-foreground/10 transition-colors cursor-default select-none"
+              className="absolute p-3 flex flex-col items-center gap-1 rounded-lg hover:bg-foreground/10 transition-colors cursor-default select-none z-10"
               style={{ 
                 right: 80, 
                 top: 80 + index * 110,

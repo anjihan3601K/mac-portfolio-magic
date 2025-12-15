@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { useWindowStore, WindowId } from '@/stores/windowStore';
-import { X, ChevronLeft, ExternalLink, Calendar, Download, FileText, Briefcase, GraduationCap, Code2, Brain, Database, Cloud } from 'lucide-react';
+import { X, ChevronLeft, ExternalLink, Calendar, Download, FileText, Briefcase, GraduationCap, Code2, Brain, Database, Cloud, MapPin, Mail, Github, Linkedin } from 'lucide-react';
+import profilePhoto from '@/assets/profile-photo.png';
 
 const windowTitles: Record<WindowId, string> = {
   terminal: 'Terminal',
@@ -28,7 +29,7 @@ export const MobileWindowSheet = () => {
       case 'terminal':
         return <MobileTerminalContent />;
       case 'finder':
-        return <MobileFinderContent onClose={() => closeWindow(activeWindow)} onOpenResume={() => { closeWindow('finder'); openWindow('resume'); }} />;
+        return <MobileFinderContent onClose={() => closeWindow(activeWindow)} onOpenResume={() => { closeWindow('finder'); openWindow('resume'); }} onOpenAbout={() => { closeWindow('finder'); openWindow('about'); }} />;
       case 'contact':
         return <MobileContactContent />;
       case 'about':
@@ -102,7 +103,7 @@ const MobileTerminalContent = () => (
 interface FolderItem {
   id: string;
   name: string;
-  type: 'folder' | 'link' | 'resume';
+  type: 'folder' | 'link' | 'resume' | 'aboutfile';
   url?: string;
   isDownload?: boolean;
   children?: FolderItem[];
@@ -133,6 +134,7 @@ const finderData: FolderItem[] = [
     name: 'About me',
     type: 'folder',
     children: [
+      { id: 'aboutme-file', name: 'aboutme.txt', type: 'aboutfile' },
       { id: 'linkedin', name: 'LinkedIn Profile', type: 'link', url: 'https://www.linkedin.com/in/anjani-kumar-kanamarlapudi-3b5a002b9' },
       { id: 'github', name: 'GitHub Profile', type: 'link', url: 'https://github.com/anjani3601K' },
       { id: 'kaggle', name: 'Kaggle Profile', type: 'link', url: 'https://kaggle.com' },
@@ -148,7 +150,7 @@ const finderData: FolderItem[] = [
   },
 ];
 
-const MobileFinderContent = ({ onClose, onOpenResume }: { onClose: () => void; onOpenResume: () => void }) => {
+const MobileFinderContent = ({ onClose, onOpenResume, onOpenAbout }: { onClose: () => void; onOpenResume: () => void; onOpenAbout: () => void }) => {
   const [currentPath, setCurrentPath] = useState<string[]>([]);
 
   const getCurrentItems = (): FolderItem[] => {
@@ -171,6 +173,8 @@ const MobileFinderContent = ({ onClose, onOpenResume }: { onClose: () => void; o
       window.open(folder.url, '_blank');
     } else if (folder.type === 'resume') {
       onOpenResume();
+    } else if (folder.type === 'aboutfile') {
+      onOpenAbout();
     }
   };
 
@@ -235,6 +239,10 @@ const MobileFinderContent = ({ onClose, onOpenResume }: { onClose: () => void; o
               ) : item.type === 'resume' ? (
                 <div className="w-16 h-16 rounded-xl bg-red-100 dark:bg-red-900/30 flex items-center justify-center">
                   <FileText className="w-8 h-8 text-red-500" />
+                </div>
+              ) : item.type === 'aboutfile' ? (
+                <div className="w-16 h-16 rounded-xl bg-yellow-100 dark:bg-yellow-900/30 flex items-center justify-center">
+                  <FileText className="w-8 h-8 text-yellow-600" />
                 </div>
               ) : (
                 <div className="w-16 h-16 rounded-xl bg-gray-100 dark:bg-gray-800 flex items-center justify-center">
@@ -301,97 +309,105 @@ const experiences = [
 ];
 
 const MobileAboutContent = () => (
-  <div className="p-4 min-h-full bg-background overflow-auto">
-    {/* Hero */}
-    <div className="flex flex-col items-center mb-6">
-      <div className="w-24 h-32 rounded-2xl bg-gradient-to-br from-primary/20 to-purple-600/20 border-2 border-primary/30 flex items-center justify-center mb-4">
-        <span className="text-4xl font-bold gradient-text">AK</span>
-      </div>
-      <h2 className="text-xl font-bold text-primary text-center">Anjani Kumar Kanamarlapudi</h2>
-      <p className="text-sm text-foreground/60">AI Developer & Data Scientist</p>
+  <div className="min-h-full bg-[#fefefe] dark:bg-[#1e1e1e] overflow-auto">
+    {/* TextEdit-style Toolbar */}
+    <div className="sticky top-0 z-10 h-8 bg-gradient-to-b from-[#f6f6f6] to-[#ebebeb] dark:from-[#3c3c3c] dark:to-[#323232] border-b border-[#c8c8c8] dark:border-[#2a2a2a] px-3 flex items-center">
+      <span className="px-1.5 py-0.5 bg-[#fff] dark:bg-[#2d2d2d] border border-[#ccc] dark:border-[#4a4a4a] rounded text-[9px] text-[#666] dark:text-[#999]">
+        Plain Text
+      </span>
     </div>
 
-    {/* Bio */}
-    <div className="p-4 rounded-xl bg-foreground/5 mb-6">
-      <p className="text-sm text-foreground/80 leading-relaxed">
-        Passionate AI Developer with expertise in machine learning, deep learning, and data analytics. Experienced in building predictive models, GenAI applications, and data-driven solutions.
-      </p>
-    </div>
-
-    {/* Stats */}
-    <div className="grid grid-cols-4 gap-2 mb-6">
-      {[
-        { icon: Brain, title: 'ML/AI' },
-        { icon: Database, title: 'Data' },
-        { icon: Cloud, title: 'GenAI' },
-        { icon: Code2, title: 'Dev' },
-      ].map((item, index) => (
-        <div key={index} className="p-3 rounded-xl bg-secondary/50 text-center">
-          <item.icon className="w-5 h-5 mx-auto mb-1 text-primary" />
-          <div className="text-xs font-medium text-foreground">{item.title}</div>
-        </div>
-      ))}
-    </div>
-
-    {/* Skills */}
-    <h3 className="text-sm font-semibold text-primary mb-3">Technical Skills</h3>
-    <div className="space-y-3 mb-6">
-      {skillCategories.map((category) => (
-        <div key={category.name} className="p-3 rounded-xl border border-border/50 bg-background/20">
-          <div className="flex items-center gap-2 mb-2">
-            <div className={`w-6 h-6 rounded-lg bg-gradient-to-br ${category.color} flex items-center justify-center`}>
-              <Code2 className="w-3 h-3 text-white" />
-            </div>
-            <h4 className="text-xs font-semibold text-foreground">{category.name}</h4>
-          </div>
-          <div className="flex flex-wrap gap-1">
-            {category.skills.map((skill) => (
-              <span key={skill} className="px-2 py-0.5 rounded-full bg-secondary/80 text-foreground/80 text-[10px]">
-                {skill}
-              </span>
-            ))}
-          </div>
-        </div>
-      ))}
-    </div>
-
-    {/* Experience */}
-    <h3 className="text-sm font-semibold text-orange-400 mb-3">Experience</h3>
-    <div className="space-y-3 mb-6">
-      {experiences.map((exp, index) => (
-        <div key={index} className="p-3 rounded-xl border border-orange-500/30 bg-orange-500/5">
-          <div className="flex items-start gap-2">
-            <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-orange-500 to-amber-500 flex items-center justify-center flex-shrink-0">
-              <Briefcase className="w-4 h-4 text-white" />
-            </div>
-            <div className="flex-1">
-              <h4 className="text-sm font-semibold text-foreground">{exp.title}</h4>
-              <p className="text-xs text-primary">{exp.company}</p>
-              <div className="flex flex-wrap gap-1 mt-2">
-                {exp.skills.map((skill) => (
-                  <span key={skill} className="px-1.5 py-0.5 rounded-full bg-primary/20 text-primary text-[10px]">
-                    {skill}
-                  </span>
-                ))}
-              </div>
-            </div>
-          </div>
-        </div>
-      ))}
-    </div>
-
-    {/* Education */}
-    <h3 className="text-sm font-semibold text-orange-400 mb-3">Education</h3>
-    <div className="p-3 rounded-xl border border-orange-500/30 bg-orange-500/5">
-      <div className="flex items-start gap-2">
-        <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-blue-500 to-cyan-500 flex items-center justify-center flex-shrink-0">
-          <GraduationCap className="w-4 h-4 text-white" />
-        </div>
+    {/* Document Content */}
+    <div className="p-4 font-mono text-xs leading-relaxed text-[#333] dark:text-[#d4d4d4]">
+      {/* Header */}
+      <div className="flex gap-4 mb-4">
+        <img 
+          src={profilePhoto} 
+          alt="Anjani Kumar" 
+          className="w-16 h-20 rounded-lg object-cover border border-[#ddd] dark:border-[#444]"
+        />
         <div>
-          <h4 className="text-sm font-semibold text-foreground">B.Tech in Computer Science</h4>
-          <p className="text-xs text-primary">University | Expected Graduation</p>
+          <h1 className="text-base font-bold text-[#000] dark:text-[#fff]">
+            Anjani Kumar Kanamarlapudi
+          </h1>
+          <p className="text-[#0066cc] dark:text-[#569cd6] font-medium text-xs mb-1">
+            AI Developer & Data Scientist
+          </p>
+          <div className="text-[10px] space-y-0.5 text-[#666] dark:text-[#999]">
+            <div className="flex items-center gap-1">
+              <MapPin className="w-2.5 h-2.5" /> India
+            </div>
+            <div className="flex items-center gap-1">
+              <Mail className="w-2.5 h-2.5" /> anjani.kanamarlapudi@gmail.com
+            </div>
+          </div>
         </div>
       </div>
+
+      <div className="border-t border-[#eee] dark:border-[#3c3c3c] my-3" />
+
+      {/* About */}
+      <h2 className="text-sm font-bold text-[#000] dark:text-[#dcdcaa] mb-1.5">## ABOUT ME</h2>
+      <p className="text-[#444] dark:text-[#d4d4d4] mb-3 text-[11px]">
+        Passionate AI Developer and Data Scientist with expertise in machine learning, 
+        deep learning, and data analytics. Experienced in building predictive models, 
+        GenAI applications, and data-driven solutions.
+      </p>
+
+      {/* Skills */}
+      <h2 className="text-sm font-bold text-[#000] dark:text-[#dcdcaa] mb-1.5">## TECHNICAL SKILLS</h2>
+      <div className="space-y-1 mb-3 text-[11px]">
+        {skillCategories.map((category) => (
+          <div key={category.name} className="flex">
+            <span className="w-20 text-[#888] dark:text-[#858585] shrink-0">{category.name}:</span>
+            <span className="text-[#444] dark:text-[#9cdcfe]">{category.skills.join(', ')}</span>
+          </div>
+        ))}
+      </div>
+
+      {/* Experience */}
+      <h2 className="text-sm font-bold text-[#000] dark:text-[#dcdcaa] mb-1.5">## EXPERIENCE</h2>
+      {experiences.map((exp, index) => (
+        <div key={index} className="mb-2 text-[11px]">
+          <div className="flex items-center gap-1.5">
+            <Briefcase className="w-3 h-3 text-[#888] dark:text-[#ce9178]" />
+            <span className="font-semibold text-[#333] dark:text-[#e0e0e0]">{exp.title}</span>
+          </div>
+          <p className="text-[#0066cc] dark:text-[#569cd6] ml-4">{exp.company}</p>
+        </div>
+      ))}
+
+      {/* Education */}
+      <h2 className="text-sm font-bold text-[#000] dark:text-[#dcdcaa] mb-1.5 mt-3">## EDUCATION</h2>
+      <div className="flex items-center gap-1.5 text-[11px]">
+        <GraduationCap className="w-3 h-3 text-[#888] dark:text-[#4ec9b0]" />
+        <span className="font-semibold text-[#333] dark:text-[#e0e0e0]">B.Tech in Computer Science</span>
+      </div>
+      <p className="text-[#0066cc] dark:text-[#569cd6] text-[11px] ml-4">Currently Pursuing</p>
+
+      {/* Links */}
+      <h2 className="text-sm font-bold text-[#000] dark:text-[#dcdcaa] mb-1.5 mt-3">## CONNECT</h2>
+      <div className="flex gap-3 text-[11px]">
+        <a 
+          href="https://github.com/anjihan3601K" 
+          target="_blank" 
+          rel="noopener noreferrer"
+          className="flex items-center gap-1 text-[#0066cc] dark:text-[#569cd6]"
+        >
+          <Github className="w-3 h-3" /> GitHub
+        </a>
+        <a 
+          href="https://www.linkedin.com/in/anjani-kumar-kanamarlapudi-3b5a002b9" 
+          target="_blank" 
+          rel="noopener noreferrer"
+          className="flex items-center gap-1 text-[#0066cc] dark:text-[#569cd6]"
+        >
+          <Linkedin className="w-3 h-3" /> LinkedIn
+        </a>
+      </div>
+
+      <div className="border-t border-[#eee] dark:border-[#3c3c3c] my-3" />
+      <p className="text-[9px] text-[#999] dark:text-[#666] text-center">— End of Document —</p>
     </div>
   </div>
 );

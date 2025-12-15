@@ -20,18 +20,18 @@ interface WindowStore {
 }
 
 const initialWindows: Record<WindowId, WindowState> = {
-  terminal: { id: 'terminal', isOpen: false, zIndex: 1, position: { x: 100, y: 100 } },
-  finder: { id: 'finder', isOpen: false, zIndex: 1, position: { x: 150, y: 80 } },
-  contact: { id: 'contact', isOpen: false, zIndex: 1, position: { x: 200, y: 120 } },
-  about: { id: 'about', isOpen: false, zIndex: 1, position: { x: 250, y: 100 } },
-  safari: { id: 'safari', isOpen: false, zIndex: 1, position: { x: 180, y: 90 } },
-  notes: { id: 'notes', isOpen: false, zIndex: 1, position: { x: 220, y: 110 } },
-  resume: { id: 'resume', isOpen: false, zIndex: 1, position: { x: 200, y: 80 } },
+  terminal: { id: 'terminal', isOpen: false, zIndex: 100, position: { x: 100, y: 100 } },
+  finder: { id: 'finder', isOpen: false, zIndex: 100, position: { x: 150, y: 80 } },
+  contact: { id: 'contact', isOpen: false, zIndex: 100, position: { x: 200, y: 120 } },
+  about: { id: 'about', isOpen: false, zIndex: 100, position: { x: 250, y: 100 } },
+  safari: { id: 'safari', isOpen: false, zIndex: 100, position: { x: 180, y: 90 } },
+  notes: { id: 'notes', isOpen: false, zIndex: 100, position: { x: 220, y: 110 } },
+  resume: { id: 'resume', isOpen: false, zIndex: 100, position: { x: 200, y: 80 } },
 };
 
 export const useWindowStore = create<WindowStore>((set) => ({
   windows: initialWindows,
-  maxZIndex: 1,
+  maxZIndex: 100,
 
   openWindow: (id) =>
     set(
