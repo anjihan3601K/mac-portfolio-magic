@@ -1,6 +1,7 @@
 import { useRef, useState, useCallback } from 'react';
 import { Tooltip } from 'react-tooltip';
 import { useWindowStore, WindowId } from '@/stores/windowStore';
+import { haptics } from '@/lib/haptics';
 
 // Import dock icons
 import finderIcon from '@/assets/dock-icons/finder.png';
@@ -43,6 +44,7 @@ export const Dock = () => {
   }, []);
 
   const handleClick = (id: WindowId) => {
+    haptics.light();
     if (windows[id].isOpen) {
       focusWindow(id);
     } else {

@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { useWindowStore, WindowId } from '@/stores/windowStore';
 import { Battery, Wifi, Signal } from 'lucide-react';
+import { haptics } from '@/lib/haptics';
 
 // Import dock icons
 import finderIcon from '@/assets/dock-icons/finder.png';
@@ -42,6 +43,7 @@ export const MobileHomeScreen = () => {
   });
 
   const handleAppTap = (id: WindowId) => {
+    haptics.light();
     openWindow(id);
   };
 

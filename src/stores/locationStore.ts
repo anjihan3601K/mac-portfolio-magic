@@ -177,4 +177,16 @@ export const fileSystem: FileItem[] = [
       { id: 'kaggle', name: 'Kaggle', type: 'link', url: 'https://kaggle.com' },
     ],
   },
+  {
+    id: 'images',
+    name: 'Images',
+    type: 'folder',
+    children: [
+      { id: 'profile-photo', name: 'Profile Photo.jpg', type: 'image', url: '/profile-photo.png' },
+      { id: 'hackathon-winner', name: 'Hackathon Winner.jpg', type: 'image', url: '' },
+      { id: 'ai-competition', name: 'AI Competition 2024.jpg', type: 'image', url: '' },
+      { id: 'conference-speaker', name: 'Tech Conference.jpg', type: 'image', url: '' },
+      { id: 'team-project', name: 'Team Project.jpg', type: 'image', url: '' },
+    ],
+  },
 ];
