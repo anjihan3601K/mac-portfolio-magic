@@ -9,6 +9,7 @@ import terminalIcon from '@/assets/dock-icons/terminal.png';
 import notesIcon from '@/assets/dock-icons/notes.png';
 import contactsIcon from '@/assets/dock-icons/contacts.png';
 import aboutIcon from '@/assets/dock-icons/about.png';
+import mailIcon from '@/assets/dock-icons/mail.png';
 
 interface AppItem {
   id: WindowId;
@@ -23,6 +24,7 @@ const apps: AppItem[] = [
   { id: 'notes', name: 'Notes', icon: notesIcon },
   { id: 'contact', name: 'Contact', icon: contactsIcon },
   { id: 'about', name: 'About Me', icon: aboutIcon },
+  { id: 'resume', name: 'Resume', icon: mailIcon },
 ];
 
 const dockApps: AppItem[] = [
