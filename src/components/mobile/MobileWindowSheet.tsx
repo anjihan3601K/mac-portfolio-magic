@@ -265,33 +265,123 @@ const MobileFinderContent = ({ onClose, onOpenResume, onOpenAbout }: { onClose: 
   );
 };
 
-const MobileContactContent = () => (
-  <div className="p-6 flex flex-col items-center min-h-full bg-background">
-    <div className="w-24 h-24 rounded-full bg-gradient-to-br from-primary to-purple-600 flex items-center justify-center mb-4">
-      <span className="text-3xl font-bold text-white">AK</span>
+const MobileContactContent = () => {
+  const [showForm, setShowForm] = useState(false);
+  const [name, setName] = useState('');
+  const [email, setEmail] = useState('');
+  const [subject, setSubject] = useState('');
+  const [message, setMessage] = useState('');
+
+  const handleSendEmail = () => {
+    if (!name.trim() || !email.trim() || !message.trim()) return;
+    const mailtoLink = `mailto:anjani.kanamarlapudi@gmail.com?subject=${encodeURIComponent(subject || `Message from ${name}`)}&body=${encodeURIComponent(`Name: ${name}\nEmail: ${email}\n\n${message}`)}`;
+    window.open(mailtoLink, '_blank');
+  };
+
+  return (
+    <div className="p-5 flex flex-col min-h-full bg-background">
+      <div className="flex flex-col items-center mb-4">
+        <div className="w-20 h-20 rounded-full bg-gradient-to-br from-primary to-purple-600 flex items-center justify-center mb-3">
+          <span className="text-2xl font-bold text-white">AK</span>
+        </div>
+        <h2 className="text-lg font-bold text-foreground">Anjani Kumar</h2>
+        <p className="text-foreground/60 text-sm">AI/ML Engineer</p>
+      </div>
+
+      {!showForm ? (
+        <>
+          {/* Email Button */}
+          <button
+            onClick={() => setShowForm(true)}
+            className="w-full mb-4 flex items-center justify-center gap-2 p-3 rounded-xl bg-gradient-to-r from-purple-500 to-pink-500 text-white font-medium"
+          >
+            <Mail className="w-5 h-5" />
+            Contact via Email
+          </button>
+
+          <div className="grid grid-cols-2 gap-3 w-full">
+            {[
+              { name: 'GitHub', color: 'bg-gray-800', url: 'https://github.com/anjani3601K' },
+              { name: 'LinkedIn', color: 'bg-blue-600', url: 'https://www.linkedin.com/in/anjani-kumar-kanamarlapudi-3b5a002b9' },
+              { name: 'Portfolio', color: 'bg-purple-600', url: '#' },
+              { name: 'Kaggle', color: 'bg-cyan-500', url: 'https://kaggle.com' },
+            ].map((social) => (
+              <a 
+                key={social.name}
+                href={social.url}
+                target="_blank"
+                rel="noopener noreferrer"
+                className={`${social.color} text-white py-3 rounded-xl font-medium text-center text-sm`}
+              >
+                {social.name}
+              </a>
+            ))}
+          </div>
+        </>
+      ) : (
+        <div className="flex-1 flex flex-col">
+          <div className="space-y-3 flex-1">
+            <div>
+              <label className="text-xs text-muted-foreground mb-1 block">Your Name *</label>
+              <input
+                type="text"
+                value={name}
+                onChange={(e) => setName(e.target.value)}
+                placeholder="John Doe"
+                className="w-full px-3 py-2.5 rounded-xl bg-secondary border border-border text-foreground text-sm"
+              />
+            </div>
+            <div>
+              <label className="text-xs text-muted-foreground mb-1 block">Your Email *</label>
+              <input
+                type="email"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+                placeholder="john@example.com"
+                className="w-full px-3 py-2.5 rounded-xl bg-secondary border border-border text-foreground text-sm"
+              />
+            </div>
+            <div>
+              <label className="text-xs text-muted-foreground mb-1 block">Subject</label>
+              <input
+                type="text"
+                value={subject}
+                onChange={(e) => setSubject(e.target.value)}
+                placeholder="Let's collaborate!"
+                className="w-full px-3 py-2.5 rounded-xl bg-secondary border border-border text-foreground text-sm"
+              />
+            </div>
+            <div>
+              <label className="text-xs text-muted-foreground mb-1 block">Message *</label>
+              <textarea
+                value={message}
+                onChange={(e) => setMessage(e.target.value)}
+                placeholder="Hi Anjani, I'd love to discuss..."
+                rows={3}
+                className="w-full px-3 py-2.5 rounded-xl bg-secondary border border-border text-foreground text-sm resize-none"
+              />
+            </div>
+          </div>
+
+          <div className="flex gap-2 mt-4">
+            <button
+              onClick={() => setShowForm(false)}
+              className="flex-1 py-2.5 rounded-xl border border-border text-foreground text-sm font-medium"
+            >
+              Back
+            </button>
+            <button
+              onClick={handleSendEmail}
+              className="flex-1 py-2.5 rounded-xl bg-gradient-to-r from-purple-500 to-pink-500 text-white text-sm font-medium flex items-center justify-center gap-2"
+            >
+              Send
+            </button>
+          </div>
+        </div>
+      )}
     </div>
-    <h2 className="text-xl font-bold text-foreground mb-1">Anjani Kumar</h2>
-    <p className="text-foreground/60 mb-6">AI/ML Engineer</p>
-    <div className="grid grid-cols-2 gap-3 w-full">
-      {[
-        { name: 'GitHub', color: 'bg-gray-800', url: 'https://github.com/anjani3601K' },
-        { name: 'LinkedIn', color: 'bg-blue-600', url: 'https://www.linkedin.com/in/anjani-kumar-kanamarlapudi-3b5a002b9' },
-        { name: 'Portfolio', color: 'bg-purple-600', url: '#' },
-        { name: 'Kaggle', color: 'bg-cyan-500', url: 'https://kaggle.com' },
-      ].map((social) => (
-        <a 
-          key={social.name}
-          href={social.url}
-          target="_blank"
-          rel="noopener noreferrer"
-          className={`${social.color} text-white py-3 rounded-xl font-medium text-center`}
-        >
-          {social.name}
-        </a>
-      ))}
-    </div>
-  </div>
-);
+  );
+};
 
 // Enhanced About content matching desktop
 const skillCategories = [
