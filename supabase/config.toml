@@ -1,1 +1,4 @@
 project_id = "wvjozmoalixizklaogka"
+
+[functions.setup-admin]
+verify_jwt = false
