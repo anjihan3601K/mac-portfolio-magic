@@ -12,6 +12,7 @@ import { ResumeViewer } from '@/components/windows/ResumeViewer';
 import { MobileHomeScreen } from '@/components/mobile/MobileHomeScreen';
 import { MobileWindowSheet } from '@/components/mobile/MobileWindowSheet';
 import { MobileWelcomeScreen } from '@/components/mobile/MobileWelcomeScreen';
+import { AdminProjectButton } from '@/components/admin/AdminProjectButton';
 import { useWindowStore } from '@/stores/windowStore';
 import { useIsMobile } from '@/hooks/use-mobile';
 import { Folder } from 'lucide-react';
@@ -177,6 +178,9 @@ export const Desktop = () => {
       <SafariWindow />
       <NotesWindow />
       <ResumeViewer />
+
+      {/* Admin Project Button */}
+      <AdminProjectButton />
 
       {/* Dock */}
       {!showWelcome && <Dock />}
