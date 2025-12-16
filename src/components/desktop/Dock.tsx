@@ -11,6 +11,7 @@ import notesIcon from '@/assets/dock-icons/notes.png';
 import contactsIcon from '@/assets/dock-icons/contacts.png';
 import mailIcon from '@/assets/dock-icons/mail.png';
 import aboutIcon from '@/assets/dock-icons/about.png';
+import resumeIcon from '@/assets/dock-icons/resume.png';
 
 interface DockItem {
   id: WindowId;
@@ -23,6 +24,7 @@ const dockItems: DockItem[] = [
   { id: 'terminal', name: 'Terminal', icon: terminalIcon },
   { id: 'safari', name: 'Safari', icon: safariIcon },
   { id: 'notes', name: 'Notes', icon: notesIcon },
+  { id: 'resume', name: 'Resume', icon: resumeIcon },
   { id: 'contact', name: 'Contact', icon: mailIcon },
   { id: 'about', name: 'About', icon: aboutIcon },
 ];
