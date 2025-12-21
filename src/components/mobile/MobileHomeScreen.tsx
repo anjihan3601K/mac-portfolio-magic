@@ -6,11 +6,12 @@ import { haptics } from '@/lib/haptics';
 // Import dock icons
 import finderIcon from '@/assets/dock-icons/finder.png';
 import safariIcon from '@/assets/dock-icons/safari.png';
-import terminalIcon from '@/assets/dock-icons/terminal.png';
 import notesIcon from '@/assets/dock-icons/notes.png';
 import contactsIcon from '@/assets/dock-icons/contacts.png';
 import aboutIcon from '@/assets/dock-icons/about.png';
 import mailIcon from '@/assets/dock-icons/mail.png';
+import galleryIcon from '@/assets/dock-icons/gallery.png';
+import achievementsIcon from '@/assets/dock-icons/achievements.png';
 
 interface AppItem {
   id: WindowId;
@@ -20,8 +21,8 @@ interface AppItem {
 
 const apps: AppItem[] = [
   { id: 'finder', name: 'Finder', icon: finderIcon },
-  { id: 'gallery', name: 'Gallery', icon: aboutIcon },
-  { id: 'achievements', name: 'Achievements', icon: aboutIcon },
+  { id: 'gallery', name: 'Gallery', icon: galleryIcon },
+  { id: 'achievements', name: 'Achievements', icon: achievementsIcon },
   { id: 'safari', name: 'Blog', icon: safariIcon },
   { id: 'notes', name: 'Notes', icon: notesIcon },
   { id: 'contact', name: 'Contact', icon: contactsIcon },
