@@ -9,6 +9,7 @@ import { AboutWindow } from '@/components/windows/AboutWindow';
 import { SafariWindow } from '@/components/windows/SafariWindow';
 import { NotesWindow } from '@/components/windows/NotesWindow';
 import { ResumeViewer } from '@/components/windows/ResumeViewer';
+import { AchievementsWindow } from '@/components/windows/AchievementsWindow';
 import { MobileHomeScreen } from '@/components/mobile/MobileHomeScreen';
 import { MobileWindowSheet } from '@/components/mobile/MobileWindowSheet';
 import { MobileWelcomeScreen } from '@/components/mobile/MobileWelcomeScreen';
@@ -21,6 +22,7 @@ import { Draggable } from 'gsap/Draggable';
 gsap.registerPlugin(Draggable);
 
 const desktopFolders = [
+  { id: 'achievements', name: 'Achievements &\nCertifications' },
   { id: 'healthcare-ai', name: 'Healthcare AI\nPrediction System' },
   { id: 'resume-analyzer', name: 'AI Resume\nAnalyzer' },
   { id: 'sentiment-analysis', name: 'Sentiment Analysis\nDashboard' },
@@ -71,7 +73,11 @@ export const Desktop = () => {
   }, [showWelcome, isMobile]);
 
   const handleFolderDoubleClick = (id: string) => {
-    openWindow('finder');
+    if (id === 'achievements') {
+      openWindow('achievements');
+    } else {
+      openWindow('finder');
+    }
   };
 
   // Mobile iOS view
@@ -177,6 +183,7 @@ export const Desktop = () => {
       <SafariWindow />
       <NotesWindow />
       <ResumeViewer />
+      <AchievementsWindow />
 
       {/* Dock */}
       {!showWelcome && <Dock />}

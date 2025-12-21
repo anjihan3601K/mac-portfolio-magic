@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { useWindowStore, WindowId } from '@/stores/windowStore';
-import { X, ChevronLeft, ExternalLink, Calendar, Download, FileText, Briefcase, GraduationCap, Code2, Brain, Database, Cloud, MapPin, Mail, Github, Linkedin, Image } from 'lucide-react';
+import { X, ChevronLeft, ExternalLink, Calendar, Download, FileText, Briefcase, GraduationCap, Code2, Brain, Database, Cloud, MapPin, Mail, Github, Linkedin, Image, Award, Trophy, Medal, Star } from 'lucide-react';
 import profilePhoto from '@/assets/profile-photo.png';
 import { haptics } from '@/lib/haptics';
 
@@ -12,6 +12,7 @@ const windowTitles: Record<WindowId, string> = {
   safari: 'Developer Blog',
   notes: 'Notes',
   resume: 'Resume',
+  achievements: 'Achievements',
 };
 
 export const MobileWindowSheet = () => {
@@ -41,6 +42,8 @@ export const MobileWindowSheet = () => {
         return <MobileNotesContent />;
       case 'resume':
         return <MobileResumeContent />;
+      case 'achievements':
+        return <MobileAchievementsContent />;
       default:
         return null;
     }
@@ -111,6 +114,8 @@ interface FolderItem {
   category?: string;
   description?: string;
   tech?: string[];
+  gitUrl?: string;
+  deployedUrl?: string;
 }
 
 const finderData: FolderItem[] = [
@@ -119,15 +124,15 @@ const finderData: FolderItem[] = [
     name: 'Projects',
     type: 'folder',
     children: [
-      { id: 'pneumonia', name: 'Pneumonia Prediction', type: 'link', url: 'https://github.com/anjani3601K', category: 'Healthcare AI' },
-      { id: 'genai', name: 'GenAI Application', type: 'link', url: 'https://github.com/anjani3601K', category: 'Generative AI' },
-      { id: 'stock-pred', name: 'Stock Price Prediction', type: 'link', url: 'https://github.com/anjani3601K', category: 'Financial AI' },
-      { id: 'stock-analyzer', name: 'Stock Analyzer', type: 'link', url: 'https://github.com/anjani3601K', category: 'Financial AI' },
-      { id: 'privacy-chat', name: 'Privacy Chat', type: 'link', url: 'https://github.com/anjani3601K', category: 'Security' },
-      { id: 'car-price', name: 'Car Price Predictor', type: 'link', url: 'https://github.com/anjani3601K', category: 'Predictive Analytics' },
-      { id: 'dynamic-pricing', name: 'Dynamic Pricing', type: 'link', url: 'https://github.com/anjani3601K', category: 'Business Intelligence' },
-      { id: 'disaster', name: 'Disaster Management', type: 'link', url: 'https://github.com/anjani3601K', category: 'Social Impact' },
-      { id: 'suraksha', name: 'Suraksha ML Models', type: 'link', url: 'https://github.com/anjani3601K', category: 'Security' },
+      { id: 'pneumonia', name: 'Pneumonia Prediction', type: 'link', gitUrl: 'https://github.com/anjani3601K', deployedUrl: 'https://github.com/anjani3601K', category: 'Healthcare AI' },
+      { id: 'genai', name: 'GenAI Application', type: 'link', gitUrl: 'https://github.com/anjani3601K', deployedUrl: 'https://github.com/anjani3601K', category: 'Generative AI' },
+      { id: 'stock-pred', name: 'Stock Price Prediction', type: 'link', gitUrl: 'https://github.com/anjani3601K', deployedUrl: 'https://github.com/anjani3601K', category: 'Financial AI' },
+      { id: 'stock-analyzer', name: 'Stock Analyzer', type: 'link', gitUrl: 'https://github.com/anjani3601K', deployedUrl: 'https://github.com/anjani3601K', category: 'Financial AI' },
+      { id: 'privacy-chat', name: 'Privacy Chat', type: 'link', gitUrl: 'https://github.com/anjani3601K', deployedUrl: 'https://github.com/anjani3601K', category: 'Security' },
+      { id: 'car-price', name: 'Car Price Predictor', type: 'link', gitUrl: 'https://github.com/anjani3601K', deployedUrl: 'https://github.com/anjani3601K', category: 'Predictive Analytics' },
+      { id: 'dynamic-pricing', name: 'Dynamic Pricing', type: 'link', gitUrl: 'https://github.com/anjani3601K', deployedUrl: 'https://github.com/anjani3601K', category: 'Business Intelligence' },
+      { id: 'disaster', name: 'Disaster Management', type: 'link', gitUrl: 'https://github.com/anjani3601K', deployedUrl: 'https://github.com/anjani3601K', category: 'Social Impact' },
+      { id: 'suraksha', name: 'Suraksha ML Models', type: 'link', gitUrl: 'https://github.com/anjani3601K', deployedUrl: 'https://github.com/anjani3601K', category: 'Security' },
     ]
   },
   {
@@ -184,9 +189,10 @@ const MobileFinderContent = ({ onClose, onOpenResume, onOpenAbout }: { onClose: 
       setCurrentPath([...currentPath, folder.id]);
     } else if (folder.type === 'link' && folder.url) {
       window.open(folder.url, '_blank');
-      onOpenResume();
     } else if (folder.type === 'aboutfile') {
       onOpenAbout();
+    } else if (folder.type === 'resume') {
+      onOpenResume();
     }
   };
 
@@ -206,6 +212,9 @@ const MobileFinderContent = ({ onClose, onOpenResume, onOpenAbout }: { onClose: 
     return folder?.name || 'Portfolio';
   };
 
+  // Check if we're in the Projects folder
+  const isInProjects = currentPath.length === 1 && currentPath[0] === 'work';
+
   return (
     <div className="min-h-full bg-white dark:bg-gray-900">
       {/* iOS Navigation Header */}
@@ -224,55 +233,103 @@ const MobileFinderContent = ({ onClose, onOpenResume, onOpenAbout }: { onClose: 
         </div>
       </div>
 
-      {/* Folder Grid - iOS Style */}
-      <div className="p-6">
-        <div className="grid grid-cols-3 gap-6">
+      {isInProjects ? (
+        // Projects List View - Name, Git Repo, Deployed Link
+        <div className="p-4 space-y-3">
           {currentItems.map((item) => (
-            <button
+            <div
               key={item.id}
-              onClick={() => navigateToFolder(item)}
-              className="flex flex-col items-center gap-2 active:scale-95 transition-transform"
+              className="p-4 rounded-xl bg-gray-50 dark:bg-gray-800 border border-gray-200 dark:border-gray-700"
             >
-              {item.type === 'folder' ? (
-                <div className="w-20 h-16 relative">
-                  <svg viewBox="0 0 100 80" className="w-full h-full drop-shadow-md">
-                    <defs>
-                      <linearGradient id={`folderGrad-${item.id}`} x1="0%" y1="0%" x2="0%" y2="100%">
-                        <stop offset="0%" stopColor="#7DD3FC" />
-                        <stop offset="100%" stopColor="#38BDF8" />
-                      </linearGradient>
-                    </defs>
-                    <path 
-                      d="M5 20 L5 70 Q5 75 10 75 L90 75 Q95 75 95 70 L95 25 Q95 20 90 20 L40 20 L35 12 Q33 10 30 10 L10 10 Q5 10 5 15 Z" 
-                      fill={`url(#folderGrad-${item.id})`}
-                    />
-                  </svg>
+              <div className="flex items-start gap-3">
+                <div className="w-10 h-10 rounded-lg bg-blue-100 dark:bg-blue-900/30 flex items-center justify-center shrink-0">
+                  <Code2 className="w-5 h-5 text-blue-500" />
                 </div>
-              ) : item.type === 'resume' ? (
-                <div className="w-16 h-16 rounded-xl bg-red-100 dark:bg-red-900/30 flex items-center justify-center">
-                  <FileText className="w-8 h-8 text-red-500" />
+                <div className="flex-1 min-w-0">
+                  <h3 className="font-semibold text-gray-900 dark:text-white text-sm">{item.name}</h3>
+                  {item.category && (
+                    <span className="text-xs text-blue-500 dark:text-blue-400">{item.category}</span>
+                  )}
+                  <div className="flex flex-wrap gap-3 mt-3">
+                    {item.gitUrl && (
+                      <a
+                        href={item.gitUrl}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="flex items-center gap-1.5 text-xs text-gray-600 dark:text-gray-300 bg-gray-100 dark:bg-gray-700 px-3 py-1.5 rounded-lg"
+                      >
+                        <Github className="w-3.5 h-3.5" />
+                        Git Repo
+                      </a>
+                    )}
+                    {item.deployedUrl && (
+                      <a
+                        href={item.deployedUrl}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="flex items-center gap-1.5 text-xs text-gray-600 dark:text-gray-300 bg-gray-100 dark:bg-gray-700 px-3 py-1.5 rounded-lg"
+                      >
+                        <ExternalLink className="w-3.5 h-3.5" />
+                        Live Demo
+                      </a>
+                    )}
+                  </div>
                 </div>
-              ) : item.type === 'aboutfile' ? (
-                <div className="w-16 h-16 rounded-xl bg-yellow-100 dark:bg-yellow-900/30 flex items-center justify-center">
-                  <FileText className="w-8 h-8 text-yellow-600" />
-                </div>
-              ) : (
-                <div className="w-16 h-16 rounded-xl bg-gray-100 dark:bg-gray-800 flex items-center justify-center">
-                  <ExternalLink className="w-8 h-8 text-gray-500" />
-                </div>
-              )}
-              <span className="text-xs text-gray-800 dark:text-gray-200 font-medium text-center leading-tight max-w-[80px]">
-                {item.name}
-              </span>
-              {item.category && (
-                <span className="text-[10px] text-blue-500 dark:text-blue-400 bg-blue-50 dark:bg-blue-900/30 px-2 py-0.5 rounded-full">
-                  {item.category}
-                </span>
-              )}
-            </button>
+              </div>
+            </div>
           ))}
         </div>
-      </div>
+      ) : (
+        // Folder Grid - iOS Style
+        <div className="p-6">
+          <div className="grid grid-cols-3 gap-6">
+            {currentItems.map((item) => (
+              <button
+                key={item.id}
+                onClick={() => navigateToFolder(item)}
+                className="flex flex-col items-center gap-2 active:scale-95 transition-transform"
+              >
+                {item.type === 'folder' ? (
+                  <div className="w-20 h-16 relative">
+                    <svg viewBox="0 0 100 80" className="w-full h-full drop-shadow-md">
+                      <defs>
+                        <linearGradient id={`folderGrad-${item.id}`} x1="0%" y1="0%" x2="0%" y2="100%">
+                          <stop offset="0%" stopColor="#7DD3FC" />
+                          <stop offset="100%" stopColor="#38BDF8" />
+                        </linearGradient>
+                      </defs>
+                      <path 
+                        d="M5 20 L5 70 Q5 75 10 75 L90 75 Q95 75 95 70 L95 25 Q95 20 90 20 L40 20 L35 12 Q33 10 30 10 L10 10 Q5 10 5 15 Z" 
+                        fill={`url(#folderGrad-${item.id})`}
+                      />
+                    </svg>
+                  </div>
+                ) : item.type === 'resume' ? (
+                  <div className="w-16 h-16 rounded-xl bg-red-100 dark:bg-red-900/30 flex items-center justify-center">
+                    <FileText className="w-8 h-8 text-red-500" />
+                  </div>
+                ) : item.type === 'aboutfile' ? (
+                  <div className="w-16 h-16 rounded-xl bg-yellow-100 dark:bg-yellow-900/30 flex items-center justify-center">
+                    <FileText className="w-8 h-8 text-yellow-600" />
+                  </div>
+                ) : (
+                  <div className="w-16 h-16 rounded-xl bg-gray-100 dark:bg-gray-800 flex items-center justify-center">
+                    <ExternalLink className="w-8 h-8 text-gray-500" />
+                  </div>
+                )}
+                <span className="text-xs text-gray-800 dark:text-gray-200 font-medium text-center leading-tight max-w-[80px]">
+                  {item.name}
+                </span>
+                {item.category && (
+                  <span className="text-[10px] text-blue-500 dark:text-blue-400 bg-blue-50 dark:bg-blue-900/30 px-2 py-0.5 rounded-full">
+                    {item.category}
+                  </span>
+                )}
+              </button>
+            ))}
+          </div>
+        </div>
+      )}
     </div>
   );
 };
@@ -646,3 +703,121 @@ const MobileResumeContent = () => {
     </div>
   );
 };
+
+// Mobile Achievements Content
+interface Achievement {
+  id: string;
+  title: string;
+  organization: string;
+  date: string;
+  type: 'certification' | 'award' | 'achievement';
+  description: string;
+  credentialUrl?: string;
+}
+
+const mobileAchievements: Achievement[] = [
+  {
+    id: 'bcg-data-science',
+    title: 'Data Science & Analytics Virtual Experience',
+    organization: 'Boston Consulting Group (BCG)',
+    date: '2024',
+    type: 'certification',
+    description: 'Completed comprehensive virtual internship focused on data science methodologies.',
+    credentialUrl: 'https://www.theforage.com/virtual-internships/prototype/Tcz8gTtprzAS4xSoK/Data-Science'
+  },
+  {
+    id: 'ml-specialization',
+    title: 'Machine Learning Specialization',
+    organization: 'Coursera - Stanford University',
+    date: '2024',
+    type: 'certification',
+    description: 'Comprehensive machine learning course covering supervised and unsupervised learning.',
+  },
+  {
+    id: 'hackathon-winner',
+    title: 'AI Hackathon Winner',
+    organization: 'Tech Innovation Summit',
+    date: '2024',
+    type: 'award',
+    description: 'First place for developing an AI-powered disaster management solution.',
+  },
+  {
+    id: 'deep-learning',
+    title: 'Deep Learning Specialization',
+    organization: 'Coursera - DeepLearning.AI',
+    date: '2023',
+    type: 'certification',
+    description: 'Mastered neural networks, CNNs, RNNs for AI applications.',
+  },
+  {
+    id: 'kaggle-expert',
+    title: 'Kaggle Notebooks Expert',
+    organization: 'Kaggle',
+    date: '2023',
+    type: 'achievement',
+    description: 'Achieved Expert tier through quality notebook contributions.',
+    credentialUrl: 'https://kaggle.com'
+  },
+];
+
+const getAchievementIcon = (type: Achievement['type']) => {
+  switch (type) {
+    case 'certification':
+      return <Medal className="w-5 h-5 text-blue-400" />;
+    case 'award':
+      return <Trophy className="w-5 h-5 text-yellow-400" />;
+    case 'achievement':
+      return <Star className="w-5 h-5 text-purple-400" />;
+  }
+};
+
+const MobileAchievementsContent = () => (
+  <div className="min-h-full bg-background p-4">
+    <div className="flex items-center gap-3 mb-6">
+      <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-yellow-400 to-orange-500 flex items-center justify-center">
+        <Award className="w-6 h-6 text-white" />
+      </div>
+      <div>
+        <h2 className="text-lg font-bold text-foreground">Achievements</h2>
+        <p className="text-xs text-muted-foreground">Certifications & Awards</p>
+      </div>
+    </div>
+
+    <div className="space-y-3">
+      {mobileAchievements.map((achievement) => (
+        <div
+          key={achievement.id}
+          className="p-4 rounded-xl bg-secondary/50 border border-border"
+        >
+          <div className="flex items-start gap-3">
+            <div className="w-10 h-10 rounded-lg bg-card flex items-center justify-center shrink-0">
+              {getAchievementIcon(achievement.type)}
+            </div>
+            <div className="flex-1 min-w-0">
+              <h3 className="font-semibold text-foreground text-sm">{achievement.title}</h3>
+              <p className="text-xs text-primary font-medium">{achievement.organization}</p>
+              <p className="text-xs text-muted-foreground mt-1">{achievement.description}</p>
+              <div className="flex items-center gap-3 mt-2 text-xs text-muted-foreground">
+                <span className="flex items-center gap-1">
+                  <Calendar className="w-3 h-3" />
+                  {achievement.date}
+                </span>
+                {achievement.credentialUrl && (
+                  <a
+                    href={achievement.credentialUrl}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="flex items-center gap-1 text-primary"
+                  >
+                    <ExternalLink className="w-3 h-3" />
+                    View
+                  </a>
+                )}
+              </div>
+            </div>
+          </div>
+        </div>
+      ))}
+    </div>
+  </div>
+);
