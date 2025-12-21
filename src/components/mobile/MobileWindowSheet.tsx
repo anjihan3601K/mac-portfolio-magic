@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { useWindowStore, WindowId } from '@/stores/windowStore';
-import { X, ChevronLeft, ExternalLink, Calendar, Download, FileText, Briefcase, GraduationCap, Code2, Brain, Database, Cloud, MapPin, Mail, Github, Linkedin, Image, Award, Trophy, Medal, Star } from 'lucide-react';
+import { X, ChevronLeft, ExternalLink, Calendar, Download, FileText, Briefcase, GraduationCap, Code2, Brain, Database, Cloud, MapPin, Mail, Github, Linkedin, Image, Award, Trophy, Medal, Star, ChevronRight, ZoomIn } from 'lucide-react';
 import profilePhoto from '@/assets/profile-photo.png';
 import { haptics } from '@/lib/haptics';
 
@@ -13,6 +13,7 @@ const windowTitles: Record<WindowId, string> = {
   notes: 'Notes',
   resume: 'Resume',
   achievements: 'Achievements',
+  gallery: 'Photo Gallery',
 };
 
 export const MobileWindowSheet = () => {
@@ -44,6 +45,8 @@ export const MobileWindowSheet = () => {
         return <MobileResumeContent />;
       case 'achievements':
         return <MobileAchievementsContent />;
+      case 'gallery':
+        return <MobileGalleryContent />;
       default:
         return null;
     }
@@ -821,3 +824,183 @@ const MobileAchievementsContent = () => (
     </div>
   </div>
 );
+
+// Mobile Gallery Content
+interface GalleryImage {
+  id: string;
+  title: string;
+  src: string;
+  category: string;
+  description?: string;
+}
+
+const mobileGalleryImages: GalleryImage[] = [
+  {
+    id: 'profile',
+    title: 'Profile Photo',
+    src: profilePhoto,
+    category: 'Personal',
+    description: 'Professional headshot'
+  },
+  {
+    id: 'hackathon',
+    title: 'Hackathon Winner 2024',
+    src: 'https://images.unsplash.com/photo-1504384308090-c894fdcc538d?w=800&h=600&fit=crop',
+    category: 'Achievements',
+    description: 'First place at Tech Innovation Summit'
+  },
+  {
+    id: 'ai-competition',
+    title: 'AI Competition 2024',
+    src: 'https://images.unsplash.com/photo-1485827404703-89b55fcc595e?w=800&h=600&fit=crop',
+    category: 'Achievements',
+    description: 'AI & ML National Competition'
+  },
+  {
+    id: 'conference',
+    title: 'Tech Conference Speaker',
+    src: 'https://images.unsplash.com/photo-1540575467063-178a50c2df87?w=800&h=600&fit=crop',
+    category: 'Events',
+    description: 'Speaking at Developer Summit 2024'
+  },
+  {
+    id: 'team-project',
+    title: 'Team Project',
+    src: 'https://images.unsplash.com/photo-1522071820081-009f0129c71c?w=800&h=600&fit=crop',
+    category: 'Work',
+    description: 'Collaborative ML research project'
+  },
+  {
+    id: 'workshop',
+    title: 'AI Workshop',
+    src: 'https://images.unsplash.com/photo-1531482615713-2afd69097998?w=800&h=600&fit=crop',
+    category: 'Events',
+    description: 'Teaching AI fundamentals to students'
+  },
+];
+
+const MobileGalleryContent = () => {
+  const [selectedImage, setSelectedImage] = useState<GalleryImage | null>(null);
+  const [activeCategory, setActiveCategory] = useState<string>('All');
+
+  const categories = ['All', ...new Set(mobileGalleryImages.map(img => img.category))];
+  
+  const filteredImages = activeCategory === 'All' 
+    ? mobileGalleryImages 
+    : mobileGalleryImages.filter(img => img.category === activeCategory);
+
+  const handlePrev = () => {
+    if (!selectedImage) return;
+    const currentIndex = filteredImages.findIndex(img => img.id === selectedImage.id);
+    const prevIndex = currentIndex > 0 ? currentIndex - 1 : filteredImages.length - 1;
+    setSelectedImage(filteredImages[prevIndex]);
+  };
+
+  const handleNext = () => {
+    if (!selectedImage) return;
+    const currentIndex = filteredImages.findIndex(img => img.id === selectedImage.id);
+    const nextIndex = currentIndex < filteredImages.length - 1 ? currentIndex + 1 : 0;
+    setSelectedImage(filteredImages[nextIndex]);
+  };
+
+  return (
+    <div className="min-h-full bg-background relative">
+      {/* Header */}
+      <div className="p-4 border-b border-border">
+        <div className="flex items-center gap-3 mb-4">
+          <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-pink-500 to-purple-600 flex items-center justify-center">
+            <Image className="w-5 h-5 text-white" />
+          </div>
+          <div>
+            <h2 className="text-lg font-bold text-foreground">Photo Gallery</h2>
+            <p className="text-xs text-muted-foreground">{mobileGalleryImages.length} photos</p>
+          </div>
+        </div>
+        
+        {/* Category Filter */}
+        <div className="flex gap-2 overflow-x-auto pb-1">
+          {categories.map((category) => (
+            <button
+              key={category}
+              onClick={() => setActiveCategory(category)}
+              className={`px-3 py-1.5 rounded-full text-xs font-medium whitespace-nowrap transition-colors ${
+                activeCategory === category
+                  ? 'bg-primary text-primary-foreground'
+                  : 'bg-secondary text-muted-foreground'
+              }`}
+            >
+              {category}
+            </button>
+          ))}
+        </div>
+      </div>
+
+      {/* Image Grid */}
+      <div className="p-4">
+        <div className="grid grid-cols-2 gap-3">
+          {filteredImages.map((image) => (
+            <button
+              key={image.id}
+              onClick={() => setSelectedImage(image)}
+              className="relative aspect-square rounded-xl overflow-hidden bg-secondary"
+            >
+              <img
+                src={image.src}
+                alt={image.title}
+                className="w-full h-full object-cover"
+              />
+              <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent">
+                <div className="absolute bottom-0 left-0 right-0 p-2">
+                  <p className="text-white text-xs font-medium truncate">{image.title}</p>
+                </div>
+              </div>
+            </button>
+          ))}
+        </div>
+      </div>
+
+      {/* Lightbox */}
+      {selectedImage && (
+        <div className="fixed inset-0 bg-black/95 flex items-center justify-center z-[60]">
+          <button
+            onClick={() => setSelectedImage(null)}
+            className="absolute top-4 right-4 w-10 h-10 rounded-full bg-white/10 flex items-center justify-center"
+          >
+            <X className="w-5 h-5 text-white" />
+          </button>
+          
+          <button
+            onClick={handlePrev}
+            className="absolute left-4 top-1/2 -translate-y-1/2 w-10 h-10 rounded-full bg-white/10 flex items-center justify-center"
+          >
+            <ChevronLeft className="w-5 h-5 text-white" />
+          </button>
+          
+          <button
+            onClick={handleNext}
+            className="absolute right-4 top-1/2 -translate-y-1/2 w-10 h-10 rounded-full bg-white/10 flex items-center justify-center"
+          >
+            <ChevronRight className="w-5 h-5 text-white" />
+          </button>
+
+          <div className="max-w-[90%] max-h-[80%] flex flex-col items-center px-4">
+            <img
+              src={selectedImage.src}
+              alt={selectedImage.title}
+              className="max-w-full max-h-[60vh] object-contain rounded-lg"
+            />
+            <div className="mt-4 text-center">
+              <h3 className="text-white font-semibold text-sm">{selectedImage.title}</h3>
+              {selectedImage.description && (
+                <p className="text-white/70 text-xs mt-1">{selectedImage.description}</p>
+              )}
+              <span className="inline-block mt-2 px-3 py-1 bg-white/10 rounded-full text-white/80 text-[10px]">
+                {selectedImage.category}
+              </span>
+            </div>
+          </div>
+        </div>
+      )}
+    </div>
+  );
+};
