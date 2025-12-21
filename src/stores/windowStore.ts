@@ -1,7 +1,7 @@
 import { create } from 'zustand';
 import { produce } from 'immer';
 
-export type WindowId = 'terminal' | 'finder' | 'contact' | 'about' | 'safari' | 'notes' | 'resume' | 'achievements';
+export type WindowId = 'terminal' | 'finder' | 'contact' | 'about' | 'safari' | 'notes' | 'resume' | 'achievements' | 'gallery';
 
 interface WindowState {
   id: WindowId;
@@ -28,6 +28,7 @@ const initialWindows: Record<WindowId, WindowState> = {
   notes: { id: 'notes', isOpen: false, zIndex: 100, position: { x: 220, y: 110 } },
   resume: { id: 'resume', isOpen: false, zIndex: 100, position: { x: 200, y: 80 } },
   achievements: { id: 'achievements', isOpen: false, zIndex: 100, position: { x: 180, y: 100 } },
+  gallery: { id: 'gallery', isOpen: false, zIndex: 100, position: { x: 160, y: 90 } },
 };
 
 export const useWindowStore = create<WindowStore>((set) => ({

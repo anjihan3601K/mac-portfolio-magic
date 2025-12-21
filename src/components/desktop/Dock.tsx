@@ -20,6 +20,7 @@ interface DockItem {
 
 const dockItems: DockItem[] = [
   { id: 'finder', name: 'Finder', icon: finderIcon },
+  { id: 'gallery', name: 'Gallery', icon: aboutIcon },
   { id: 'terminal', name: 'Terminal', icon: terminalIcon },
   { id: 'safari', name: 'Safari', icon: safariIcon },
   { id: 'notes', name: 'Notes', icon: notesIcon },

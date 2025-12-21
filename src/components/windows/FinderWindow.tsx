@@ -61,7 +61,13 @@ export const FinderWindow = () => {
 
   const handleItemDoubleClick = (item: FileItem) => {
     if (item.type === 'folder') {
-      navigateTo(item.name);
+      // Open gallery for Images folder
+      if (item.id === 'images') {
+        const { openWindow } = useWindowStore.getState();
+        openWindow('gallery');
+      } else {
+        navigateTo(item.name);
+      }
     } else if (item.type === 'link' && item.url) {
       window.open(item.url, '_blank');
     } else if (item.type === 'pdf') {
