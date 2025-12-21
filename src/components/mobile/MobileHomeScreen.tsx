@@ -20,7 +20,7 @@ interface AppItem {
 
 const apps: AppItem[] = [
   { id: 'finder', name: 'Finder', icon: finderIcon },
-  { id: 'terminal', name: 'Terminal', icon: terminalIcon },
+  { id: 'achievements', name: 'Achievements', icon: aboutIcon },
   { id: 'safari', name: 'Blog', icon: safariIcon },
   { id: 'notes', name: 'Notes', icon: notesIcon },
   { id: 'contact', name: 'Contact', icon: contactsIcon },
