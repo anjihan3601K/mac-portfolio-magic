@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { useWindowStore, WindowId } from '@/stores/windowStore';
 import { Battery, Wifi, Signal } from 'lucide-react';
 import { haptics } from '@/lib/haptics';
+import wallpaper from '@/assets/wallpaper.jpg';
 
 // Import dock icons
 import finderIcon from '@/assets/dock-icons/finder.png';
@@ -50,23 +51,14 @@ export const MobileHomeScreen = () => {
   };
 
   return (
-    <div className="relative w-full h-screen flex flex-col overflow-hidden bg-gradient-to-br from-[#1a1a3e] via-[#2d1b4e] to-[#0f1629]">
-      {/* iOS Background */}
-      <div className="absolute inset-0 overflow-hidden">
-        <div 
-          className="absolute inset-0"
-          style={{
-            background: `
-              radial-gradient(ellipse 80% 50% at 20% 40%, rgba(30, 64, 175, 0.4) 0%, transparent 50%),
-              radial-gradient(ellipse 60% 40% at 70% 60%, rgba(88, 28, 135, 0.3) 0%, transparent 50%),
-              radial-gradient(ellipse 50% 30% at 40% 80%, rgba(15, 23, 42, 0.8) 0%, transparent 50%),
-              linear-gradient(to bottom right, #1e3a5f 0%, #2d1b4e 30%, #1a1a3e 60%, #0f1629 100%)
-            `
-          }}
-        />
-        <div className="absolute top-1/3 left-1/4 w-[300px] h-[300px] bg-blue-600/20 rounded-full blur-[80px] animate-pulse-slow" />
-        <div className="absolute bottom-1/3 right-1/4 w-[250px] h-[250px] bg-purple-600/15 rounded-full blur-[60px] animate-pulse-slow" style={{ animationDelay: '2s' }} />
-      </div>
+    <div className="relative w-full h-screen flex flex-col overflow-hidden">
+      {/* Wallpaper Background */}
+      <div 
+        className="absolute inset-0 bg-cover bg-center bg-no-repeat"
+        style={{ backgroundImage: `url(${wallpaper})` }}
+      />
+      {/* Subtle overlay for readability */}
+      <div className="absolute inset-0 bg-black/20" />
 
       {/* iOS Status Bar */}
       <div className="relative z-50 flex items-center justify-between px-6 pt-3 pb-2 shrink-0">
