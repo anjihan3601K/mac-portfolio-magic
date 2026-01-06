@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { useWindowStore, WindowId } from '@/stores/windowStore';
-import { X, ChevronLeft, ExternalLink, Calendar, Download, FileText, Briefcase, GraduationCap, Code2, Brain, Database, Cloud, MapPin, Mail, Github, Linkedin, Image, Award, Trophy, Medal, Star, ChevronRight, ZoomIn } from 'lucide-react';
+import { X, ChevronLeft, ExternalLink, Calendar, Download, FileText, Briefcase, GraduationCap, Code2, Brain, Database, Cloud, MapPin, Mail, Github, Linkedin, Image, Award, Trophy, Medal, Star, ChevronRight, ZoomIn, Phone } from 'lucide-react';
 import profilePhoto from '@/assets/profile-photo.png';
 import { haptics } from '@/lib/haptics';
 
@@ -459,17 +459,17 @@ const MobileContactContent = () => {
 
 // Enhanced About content matching desktop
 const skillCategories = [
-  { name: 'Programming', skills: ['Python', 'SQL', 'R', 'JavaScript'], color: 'from-pink-500 to-rose-500' },
-  { name: 'ML/DL', skills: ['TensorFlow', 'PyTorch', 'Scikit-learn', 'Keras'], color: 'from-cyan-500 to-teal-500' },
-  { name: 'Data Science', skills: ['Pandas', 'NumPy', 'Matplotlib'], color: 'from-blue-500 to-indigo-500' },
-  { name: 'GenAI & LLMs', skills: ['OpenAI API', 'LangChain', 'Hugging Face'], color: 'from-purple-500 to-violet-500' },
-  { name: 'Cloud & Tools', skills: ['AWS', 'Docker', 'Git'], color: 'from-teal-500 to-cyan-500' },
-  { name: 'Databases', skills: ['MongoDB', 'PostgreSQL', 'MySQL'], color: 'from-blue-500 to-sky-500' },
+  { name: 'Languages', skills: ['Python', 'C', 'SQL'], color: 'from-pink-500 to-rose-500' },
+  { name: 'ML & AI', skills: ['TensorFlow', 'Scikit-learn', 'CNNs', 'Gradient Boosting'], color: 'from-cyan-500 to-teal-500' },
+  { name: 'Data Science', skills: ['Pandas', 'NumPy', 'Matplotlib', 'Seaborn'], color: 'from-blue-500 to-indigo-500' },
+  { name: 'Databases', skills: ['MySQL', 'MongoDB'], color: 'from-purple-500 to-violet-500' },
+  { name: 'Tools', skills: ['Git', 'GitHub', 'Jupyter', 'Docker'], color: 'from-teal-500 to-cyan-500' },
+  { name: 'Frameworks', skills: ['Flask', 'REST APIs'], color: 'from-blue-500 to-sky-500' },
 ];
 
 const experiences = [
-  { title: 'BCG Internship', company: 'Boston Consulting Group', skills: ['Python', 'Data Analytics', 'ML'] },
-  { title: 'Community Service', company: 'Social Impact Project', skills: ['Python', 'ML', 'Data Science'] },
+  { title: 'AI & Sustainability Intern', company: '1M1B – Green Skills Academy', period: 'May 2025 – Jun 2025', skills: ['CNNs', 'Transfer Learning', 'Image Classification'] },
+  { title: 'Data Science Intern', company: 'Infosys Springboard', period: 'Sep 2025 – Nov 2025', skills: ['ML', 'Price Prediction', 'Data Modeling'] },
 ];
 
 const MobileAboutContent = () => (
@@ -495,14 +495,14 @@ const MobileAboutContent = () => (
             Anjani Kumar Kanamarlapudi
           </h1>
           <p className="text-[#0066cc] dark:text-[#569cd6] font-medium text-xs mb-1">
-            AI Developer & Data Scientist
+            Data Analyst & AI Developer
           </p>
           <div className="text-[10px] space-y-0.5 text-[#666] dark:text-[#999]">
             <div className="flex items-center gap-1">
-              <MapPin className="w-2.5 h-2.5" /> India
+              <Phone className="w-2.5 h-2.5" /> +91-9381861326
             </div>
             <div className="flex items-center gap-1">
-              <Mail className="w-2.5 h-2.5" /> anjani.kanamarlapudi@gmail.com
+              <Mail className="w-2.5 h-2.5" /> venkat.kanamariapudi906@gmail.com
             </div>
           </div>
         </div>
@@ -511,15 +511,23 @@ const MobileAboutContent = () => (
       <div className="border-t border-[#eee] dark:border-[#3c3c3c] my-3" />
 
       {/* About */}
-      <h2 className="text-sm font-bold text-[#000] dark:text-[#dcdcaa] mb-1.5">## ABOUT ME</h2>
+      <h2 className="text-sm font-bold text-[#000] dark:text-[#dcdcaa] mb-1.5">## SUMMARY</h2>
       <p className="text-[#444] dark:text-[#d4d4d4] mb-3 text-[11px]">
-        Passionate AI Developer and Data Scientist with expertise in machine learning, 
-        deep learning, and data analytics. Experienced in building predictive models, 
-        GenAI applications, and data-driven solutions.
+        Aspiring Data Analyst and AI Developer with strong foundations in machine learning, 
+        data science, and system design. Passionate about building scalable, real-world 
+        AI solutions with measurable impact.
       </p>
 
+      {/* Education */}
+      <h2 className="text-sm font-bold text-[#000] dark:text-[#dcdcaa] mb-1.5">## EDUCATION</h2>
+      <div className="flex items-center gap-1.5 text-[11px]">
+        <GraduationCap className="w-3 h-3 text-[#888] dark:text-[#4ec9b0]" />
+        <span className="font-semibold text-[#333] dark:text-[#e0e0e0]">B.Tech in AI & Data Science</span>
+      </div>
+      <p className="text-[#0066cc] dark:text-[#569cd6] text-[11px] ml-4">SRKR Engineering College • 2023 – Present</p>
+
       {/* Skills */}
-      <h2 className="text-sm font-bold text-[#000] dark:text-[#dcdcaa] mb-1.5">## TECHNICAL SKILLS</h2>
+      <h2 className="text-sm font-bold text-[#000] dark:text-[#dcdcaa] mb-1.5 mt-3">## TECHNICAL SKILLS</h2>
       <div className="space-y-1 mb-3 text-[11px]">
         {skillCategories.map((category) => (
           <div key={category.name} className="flex">
@@ -538,16 +546,9 @@ const MobileAboutContent = () => (
             <span className="font-semibold text-[#333] dark:text-[#e0e0e0]">{exp.title}</span>
           </div>
           <p className="text-[#0066cc] dark:text-[#569cd6] ml-4">{exp.company}</p>
+          <p className="text-[#888] dark:text-[#666] ml-4 text-[10px]">{exp.period}</p>
         </div>
       ))}
-
-      {/* Education */}
-      <h2 className="text-sm font-bold text-[#000] dark:text-[#dcdcaa] mb-1.5 mt-3">## EDUCATION</h2>
-      <div className="flex items-center gap-1.5 text-[11px]">
-        <GraduationCap className="w-3 h-3 text-[#888] dark:text-[#4ec9b0]" />
-        <span className="font-semibold text-[#333] dark:text-[#e0e0e0]">B.Tech in Computer Science</span>
-      </div>
-      <p className="text-[#0066cc] dark:text-[#569cd6] text-[11px] ml-4">Currently Pursuing</p>
 
       {/* Links */}
       <h2 className="text-sm font-bold text-[#000] dark:text-[#dcdcaa] mb-1.5 mt-3">## CONNECT</h2>
@@ -561,7 +562,7 @@ const MobileAboutContent = () => (
           <Github className="w-3 h-3" /> GitHub
         </a>
         <a 
-          href="https://www.linkedin.com/in/anjani-kumar-kanamarlapudi-3b5a002b9" 
+          href="https://www.linkedin.com/in/venkata-kanamarlapudi" 
           target="_blank" 
           rel="noopener noreferrer"
           className="flex items-center gap-1 text-[#0066cc] dark:text-[#569cd6]"
