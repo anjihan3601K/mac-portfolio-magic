@@ -1,26 +1,46 @@
 import { WindowWrapper } from '@/components/desktop/WindowWrapper';
-import { Brain, Database, Cloud, Code2, Briefcase, GraduationCap, MapPin, Mail, Linkedin, Github } from 'lucide-react';
+import { Briefcase, GraduationCap, MapPin, Mail, Linkedin, Github, Phone } from 'lucide-react';
 import profilePhoto from '@/assets/profile-photo.png';
 
 const skillCategories = [
-  { name: 'Languages', skills: ['Python', 'SQL', 'R', 'JavaScript'] },
-  { name: 'ML/DL', skills: ['TensorFlow', 'PyTorch', 'Scikit-learn', 'Keras'] },
-  { name: 'Data Science', skills: ['Pandas', 'NumPy', 'Matplotlib', 'Seaborn'] },
-  { name: 'GenAI', skills: ['OpenAI API', 'LangChain', 'Hugging Face'] },
-  { name: 'Cloud', skills: ['AWS', 'Docker', 'Git'] },
-  { name: 'Web', skills: ['FastAPI', 'Flask', 'React'] },
+  { name: 'Languages', skills: ['Python', 'C', 'SQL'] },
+  { name: 'ML & AI', skills: ['TensorFlow', 'Scikit-learn', 'CNNs', 'Gradient Boosting'] },
+  { name: 'Data Science', skills: ['Pandas', 'NumPy', 'Matplotlib', 'Seaborn', 'Statistical Modeling'] },
+  { name: 'Databases', skills: ['MySQL', 'MongoDB'] },
+  { name: 'Tools', skills: ['Git', 'GitHub', 'Jupyter Notebook', 'Docker'] },
+  { name: 'Frameworks', skills: ['Flask', 'REST APIs'] },
 ];
 
 const experiences = [
   {
-    title: 'BCG Internship',
-    company: 'Boston Consulting Group',
-    description: 'Data analytics and machine learning projects for business intelligence.',
+    title: 'AI & Sustainability Intern',
+    company: '1M1B – Green Skills Academy',
+    period: 'May 2025 – Jun 2025',
+    description: 'Built an AI-based waste classification system using 20,000+ images. Achieved 95%+ accuracy using CNNs and transfer learning.',
   },
   {
-    title: 'Community Service Internship',
-    company: 'Social Impact Project',
-    description: 'ML solutions for community welfare and social impact applications.',
+    title: 'Data Science Intern',
+    company: 'Infosys Springboard',
+    period: 'Sep 2025 – Nov 2025',
+    description: 'Developed real estate price prediction models with 90% accuracy.',
+  },
+];
+
+const projects = [
+  {
+    title: 'Car Price Prediction',
+    year: '2024',
+    description: 'Regression-based ML system achieving 95% prediction accuracy via feature engineering.',
+  },
+  {
+    title: 'Dynamic Pricing Model for Ride-Sharing',
+    year: '2024',
+    description: 'ML-driven pricing optimization using demand–supply dynamics. R²: 0.84 using Gradient Boosting.',
+  },
+  {
+    title: 'Suraksha – Natural Disaster Prediction',
+    year: '2024',
+    description: 'AI-powered real-time disaster forecasting platform with 95%+ accuracy for earthquakes, floods, tsunamis, and hurricanes.',
   },
 ];
 
@@ -51,14 +71,14 @@ export const AboutWindow = () => {
                 Anjani Kumar Kanamarlapudi
               </h1>
               <p className="text-[#0066cc] dark:text-[#569cd6] font-medium mb-2">
-                AI Developer & Data Scientist
+                Data Analyst & AI Developer
               </p>
               <div className="text-xs space-y-1 text-[#666] dark:text-[#999]">
                 <div className="flex items-center gap-1.5">
-                  <MapPin className="w-3 h-3" /> India
+                  <Phone className="w-3 h-3" /> +91-9381861326
                 </div>
                 <div className="flex items-center gap-1.5">
-                  <Mail className="w-3 h-3" /> anjani.kanamarlapudi@gmail.com
+                  <Mail className="w-3 h-3" /> venkat.kanamariapudi906@gmail.com
                 </div>
               </div>
             </div>
@@ -69,13 +89,27 @@ export const AboutWindow = () => {
           {/* About Section */}
           <div className="mb-5">
             <h2 className="text-base font-bold text-[#000] dark:text-[#dcdcaa] mb-2">
-              ## ABOUT ME
+              ## SUMMARY
             </h2>
             <p className="text-[#444] dark:text-[#d4d4d4]">
-              Passionate AI Developer and Data Scientist with expertise in machine learning, 
-              deep learning, and data analytics. Experienced in building predictive models, 
-              GenAI applications, and data-driven solutions across healthcare, finance, 
-              and various domains.
+              Aspiring Data Analyst and AI Developer with strong foundations in machine learning, 
+              data science, and system design. Passionate about building scalable, real-world 
+              AI solutions with measurable impact.
+            </p>
+          </div>
+
+          {/* Education Section */}
+          <div className="mb-5">
+            <h2 className="text-base font-bold text-[#000] dark:text-[#dcdcaa] mb-2">
+              ## EDUCATION
+            </h2>
+            <div className="flex items-center gap-2">
+              <GraduationCap className="w-3.5 h-3.5 text-[#888] dark:text-[#4ec9b0]" />
+              <span className="font-semibold text-[#333] dark:text-[#e0e0e0]">B.Tech in Artificial Intelligence & Data Science</span>
+            </div>
+            <p className="text-[#0066cc] dark:text-[#569cd6] text-xs ml-5">SRKR Engineering College • Graduating 2023 – Present</p>
+            <p className="text-[#666] dark:text-[#999] text-xs ml-5 mt-1">
+              Coursework: Machine Learning, Data Structures, DBMS, Statistics, Deep Learning
             </p>
           </div>
 
@@ -105,22 +139,26 @@ export const AboutWindow = () => {
                   <Briefcase className="w-3.5 h-3.5 text-[#888] dark:text-[#ce9178]" />
                   <span className="font-semibold text-[#333] dark:text-[#e0e0e0]">{exp.title}</span>
                 </div>
-                <p className="text-[#0066cc] dark:text-[#569cd6] text-xs ml-5">{exp.company}</p>
+                <p className="text-[#0066cc] dark:text-[#569cd6] text-xs ml-5">{exp.company} • {exp.period}</p>
                 <p className="text-[#666] dark:text-[#999] text-xs ml-5 mt-0.5">{exp.description}</p>
               </div>
             ))}
           </div>
 
-          {/* Education Section */}
+          {/* Projects Section */}
           <div className="mb-5">
             <h2 className="text-base font-bold text-[#000] dark:text-[#dcdcaa] mb-2">
-              ## EDUCATION
+              ## KEY PROJECTS
             </h2>
-            <div className="flex items-center gap-2">
-              <GraduationCap className="w-3.5 h-3.5 text-[#888] dark:text-[#4ec9b0]" />
-              <span className="font-semibold text-[#333] dark:text-[#e0e0e0]">B.Tech in Computer Science</span>
-            </div>
-            <p className="text-[#0066cc] dark:text-[#569cd6] text-xs ml-5">Currently Pursuing</p>
+            {projects.map((project, index) => (
+              <div key={index} className="mb-2">
+                <div className="flex items-center gap-2">
+                  <span className="font-semibold text-[#333] dark:text-[#e0e0e0]">{project.title}</span>
+                  <span className="text-[#888] dark:text-[#666] text-xs">({project.year})</span>
+                </div>
+                <p className="text-[#666] dark:text-[#999] text-xs ml-0 mt-0.5">{project.description}</p>
+              </div>
+            ))}
           </div>
 
           {/* Links Section */}
@@ -138,7 +176,7 @@ export const AboutWindow = () => {
                 <Github className="w-3.5 h-3.5" /> GitHub
               </a>
               <a 
-                href="https://www.linkedin.com/in/anjani-kumar-kanamarlapudi-3b5a002b9" 
+                href="https://www.linkedin.com/in/venkata-kanamarlapudi" 
                 target="_blank" 
                 rel="noopener noreferrer"
                 className="flex items-center gap-1.5 text-[#0066cc] dark:text-[#569cd6] hover:underline text-xs"

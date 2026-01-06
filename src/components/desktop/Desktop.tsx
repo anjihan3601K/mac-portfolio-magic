@@ -1,6 +1,7 @@
 import { useState, useRef, useEffect } from 'react';
 import { MenuBar } from './MenuBar';
 import { Dock } from './Dock';
+import wallpaper from '@/assets/wallpaper.jpg';
 import { WelcomeScreen } from './WelcomeScreen';
 import { TerminalWindow } from '@/components/windows/TerminalWindow';
 import { FinderWindow } from '@/components/windows/FinderWindow';
@@ -98,23 +99,14 @@ export const Desktop = () => {
 
   // Desktop/Tablet macOS view
   return (
-    <div className="relative w-full h-screen overflow-hidden bg-gradient-to-br from-[#1a1a3e] via-[#2d1b4e] to-[#0f1629]">
-      {/* Animated Background - macOS Sonoma style waves */}
-      <div className="absolute inset-0 overflow-hidden">
-        <div 
-          className="absolute inset-0"
-          style={{
-            background: `
-              radial-gradient(ellipse 80% 50% at 20% 40%, rgba(30, 64, 175, 0.4) 0%, transparent 50%),
-              radial-gradient(ellipse 60% 40% at 70% 60%, rgba(88, 28, 135, 0.3) 0%, transparent 50%),
-              radial-gradient(ellipse 50% 30% at 40% 80%, rgba(15, 23, 42, 0.8) 0%, transparent 50%),
-              linear-gradient(to bottom right, #1e3a5f 0%, #2d1b4e 30%, #1a1a3e 60%, #0f1629 100%)
-            `
-          }}
-        />
-        <div className="absolute top-1/3 left-1/4 w-[500px] h-[500px] bg-blue-600/20 rounded-full blur-[100px] animate-pulse-slow" />
-        <div className="absolute bottom-1/3 right-1/3 w-[400px] h-[400px] bg-purple-600/15 rounded-full blur-[80px] animate-pulse-slow" style={{ animationDelay: '2s' }} />
-      </div>
+    <div className="relative w-full h-screen overflow-hidden">
+      {/* Wallpaper Background */}
+      <div 
+        className="absolute inset-0 bg-cover bg-center bg-no-repeat"
+        style={{ backgroundImage: `url(${wallpaper})` }}
+      />
+      {/* Subtle overlay for text readability */}
+      <div className="absolute inset-0 bg-black/10" />
 
       {/* Welcome Screen with transparent bg */}
       {showWelcome && <WelcomeScreen onComplete={() => setShowWelcome(false)} />}
