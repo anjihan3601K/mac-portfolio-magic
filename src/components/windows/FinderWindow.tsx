@@ -1,6 +1,7 @@
 import { WindowWrapper } from '@/components/desktop/WindowWrapper';
 import { useLocationStore, fileSystem, FileItem } from '@/stores/locationStore';
 import { useWindowStore } from '@/stores/windowStore';
+import { useProjects } from '@/hooks/usePortfolioData';
 import {
   Folder, 
   FileText, 
@@ -12,7 +13,8 @@ import {
   Home,
   Star,
   Github,
-  ExternalLink
+  ExternalLink,
+  Loader2
 } from 'lucide-react';
 
 const getIcon = (type: FileItem['type']) => {
@@ -52,8 +54,25 @@ const isProjectsFolder = (path: string[]): boolean => {
 
 export const FinderWindow = () => {
   const { currentPath, selectedItem, setPath, navigateTo, navigateBack, selectItem } = useLocationStore();
+  const { data: dbProjects, isLoading: projectsLoading } = useProjects();
+  
   const currentItems = getCurrentItems(currentPath);
   const inProjectsView = isProjectsFolder(currentPath);
+
+  // Use database projects if available, otherwise fall back to hardcoded
+  const projectItems = inProjectsView && dbProjects && dbProjects.length > 0
+    ? dbProjects.map(p => ({
+        id: p.id,
+        name: p.name,
+        type: 'link' as const,
+        category: p.category || undefined,
+        description: p.description || undefined,
+        tech: p.technologies || undefined,
+        codeUrl: p.github_url || undefined,
+        viewUrl: p.demo_url || undefined,
+        url: p.github_url || p.demo_url || undefined,
+      }))
+    : currentItems;
 
   const handleItemClick = (item: FileItem) => {
     selectItem(item);
@@ -134,72 +153,83 @@ export const FinderWindow = () => {
           {/* Content Area */}
           <div className="flex-1 p-4 overflow-auto">
             {inProjectsView ? (
-              // Projects List View - Name, Git Repo, Deployed Link
-              <div className="space-y-2">
-                {/* Table Header */}
-                <div className="grid grid-cols-12 gap-4 px-3 py-2 text-xs font-semibold text-muted-foreground uppercase tracking-wider border-b border-border">
-                  <div className="col-span-5">Project Name</div>
-                  <div className="col-span-4">Git Repository</div>
-                  <div className="col-span-3">Deployed Link</div>
+              projectsLoading ? (
+                <div className="flex items-center justify-center h-full">
+                  <Loader2 className="w-6 h-6 animate-spin text-primary" />
                 </div>
-                {/* Project Rows */}
-                {currentItems.map((item) => (
-                  <div
-                    key={item.id}
-                    onClick={() => handleItemClick(item)}
-                    onDoubleClick={() => handleItemDoubleClick(item)}
-                    className={`grid grid-cols-12 gap-4 px-3 py-3 rounded-lg cursor-pointer transition-colors ${
-                      selectedItem?.id === item.id
-                        ? 'bg-finder-selected'
-                        : 'hover:bg-secondary/50'
-                    }`}
-                  >
-                    <div className="col-span-5 flex items-center gap-3">
-                      <div className="w-8 h-8 rounded-lg bg-primary/10 flex items-center justify-center shrink-0">
-                        <Link className="w-4 h-4 text-primary" />
+              ) : (
+                // Projects List View - Name, Git Repo, Deployed Link
+                <div className="space-y-2">
+                  {/* Table Header */}
+                  <div className="grid grid-cols-12 gap-4 px-3 py-2 text-xs font-semibold text-muted-foreground uppercase tracking-wider border-b border-border">
+                    <div className="col-span-5">Project Name</div>
+                    <div className="col-span-4">Git Repository</div>
+                    <div className="col-span-3">Deployed Link</div>
+                  </div>
+                  {/* Project Rows */}
+                  {projectItems.map((item) => (
+                    <div
+                      key={item.id}
+                      onClick={() => handleItemClick(item as FileItem)}
+                      onDoubleClick={() => handleItemDoubleClick(item as FileItem)}
+                      className={`grid grid-cols-12 gap-4 px-3 py-3 rounded-lg cursor-pointer transition-colors ${
+                        selectedItem?.id === item.id
+                          ? 'bg-finder-selected'
+                          : 'hover:bg-secondary/50'
+                      }`}
+                    >
+                      <div className="col-span-5 flex items-center gap-3">
+                        <div className="w-8 h-8 rounded-lg bg-primary/10 flex items-center justify-center shrink-0">
+                          <Link className="w-4 h-4 text-primary" />
+                        </div>
+                        <div className="min-w-0">
+                          <div className="font-medium text-foreground text-sm truncate">{item.name}</div>
+                          {item.category && (
+                            <div className="text-xs text-muted-foreground">{item.category}</div>
+                          )}
+                        </div>
                       </div>
-                      <div className="min-w-0">
-                        <div className="font-medium text-foreground text-sm truncate">{item.name}</div>
-                        {item.category && (
-                          <div className="text-xs text-muted-foreground">{item.category}</div>
+                      <div className="col-span-4 flex items-center">
+                        {item.codeUrl ? (
+                          <a
+                            href={item.codeUrl}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            onClick={(e) => e.stopPropagation()}
+                            className="flex items-center gap-2 text-sm text-foreground/80 hover:text-primary transition-colors"
+                          >
+                            <Github className="w-4 h-4" />
+                            <span className="truncate">View Code</span>
+                          </a>
+                        ) : (
+                          <span className="text-sm text-muted-foreground">-</span>
+                        )}
+                      </div>
+                      <div className="col-span-3 flex items-center">
+                        {item.viewUrl ? (
+                          <a
+                            href={item.viewUrl}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            onClick={(e) => e.stopPropagation()}
+                            className="flex items-center gap-2 text-sm text-foreground/80 hover:text-primary transition-colors"
+                          >
+                            <ExternalLink className="w-4 h-4" />
+                            <span className="truncate">Live Demo</span>
+                          </a>
+                        ) : (
+                          <span className="text-sm text-muted-foreground">-</span>
                         )}
                       </div>
                     </div>
-                    <div className="col-span-4 flex items-center">
-                      {item.codeUrl ? (
-                        <a
-                          href={item.codeUrl}
-                          target="_blank"
-                          rel="noopener noreferrer"
-                          onClick={(e) => e.stopPropagation()}
-                          className="flex items-center gap-2 text-sm text-foreground/80 hover:text-primary transition-colors"
-                        >
-                          <Github className="w-4 h-4" />
-                          <span className="truncate">View Code</span>
-                        </a>
-                      ) : (
-                        <span className="text-sm text-muted-foreground">-</span>
-                      )}
+                  ))}
+                  {projectItems.length === 0 && (
+                    <div className="text-center py-8 text-muted-foreground">
+                      No projects yet. Add some from the admin panel!
                     </div>
-                    <div className="col-span-3 flex items-center">
-                      {item.viewUrl ? (
-                        <a
-                          href={item.viewUrl}
-                          target="_blank"
-                          rel="noopener noreferrer"
-                          onClick={(e) => e.stopPropagation()}
-                          className="flex items-center gap-2 text-sm text-foreground/80 hover:text-primary transition-colors"
-                        >
-                          <ExternalLink className="w-4 h-4" />
-                          <span className="truncate">Live Demo</span>
-                        </a>
-                      ) : (
-                        <span className="text-sm text-muted-foreground">-</span>
-                      )}
-                    </div>
-                  </div>
-                ))}
-              </div>
+                  )}
+                </div>
+              )
             ) : (
               // Default Grid View
               <div className="grid grid-cols-4 gap-4">
@@ -225,7 +255,7 @@ export const FinderWindow = () => {
               </div>
             )}
 
-            {currentItems.length === 0 && (
+            {!inProjectsView && currentItems.length === 0 && (
               <div className="flex items-center justify-center h-full text-muted-foreground">
                 This folder is empty
               </div>
