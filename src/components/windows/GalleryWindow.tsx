@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { WindowWrapper } from '@/components/desktop/WindowWrapper';
-import { Image, X, ChevronLeft, ChevronRight, ZoomIn } from 'lucide-react';
+import { useGallery } from '@/hooks/usePortfolioData';
+import { Image, X, ChevronLeft, ChevronRight, ZoomIn, Loader2 } from 'lucide-react';
 import profilePhoto from '@/assets/profile-photo.png';
 
 interface GalleryImage {
@@ -8,10 +9,11 @@ interface GalleryImage {
   title: string;
   src: string;
   category: string;
-  description?: string;
+  description?: string | null;
 }
 
-const galleryImages: GalleryImage[] = [
+// Fallback gallery images if database is empty
+const fallbackGalleryImages: GalleryImage[] = [
   {
     id: 'profile',
     title: 'Profile Photo',
@@ -57,8 +59,20 @@ const galleryImages: GalleryImage[] = [
 ];
 
 export const GalleryWindow = () => {
+  const { data: dbGallery, isLoading } = useGallery();
   const [selectedImage, setSelectedImage] = useState<GalleryImage | null>(null);
   const [activeCategory, setActiveCategory] = useState<string>('All');
+
+  // Use database gallery if available, otherwise fall back to hardcoded
+  const galleryImages = dbGallery && dbGallery.length > 0 
+    ? dbGallery.map(img => ({
+        id: img.id,
+        title: img.title,
+        src: img.src,
+        category: img.category,
+        description: img.description
+      }))
+    : fallbackGalleryImages;
 
   const categories = ['All', ...new Set(galleryImages.map(img => img.category))];
   
@@ -115,30 +129,44 @@ export const GalleryWindow = () => {
 
         {/* Image Grid */}
         <div className="flex-1 p-4 overflow-auto">
-          <div className="grid grid-cols-3 gap-3">
-            {filteredImages.map((image) => (
-              <button
-                key={image.id}
-                onClick={() => setSelectedImage(image)}
-                className="group relative aspect-square rounded-xl overflow-hidden bg-secondary hover:ring-2 hover:ring-primary transition-all"
-              >
-                <img
-                  src={image.src}
-                  alt={image.title}
-                  className="w-full h-full object-cover transition-transform group-hover:scale-105"
-                />
-                <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity">
-                  <div className="absolute bottom-0 left-0 right-0 p-2">
-                    <p className="text-white text-xs font-medium truncate">{image.title}</p>
-                    <p className="text-white/70 text-[10px]">{image.category}</p>
+          {isLoading ? (
+            <div className="flex items-center justify-center h-full">
+              <Loader2 className="w-8 h-8 animate-spin text-primary" />
+            </div>
+          ) : (
+            <div className="grid grid-cols-3 gap-3">
+              {filteredImages.map((image) => (
+                <button
+                  key={image.id}
+                  onClick={() => setSelectedImage(image)}
+                  className="group relative aspect-square rounded-xl overflow-hidden bg-secondary hover:ring-2 hover:ring-primary transition-all"
+                >
+                  <img
+                    src={image.src}
+                    alt={image.title}
+                    className="w-full h-full object-cover transition-transform group-hover:scale-105"
+                    onError={(e) => {
+                      (e.target as HTMLImageElement).src = '/placeholder.svg';
+                    }}
+                  />
+                  <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity">
+                    <div className="absolute bottom-0 left-0 right-0 p-2">
+                      <p className="text-white text-xs font-medium truncate">{image.title}</p>
+                      <p className="text-white/70 text-[10px]">{image.category}</p>
+                    </div>
+                    <div className="absolute top-2 right-2">
+                      <ZoomIn className="w-4 h-4 text-white" />
+                    </div>
                   </div>
-                  <div className="absolute top-2 right-2">
-                    <ZoomIn className="w-4 h-4 text-white" />
-                  </div>
-                </div>
-              </button>
-            ))}
-          </div>
+                </button>
+              ))}
+            </div>
+          )}
+          {!isLoading && filteredImages.length === 0 && (
+            <div className="flex items-center justify-center h-full text-muted-foreground">
+              No images in this category
+            </div>
+          )}
         </div>
 
         {/* Lightbox */}
@@ -170,6 +198,9 @@ export const GalleryWindow = () => {
                 src={selectedImage.src}
                 alt={selectedImage.title}
                 className="max-w-full max-h-[70vh] object-contain rounded-lg"
+                onError={(e) => {
+                  (e.target as HTMLImageElement).src = '/placeholder.svg';
+                }}
               />
               <div className="mt-4 text-center">
                 <h3 className="text-white font-semibold">{selectedImage.title}</h3>
