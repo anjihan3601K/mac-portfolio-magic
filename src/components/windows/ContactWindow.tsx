@@ -2,7 +2,8 @@ import { useState } from 'react';
 import { WindowWrapper } from '@/components/desktop/WindowWrapper';
 import { Github, Linkedin, Globe, User, Mail, Send } from 'lucide-react';
 import { useToast } from '@/hooks/use-toast';
-import profilePhoto from '@/assets/profile-photo.png';
+import defaultProfilePhoto from '@/assets/profile-photo.png';
+import { useProfilePhotoUrl } from '@/components/admin/ProfilePhotoManager';
 
 const socialLinks = [
   { 

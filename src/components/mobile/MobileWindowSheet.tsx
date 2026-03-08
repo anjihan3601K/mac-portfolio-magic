@@ -2,7 +2,8 @@ import { useState } from 'react';
 import { useWindowStore, WindowId } from '@/stores/windowStore';
 import { useProjects, useAchievements, useGallery } from '@/hooks/usePortfolioData';
 import { X, ChevronLeft, ExternalLink, Calendar, Download, FileText, Briefcase, GraduationCap, Code2, Brain, Database, Cloud, MapPin, Mail, Github, Linkedin, Image, Award, Trophy, Medal, Star, ChevronRight, ZoomIn, Phone, Loader2 } from 'lucide-react';
-import profilePhoto from '@/assets/profile-photo.png';
+import defaultProfilePhoto from '@/assets/profile-photo.png';
+import { useProfilePhotoUrl } from '@/components/admin/ProfilePhotoManager';
 import { haptics } from '@/lib/haptics';
 
 const windowTitles: Record<WindowId, string> = {
