@@ -605,7 +605,8 @@ const MobileAboutContent = () => {
       <p className="text-[9px] text-[#999] dark:text-[#666] text-center">— End of Document —</p>
     </div>
   </div>
-);
+  );
+};
 
 // Developer Blog content for Safari
 interface BlogPost {
