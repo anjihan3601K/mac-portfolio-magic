@@ -972,7 +972,7 @@ const MobileGalleryContent = () => {
           </div>
           <div>
             <h2 className="text-lg font-bold text-foreground">Photo Gallery</h2>
-            <p className="text-xs text-muted-foreground">{mobileGalleryImages.length} photos</p>
+            <p className="text-xs text-muted-foreground">{galleryImages.length} photos</p>
           </div>
         </div>
         
