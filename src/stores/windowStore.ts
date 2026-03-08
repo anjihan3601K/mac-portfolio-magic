@@ -47,10 +47,18 @@ export const useWindowStore = create<WindowStore>((set) => ({
   openWindow: (id) =>
     set(
       produce((state: WindowStore) => {
+        const win = state.windows[id];
+        // If already open but minimized, just restore it
+        if (win.isOpen && win.isMinimized) {
+          win.isMinimized = false;
+          state.maxZIndex += 1;
+          win.zIndex = state.maxZIndex;
+          return;
+        }
         state.maxZIndex += 1;
-        state.windows[id].isOpen = true;
-        state.windows[id].isMinimized = false;
-        state.windows[id].zIndex = state.maxZIndex;
+        win.isOpen = true;
+        win.isMinimized = false;
+        win.zIndex = state.maxZIndex;
       })
     ),
 
