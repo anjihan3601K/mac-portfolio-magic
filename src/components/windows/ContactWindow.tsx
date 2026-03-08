@@ -39,6 +39,8 @@ export const ContactWindow = () => {
   const [subject, setSubject] = useState('');
   const [message, setMessage] = useState('');
   const { toast } = useToast();
+  const { data: uploadedPhotoUrl } = useProfilePhotoUrl();
+  const profilePhoto = uploadedPhotoUrl || defaultProfilePhoto;
 
   const handleSendEmail = () => {
     if (!name.trim() || !email.trim() || !message.trim()) {

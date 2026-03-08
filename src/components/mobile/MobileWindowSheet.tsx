@@ -369,7 +369,8 @@ const MobileContactContent = () => {
   const [email, setEmail] = useState('');
   const [subject, setSubject] = useState('');
   const [message, setMessage] = useState('');
-
+  const { data: uploadedPhotoUrl } = useProfilePhotoUrl();
+  const profilePhoto = uploadedPhotoUrl || defaultProfilePhoto;
   const handleSendEmail = () => {
     if (!name.trim() || !email.trim() || !message.trim()) return;
     const mailtoLink = `mailto:anjani.kanamarlapudi@gmail.com?subject=${encodeURIComponent(subject || `Message from ${name}`)}&body=${encodeURIComponent(`Name: ${name}\nEmail: ${email}\n\n${message}`)}`;
