@@ -800,7 +800,22 @@ const getAchievementIcon = (type: Achievement['type']) => {
   }
 };
 
-const MobileAchievementsContent = () => (
+const MobileAchievementsContent = () => {
+  const { data: dbAchievements, isLoading } = useAchievements();
+  
+  const achievements = dbAchievements && dbAchievements.length > 0
+    ? dbAchievements.map(a => ({
+        id: a.id,
+        title: a.title,
+        organization: a.organization,
+        date: a.date,
+        type: a.type as Achievement['type'],
+        description: a.description || '',
+        credentialUrl: a.credential_url || undefined,
+      }))
+    : mobileAchievements;
+
+  return (
   <div className="min-h-full bg-background p-4">
     <div className="flex items-center gap-3 mb-6">
       <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-yellow-400 to-orange-500 flex items-center justify-center">
@@ -812,8 +827,13 @@ const MobileAchievementsContent = () => (
       </div>
     </div>
 
+    {isLoading ? (
+      <div className="flex items-center justify-center py-12">
+        <Loader2 className="w-6 h-6 animate-spin text-primary" />
+      </div>
+    ) : (
     <div className="space-y-3">
-      {mobileAchievements.map((achievement) => (
+      {achievements.map((achievement) => (
         <div
           key={achievement.id}
           className="p-4 rounded-xl bg-secondary/50 border border-border"
@@ -848,8 +868,10 @@ const MobileAchievementsContent = () => (
         </div>
       ))}
     </div>
+    )}
   </div>
-);
+  );
+};
 
 // Mobile Gallery Content
 interface GalleryImage {
