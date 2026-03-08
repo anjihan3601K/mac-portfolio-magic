@@ -37,6 +37,7 @@ export const ProjectsManager = () => {
       github_url: '',
       demo_url: '',
       display_order: 0,
+      show_on_desktop: false,
     });
     setEditingProject(null);
   };
@@ -51,6 +52,7 @@ export const ProjectsManager = () => {
       github_url: project.github_url || '',
       demo_url: project.demo_url || '',
       display_order: project.display_order,
+      show_on_desktop: project.show_on_desktop,
     });
     setIsDialogOpen(true);
   };
@@ -66,6 +68,7 @@ export const ProjectsManager = () => {
       github_url: formData.github_url || null,
       demo_url: formData.demo_url || null,
       display_order: formData.display_order,
+      show_on_desktop: formData.show_on_desktop,
     };
 
     try {
