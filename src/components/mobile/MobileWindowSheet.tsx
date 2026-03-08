@@ -147,7 +147,7 @@ const finderData: FolderItem[] = [
     children: [
       { id: 'aboutme-file', name: 'aboutme.txt', type: 'aboutfile' },
       { id: 'linkedin', name: 'LinkedIn Profile', type: 'link', url: 'https://www.linkedin.com/in/anjani-kumar-kanamarlapudi-3b5a002b9' },
-      { id: 'github', name: 'GitHub Profile', type: 'link', url: 'https://github.com/anjani3601K' },
+      { id: 'github', name: 'GitHub Profile', type: 'link', url: 'https://github.com/anjihan3601K' },
       { id: 'kaggle', name: 'Kaggle Profile', type: 'link', url: 'https://kaggle.com' },
     ]
   },
