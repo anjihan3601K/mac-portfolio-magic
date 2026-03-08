@@ -892,7 +892,7 @@ const mobileGalleryImages: GalleryImage[] = [
   {
     id: 'profile',
     title: 'Profile Photo',
-    src: profilePhoto,
+    src: defaultProfilePhoto,
     category: 'Personal',
     description: 'Professional headshot'
   },
