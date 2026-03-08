@@ -1,6 +1,7 @@
 import { WindowWrapper } from '@/components/desktop/WindowWrapper';
 import { Briefcase, GraduationCap, MapPin, Mail, Linkedin, Github, Phone } from 'lucide-react';
-import profilePhoto from '@/assets/profile-photo.png';
+import defaultProfilePhoto from '@/assets/profile-photo.png';
+import { useProfilePhotoUrl } from '@/components/admin/ProfilePhotoManager';
 
 const skillCategories = [
   { name: 'Languages', skills: ['Python', 'C', 'SQL'] },

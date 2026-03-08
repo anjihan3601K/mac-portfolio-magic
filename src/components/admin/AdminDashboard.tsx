@@ -6,7 +6,9 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { ProjectsManager } from './ProjectsManager';
 import { AchievementsManager } from './AchievementsManager';
 import { GalleryManager } from './GalleryManager';
-import { LogOut, FolderGit2, Award, Image, ArrowLeft } from 'lucide-react';
+import { ResumeManager } from './ResumeManager';
+import { ProfilePhotoManager } from './ProfilePhotoManager';
+import { LogOut, FolderGit2, Award, Image, ArrowLeft, FileText, User } from 'lucide-react';
 import { toast } from 'sonner';
 
 export const AdminDashboard = () => {
@@ -50,18 +52,26 @@ export const AdminDashboard = () => {
       {/* Main Content */}
       <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
         <Tabs defaultValue="projects" className="space-y-6">
-          <TabsList className="grid w-full max-w-md grid-cols-3">
+          <TabsList className="grid w-full max-w-2xl grid-cols-5">
             <TabsTrigger value="projects" className="flex items-center gap-2">
               <FolderGit2 className="w-4 h-4" />
-              Projects
+              <span className="hidden sm:inline">Projects</span>
             </TabsTrigger>
             <TabsTrigger value="achievements" className="flex items-center gap-2">
               <Award className="w-4 h-4" />
-              Achievements
+              <span className="hidden sm:inline">Achievements</span>
             </TabsTrigger>
             <TabsTrigger value="gallery" className="flex items-center gap-2">
               <Image className="w-4 h-4" />
-              Gallery
+              <span className="hidden sm:inline">Gallery</span>
+            </TabsTrigger>
+            <TabsTrigger value="resume" className="flex items-center gap-2">
+              <FileText className="w-4 h-4" />
+              <span className="hidden sm:inline">Resume</span>
+            </TabsTrigger>
+            <TabsTrigger value="photo" className="flex items-center gap-2">
+              <User className="w-4 h-4" />
+              <span className="hidden sm:inline">Photo</span>
             </TabsTrigger>
           </TabsList>
 
@@ -75,6 +85,14 @@ export const AdminDashboard = () => {
 
           <TabsContent value="gallery">
             <GalleryManager />
+          </TabsContent>
+
+          <TabsContent value="resume">
+            <ResumeManager />
+          </TabsContent>
+
+          <TabsContent value="photo">
+            <ProfilePhotoManager />
           </TabsContent>
         </Tabs>
       </main>
