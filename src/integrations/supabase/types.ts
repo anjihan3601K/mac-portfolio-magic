@@ -96,6 +96,7 @@ export type Database = {
           github_url: string | null
           id: string
           name: string
+          show_on_desktop: boolean
           technologies: string[] | null
           updated_at: string
         }
@@ -108,6 +109,7 @@ export type Database = {
           github_url?: string | null
           id?: string
           name: string
+          show_on_desktop?: boolean
           technologies?: string[] | null
           updated_at?: string
         }
@@ -120,6 +122,7 @@ export type Database = {
           github_url?: string | null
           id?: string
           name?: string
+          show_on_desktop?: boolean
           technologies?: string[] | null
           updated_at?: string
         }

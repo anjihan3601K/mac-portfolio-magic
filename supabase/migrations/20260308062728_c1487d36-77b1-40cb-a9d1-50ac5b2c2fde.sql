@@ -1,0 +1,1 @@
+ALTER TABLE public.projects ADD COLUMN show_on_desktop boolean NOT NULL DEFAULT false;
