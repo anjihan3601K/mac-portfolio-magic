@@ -49,8 +49,6 @@ export const Desktop = () => {
           .map((p) => ({ id: p.id, name: p.name.replace(/ /g, '\n') }))
       : fallbackDesktopFolders.slice(1)),
   ];
-  const heroRef = useRef<HTMLDivElement>(null);
-  const portfolioTextRef = useRef<HTMLHeadingElement>(null);
 
   // Initialize draggable folders
   useEffect(() => {

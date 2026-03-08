@@ -25,6 +25,7 @@ export const ProjectsManager = () => {
     github_url: '',
     demo_url: '',
     display_order: 0,
+    show_on_desktop: false,
   });
 
   const resetForm = () => {
