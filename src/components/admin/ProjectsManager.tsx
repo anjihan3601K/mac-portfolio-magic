@@ -25,6 +25,7 @@ export const ProjectsManager = () => {
     github_url: '',
     demo_url: '',
     display_order: 0,
+    show_on_desktop: false,
   });
 
   const resetForm = () => {
@@ -36,6 +37,7 @@ export const ProjectsManager = () => {
       github_url: '',
       demo_url: '',
       display_order: 0,
+      show_on_desktop: false,
     });
     setEditingProject(null);
   };
@@ -50,6 +52,7 @@ export const ProjectsManager = () => {
       github_url: project.github_url || '',
       demo_url: project.demo_url || '',
       display_order: project.display_order,
+      show_on_desktop: project.show_on_desktop,
     });
     setIsDialogOpen(true);
   };
@@ -65,6 +68,7 @@ export const ProjectsManager = () => {
       github_url: formData.github_url || null,
       demo_url: formData.demo_url || null,
       display_order: formData.display_order,
+      show_on_desktop: formData.show_on_desktop,
     };
 
     try {
@@ -190,6 +194,17 @@ export const ProjectsManager = () => {
                 />
               </div>
 
+              <div className="flex items-center gap-3">
+                <input
+                  id="show_on_desktop"
+                  type="checkbox"
+                  checked={formData.show_on_desktop}
+                  onChange={(e) => setFormData({ ...formData, show_on_desktop: e.target.checked })}
+                  className="w-4 h-4 rounded border-border accent-primary"
+                />
+                <Label htmlFor="show_on_desktop">Show as folder on desktop</Label>
+              </div>
+
               <div className="flex justify-end gap-2 pt-4">
                 <Button type="button" variant="outline" onClick={() => setIsDialogOpen(false)}>
                   Cancel
@@ -224,6 +239,11 @@ export const ProjectsManager = () => {
                 {project.category && (
                   <span className="text-xs px-2 py-0.5 bg-primary/10 text-primary rounded-full">
                     {project.category}
+                  </span>
+                )}
+                {project.show_on_desktop && (
+                  <span className="text-xs px-2 py-0.5 bg-accent text-accent-foreground rounded-full">
+                    🖥 Desktop
                   </span>
                 )}
               </div>

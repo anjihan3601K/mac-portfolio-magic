@@ -10,6 +10,7 @@ export interface Project {
   github_url: string | null;
   demo_url: string | null;
   display_order: number;
+  show_on_desktop: boolean;
   created_at: string;
   updated_at: string;
 }
