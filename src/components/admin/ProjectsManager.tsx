@@ -194,6 +194,17 @@ export const ProjectsManager = () => {
                 />
               </div>
 
+              <div className="flex items-center gap-3">
+                <input
+                  id="show_on_desktop"
+                  type="checkbox"
+                  checked={formData.show_on_desktop}
+                  onChange={(e) => setFormData({ ...formData, show_on_desktop: e.target.checked })}
+                  className="w-4 h-4 rounded border-border accent-primary"
+                />
+                <Label htmlFor="show_on_desktop">Show as folder on desktop</Label>
+              </div>
+
               <div className="flex justify-end gap-2 pt-4">
                 <Button type="button" variant="outline" onClick={() => setIsDialogOpen(false)}>
                   Cancel
