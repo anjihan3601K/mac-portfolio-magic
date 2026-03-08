@@ -17,13 +17,14 @@ import { MobileWindowSheet } from '@/components/mobile/MobileWindowSheet';
 import { MobileWelcomeScreen } from '@/components/mobile/MobileWelcomeScreen';
 import { useWindowStore } from '@/stores/windowStore';
 import { useIsMobile } from '@/hooks/use-mobile';
+import { useProjects } from '@/hooks/usePortfolioData';
 import { Folder } from 'lucide-react';
 import { gsap } from 'gsap';
 import { Draggable } from 'gsap/Draggable';
 
 gsap.registerPlugin(Draggable);
 
-const desktopFolders = [
+const fallbackDesktopFolders = [
   { id: 'achievements', name: 'Achievements &\nCertifications' },
   { id: 'healthcare-ai', name: 'Healthcare AI\nPrediction System' },
   { id: 'resume-analyzer', name: 'AI Resume\nAnalyzer' },
@@ -34,7 +35,20 @@ export const Desktop = () => {
   const [showWelcome, setShowWelcome] = useState(true);
   const { openWindow } = useWindowStore();
   const isMobile = useIsMobile();
+  const { data: dbProjects } = useProjects();
   const folderRefs = useRef<(HTMLButtonElement | null)[]>([]);
+  const heroRef = useRef<HTMLDivElement>(null);
+  const portfolioTextRef = useRef<HTMLHeadingElement>(null);
+
+  // Build desktop folders from DB projects marked show_on_desktop + always include achievements
+  const desktopFolders = [
+    { id: 'achievements', name: 'Achievements &\nCertifications' },
+    ...(dbProjects
+      ? dbProjects
+          .filter((p) => p.show_on_desktop)
+          .map((p) => ({ id: p.id, name: p.name.replace(/ /g, '\n') }))
+      : fallbackDesktopFolders.slice(1)),
+  ];
   const heroRef = useRef<HTMLDivElement>(null);
   const portfolioTextRef = useRef<HTMLHeadingElement>(null);
 
