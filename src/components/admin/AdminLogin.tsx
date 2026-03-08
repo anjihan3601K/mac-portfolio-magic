@@ -23,7 +23,6 @@ export const AdminLogin = () => {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     
-    // Validate input
     const result = loginSchema.safeParse({ email, password });
     if (!result.success) {
       toast.error(result.error.errors[0].message);
@@ -38,13 +37,6 @@ export const AdminLogin = () => {
         toast.error('Invalid email or password');
       } else {
         toast.success('Welcome back!');
-      }
-        const { error } = await signIn(email, password);
-        if (error) {
-          toast.error('Invalid email or password');
-        } else {
-          toast.success('Welcome back!');
-        }
       }
     } catch (error) {
       toast.error('An unexpected error occurred');
@@ -71,7 +63,7 @@ export const AdminLogin = () => {
             </div>
             <h1 className="text-2xl font-bold text-foreground">Admin Access</h1>
             <p className="text-muted-foreground mt-2">
-              {isSignUp ? 'Create an account' : 'Sign in to manage your portfolio'}
+              Sign in to manage your portfolio
             </p>
           </div>
 
@@ -112,22 +104,13 @@ export const AdminLogin = () => {
               {isLoading ? (
                 <>
                   <Loader2 className="w-4 h-4 mr-2 animate-spin" />
-                  {isSignUp ? 'Creating account...' : 'Signing in...'}
+                  Signing in...
                 </>
               ) : (
-                isSignUp ? 'Create Account' : 'Sign In'
+                'Sign In'
               )}
             </Button>
           </form>
-
-          <div className="mt-6 text-center">
-            <button
-              onClick={() => setIsSignUp(!isSignUp)}
-              className="text-sm text-primary hover:underline"
-            >
-              {isSignUp ? 'Already have an account? Sign in' : "Don't have an account? Sign up"}
-            </button>
-          </div>
         </div>
       </div>
     </div>
