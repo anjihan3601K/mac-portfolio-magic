@@ -6,8 +6,11 @@ export type WindowId = 'terminal' | 'finder' | 'contact' | 'about' | 'safari' | 
 interface WindowState {
   id: WindowId;
   isOpen: boolean;
+  isMinimized: boolean;
+  isMaximized: boolean;
   zIndex: number;
   position: { x: number; y: number };
+  prevPosition?: { x: number; y: number };
 }
 
 interface WindowStore {
@@ -16,19 +19,25 @@ interface WindowStore {
   openWindow: (id: WindowId) => void;
   closeWindow: (id: WindowId) => void;
   focusWindow: (id: WindowId) => void;
+  minimizeWindow: (id: WindowId) => void;
+  toggleMaximize: (id: WindowId) => void;
   updatePosition: (id: WindowId, position: { x: number; y: number }) => void;
 }
 
+const createWindow = (id: WindowId, x: number, y: number): WindowState => ({
+  id, isOpen: false, isMinimized: false, isMaximized: false, zIndex: 100, position: { x, y },
+});
+
 const initialWindows: Record<WindowId, WindowState> = {
-  terminal: { id: 'terminal', isOpen: false, zIndex: 100, position: { x: 100, y: 100 } },
-  finder: { id: 'finder', isOpen: false, zIndex: 100, position: { x: 150, y: 80 } },
-  contact: { id: 'contact', isOpen: false, zIndex: 100, position: { x: 200, y: 120 } },
-  about: { id: 'about', isOpen: false, zIndex: 100, position: { x: 250, y: 100 } },
-  safari: { id: 'safari', isOpen: false, zIndex: 100, position: { x: 180, y: 90 } },
-  notes: { id: 'notes', isOpen: false, zIndex: 100, position: { x: 220, y: 110 } },
-  resume: { id: 'resume', isOpen: false, zIndex: 100, position: { x: 200, y: 80 } },
-  achievements: { id: 'achievements', isOpen: false, zIndex: 100, position: { x: 180, y: 100 } },
-  gallery: { id: 'gallery', isOpen: false, zIndex: 100, position: { x: 160, y: 90 } },
+  terminal: createWindow('terminal', 100, 100),
+  finder: createWindow('finder', 150, 80),
+  contact: createWindow('contact', 200, 120),
+  about: createWindow('about', 250, 100),
+  safari: createWindow('safari', 180, 90),
+  notes: createWindow('notes', 220, 110),
+  resume: createWindow('resume', 200, 80),
+  achievements: createWindow('achievements', 180, 100),
+  gallery: createWindow('gallery', 160, 90),
 };
 
 export const useWindowStore = create<WindowStore>((set) => ({
@@ -40,6 +49,7 @@ export const useWindowStore = create<WindowStore>((set) => ({
       produce((state: WindowStore) => {
         state.maxZIndex += 1;
         state.windows[id].isOpen = true;
+        state.windows[id].isMinimized = false;
         state.windows[id].zIndex = state.maxZIndex;
       })
     ),
@@ -48,6 +58,8 @@ export const useWindowStore = create<WindowStore>((set) => ({
     set(
       produce((state: WindowStore) => {
         state.windows[id].isOpen = false;
+        state.windows[id].isMinimized = false;
+        state.windows[id].isMaximized = false;
       })
     ),
 
@@ -56,6 +68,32 @@ export const useWindowStore = create<WindowStore>((set) => ({
       produce((state: WindowStore) => {
         state.maxZIndex += 1;
         state.windows[id].zIndex = state.maxZIndex;
+      })
+    ),
+
+  minimizeWindow: (id) =>
+    set(
+      produce((state: WindowStore) => {
+        state.windows[id].isMinimized = true;
+      })
+    ),
+
+  toggleMaximize: (id) =>
+    set(
+      produce((state: WindowStore) => {
+        const win = state.windows[id];
+        if (win.isMaximized) {
+          win.isMaximized = false;
+          if (win.prevPosition) {
+            win.position = win.prevPosition;
+          }
+        } else {
+          win.prevPosition = { ...win.position };
+          win.isMaximized = true;
+          win.position = { x: 0, y: 28 }; // below menu bar
+        }
+        state.maxZIndex += 1;
+        win.zIndex = state.maxZIndex;
       })
     ),
 
