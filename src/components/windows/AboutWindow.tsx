@@ -46,6 +46,9 @@ const projects = [
 ];
 
 export const AboutWindow = () => {
+  const { data: uploadedPhotoUrl } = useProfilePhotoUrl();
+  const profilePhoto = uploadedPhotoUrl || defaultProfilePhoto;
+
   return (
     <WindowWrapper id="about" title="About Me.txt — TextEdit" width={650} height={600}>
       <div className="h-full bg-[#fefefe] dark:bg-[#1e1e1e] overflow-auto">
