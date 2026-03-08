@@ -168,7 +168,7 @@ export const AboutWindow = () => {
             </h2>
             <div className="flex gap-4 ml-1">
               <a 
-                href="https://github.com/anjihan3601K" 
+                href="https://github.com/anjani3601K" 
                 target="_blank" 
                 rel="noopener noreferrer"
                 className="flex items-center gap-1.5 text-[#0066cc] dark:text-[#569cd6] hover:underline text-xs"
