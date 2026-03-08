@@ -33,18 +33,12 @@ export const AdminLogin = () => {
     setIsLoading(true);
     
     try {
-      if (isSignUp) {
-        const { error } = await signUp(email, password);
-        if (error) {
-          if (error.message.includes('already registered')) {
-            toast.error('This email is already registered. Please sign in.');
-          } else {
-            toast.error(error.message);
-          }
-        } else {
-          toast.success('Account created! Please contact the admin to get admin access.');
-        }
+      const { error } = await signIn(email, password);
+      if (error) {
+        toast.error('Invalid email or password');
       } else {
+        toast.success('Welcome back!');
+      }
         const { error } = await signIn(email, password);
         if (error) {
           toast.error('Invalid email or password');
