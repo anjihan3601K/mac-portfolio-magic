@@ -306,6 +306,7 @@ const MobileFinderContent = ({ onClose, onOpenResume, onOpenAbout }: { onClose: 
             </div>
           ))}
         </div>
+        )
       ) : (
         // Folder Grid - iOS Style
         <div className="p-6">
