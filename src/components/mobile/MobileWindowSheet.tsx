@@ -2,7 +2,8 @@ import { useState } from 'react';
 import { useWindowStore, WindowId } from '@/stores/windowStore';
 import { useProjects, useAchievements, useGallery } from '@/hooks/usePortfolioData';
 import { X, ChevronLeft, ExternalLink, Calendar, Download, FileText, Briefcase, GraduationCap, Code2, Brain, Database, Cloud, MapPin, Mail, Github, Linkedin, Image, Award, Trophy, Medal, Star, ChevronRight, ZoomIn, Phone, Loader2 } from 'lucide-react';
-import profilePhoto from '@/assets/profile-photo.png';
+import defaultProfilePhoto from '@/assets/profile-photo.png';
+import { useProfilePhotoUrl } from '@/components/admin/ProfilePhotoManager';
 import { haptics } from '@/lib/haptics';
 
 const windowTitles: Record<WindowId, string> = {
@@ -368,7 +369,8 @@ const MobileContactContent = () => {
   const [email, setEmail] = useState('');
   const [subject, setSubject] = useState('');
   const [message, setMessage] = useState('');
-
+  const { data: uploadedPhotoUrl } = useProfilePhotoUrl();
+  const profilePhoto = uploadedPhotoUrl || defaultProfilePhoto;
   const handleSendEmail = () => {
     if (!name.trim() || !email.trim() || !message.trim()) return;
     const mailtoLink = `mailto:anjani.kanamarlapudi@gmail.com?subject=${encodeURIComponent(subject || `Message from ${name}`)}&body=${encodeURIComponent(`Name: ${name}\nEmail: ${email}\n\n${message}`)}`;
@@ -497,7 +499,10 @@ const experiences = [
   { title: 'Data Science Intern', company: 'Infosys Springboard', period: 'Sep 2025 – Nov 2025', skills: ['ML', 'Price Prediction', 'Data Modeling'] },
 ];
 
-const MobileAboutContent = () => (
+const MobileAboutContent = () => {
+  const { data: uploadedPhotoUrl } = useProfilePhotoUrl();
+  const profilePhoto = uploadedPhotoUrl || defaultProfilePhoto;
+  return (
   <div className="min-h-full bg-[#fefefe] dark:bg-[#1e1e1e] overflow-auto">
     {/* TextEdit-style Toolbar */}
     <div className="sticky top-0 z-10 h-8 bg-gradient-to-b from-[#f6f6f6] to-[#ebebeb] dark:from-[#3c3c3c] dark:to-[#323232] border-b border-[#c8c8c8] dark:border-[#2a2a2a] px-3 flex items-center">
@@ -600,7 +605,8 @@ const MobileAboutContent = () => (
       <p className="text-[9px] text-[#999] dark:text-[#666] text-center">— End of Document —</p>
     </div>
   </div>
-);
+  );
+};
 
 // Developer Blog content for Safari
 interface BlogPost {
@@ -886,7 +892,7 @@ const mobileGalleryImages: GalleryImage[] = [
   {
     id: 'profile',
     title: 'Profile Photo',
-    src: profilePhoto,
+    src: defaultProfilePhoto,
     category: 'Personal',
     description: 'Professional headshot'
   },

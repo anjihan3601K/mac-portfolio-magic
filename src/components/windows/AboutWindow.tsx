@@ -1,6 +1,7 @@
 import { WindowWrapper } from '@/components/desktop/WindowWrapper';
 import { Briefcase, GraduationCap, MapPin, Mail, Linkedin, Github, Phone } from 'lucide-react';
-import profilePhoto from '@/assets/profile-photo.png';
+import defaultProfilePhoto from '@/assets/profile-photo.png';
+import { useProfilePhotoUrl } from '@/components/admin/ProfilePhotoManager';
 
 const skillCategories = [
   { name: 'Languages', skills: ['Python', 'C', 'SQL'] },
@@ -45,6 +46,9 @@ const projects = [
 ];
 
 export const AboutWindow = () => {
+  const { data: uploadedPhotoUrl } = useProfilePhotoUrl();
+  const profilePhoto = uploadedPhotoUrl || defaultProfilePhoto;
+
   return (
     <WindowWrapper id="about" title="About Me.txt — TextEdit" width={650} height={600}>
       <div className="h-full bg-[#fefefe] dark:bg-[#1e1e1e] overflow-auto">

@@ -2,7 +2,8 @@ import { useState } from 'react';
 import { WindowWrapper } from '@/components/desktop/WindowWrapper';
 import { Github, Linkedin, Globe, User, Mail, Send } from 'lucide-react';
 import { useToast } from '@/hooks/use-toast';
-import profilePhoto from '@/assets/profile-photo.png';
+import defaultProfilePhoto from '@/assets/profile-photo.png';
+import { useProfilePhotoUrl } from '@/components/admin/ProfilePhotoManager';
 
 const socialLinks = [
   { 
@@ -38,6 +39,8 @@ export const ContactWindow = () => {
   const [subject, setSubject] = useState('');
   const [message, setMessage] = useState('');
   const { toast } = useToast();
+  const { data: uploadedPhotoUrl } = useProfilePhotoUrl();
+  const profilePhoto = uploadedPhotoUrl || defaultProfilePhoto;
 
   const handleSendEmail = () => {
     if (!name.trim() || !email.trim() || !message.trim()) {
