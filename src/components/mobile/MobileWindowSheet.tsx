@@ -579,7 +579,7 @@ const MobileAboutContent = () => (
       <h2 className="text-sm font-bold text-[#000] dark:text-[#dcdcaa] mb-1.5 mt-3">## CONNECT</h2>
       <div className="flex gap-3 text-[11px]">
         <a 
-          href="https://github.com/anjihan3601K" 
+          href="https://github.com/anjani3601K" 
           target="_blank" 
           rel="noopener noreferrer"
           className="flex items-center gap-1 text-[#0066cc] dark:text-[#569cd6]"
