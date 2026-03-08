@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { useWindowStore, WindowId } from '@/stores/windowStore';
-import { X, ChevronLeft, ExternalLink, Calendar, Download, FileText, Briefcase, GraduationCap, Code2, Brain, Database, Cloud, MapPin, Mail, Github, Linkedin, Image, Award, Trophy, Medal, Star, ChevronRight, ZoomIn, Phone } from 'lucide-react';
+import { useProjects, useAchievements, useGallery } from '@/hooks/usePortfolioData';
+import { X, ChevronLeft, ExternalLink, Calendar, Download, FileText, Briefcase, GraduationCap, Code2, Brain, Database, Cloud, MapPin, Mail, Github, Linkedin, Image, Award, Trophy, Medal, Star, ChevronRight, ZoomIn, Phone, Loader2 } from 'lucide-react';
 import profilePhoto from '@/assets/profile-photo.png';
 import { haptics } from '@/lib/haptics';
 
@@ -172,11 +173,29 @@ const finderData: FolderItem[] = [
 
 const MobileFinderContent = ({ onClose, onOpenResume, onOpenAbout }: { onClose: () => void; onOpenResume: () => void; onOpenAbout: () => void }) => {
   const [currentPath, setCurrentPath] = useState<string[]>([]);
+  const { data: dbProjects, isLoading: projectsLoading } = useProjects();
+
+  // Build projects children from DB or fallback
+  const projectChildren: FolderItem[] = dbProjects && dbProjects.length > 0
+    ? dbProjects.map(p => ({
+        id: p.id,
+        name: p.name,
+        type: 'link' as const,
+        category: p.category || undefined,
+        gitUrl: p.github_url || undefined,
+        deployedUrl: p.demo_url || undefined,
+      }))
+    : finderData.find(f => f.id === 'work')?.children || [];
+
+  // Replace the work folder's children dynamically
+  const dynamicFinderData = finderData.map(item => 
+    item.id === 'work' ? { ...item, children: projectChildren } : item
+  );
 
   const getCurrentItems = (): FolderItem[] => {
-    if (currentPath.length === 0) return finderData;
+    if (currentPath.length === 0) return dynamicFinderData;
     
-    let items: FolderItem[] = finderData;
+    let items: FolderItem[] = dynamicFinderData;
     for (const pathId of currentPath) {
       const folder = items.find(item => item.id === pathId);
       if (folder?.children) {
@@ -211,7 +230,7 @@ const MobileFinderContent = ({ onClose, onOpenResume, onOpenAbout }: { onClose: 
   const getTitle = (): string => {
     if (currentPath.length === 0) return 'Portfolio';
     const lastPath = currentPath[currentPath.length - 1];
-    const folder = finderData.find(f => f.id === lastPath);
+    const folder = dynamicFinderData.find(f => f.id === lastPath);
     return folder?.name || 'Portfolio';
   };
 
@@ -238,6 +257,11 @@ const MobileFinderContent = ({ onClose, onOpenResume, onOpenAbout }: { onClose: 
 
       {isInProjects ? (
         // Projects List View - Name, Git Repo, Deployed Link
+        projectsLoading ? (
+          <div className="flex items-center justify-center py-12">
+            <Loader2 className="w-6 h-6 animate-spin text-primary" />
+          </div>
+        ) : (
         <div className="p-4 space-y-3">
           {currentItems.map((item) => (
             <div
@@ -282,6 +306,7 @@ const MobileFinderContent = ({ onClose, onOpenResume, onOpenAbout }: { onClose: 
             </div>
           ))}
         </div>
+        )
       ) : (
         // Folder Grid - iOS Style
         <div className="p-6">
@@ -775,7 +800,22 @@ const getAchievementIcon = (type: Achievement['type']) => {
   }
 };
 
-const MobileAchievementsContent = () => (
+const MobileAchievementsContent = () => {
+  const { data: dbAchievements, isLoading } = useAchievements();
+  
+  const achievements = dbAchievements && dbAchievements.length > 0
+    ? dbAchievements.map(a => ({
+        id: a.id,
+        title: a.title,
+        organization: a.organization,
+        date: a.date,
+        type: a.type as Achievement['type'],
+        description: a.description || '',
+        credentialUrl: a.credential_url || undefined,
+      }))
+    : mobileAchievements;
+
+  return (
   <div className="min-h-full bg-background p-4">
     <div className="flex items-center gap-3 mb-6">
       <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-yellow-400 to-orange-500 flex items-center justify-center">
@@ -787,8 +827,13 @@ const MobileAchievementsContent = () => (
       </div>
     </div>
 
+    {isLoading ? (
+      <div className="flex items-center justify-center py-12">
+        <Loader2 className="w-6 h-6 animate-spin text-primary" />
+      </div>
+    ) : (
     <div className="space-y-3">
-      {mobileAchievements.map((achievement) => (
+      {achievements.map((achievement) => (
         <div
           key={achievement.id}
           className="p-4 rounded-xl bg-secondary/50 border border-border"
@@ -823,8 +868,10 @@ const MobileAchievementsContent = () => (
         </div>
       ))}
     </div>
+    )}
   </div>
-);
+  );
+};
 
 // Mobile Gallery Content
 interface GalleryImage {
@@ -881,14 +928,25 @@ const mobileGalleryImages: GalleryImage[] = [
 ];
 
 const MobileGalleryContent = () => {
+  const { data: dbGallery, isLoading } = useGallery();
   const [selectedImage, setSelectedImage] = useState<GalleryImage | null>(null);
   const [activeCategory, setActiveCategory] = useState<string>('All');
 
-  const categories = ['All', ...new Set(mobileGalleryImages.map(img => img.category))];
+  const galleryImages = dbGallery && dbGallery.length > 0
+    ? dbGallery.map(img => ({
+        id: img.id,
+        title: img.title,
+        src: img.src,
+        category: img.category,
+        description: img.description || undefined,
+      }))
+    : mobileGalleryImages;
+
+  const categories = ['All', ...new Set(galleryImages.map(img => img.category))];
   
   const filteredImages = activeCategory === 'All' 
-    ? mobileGalleryImages 
-    : mobileGalleryImages.filter(img => img.category === activeCategory);
+    ? galleryImages 
+    : galleryImages.filter(img => img.category === activeCategory);
 
   const handlePrev = () => {
     if (!selectedImage) return;
@@ -914,7 +972,7 @@ const MobileGalleryContent = () => {
           </div>
           <div>
             <h2 className="text-lg font-bold text-foreground">Photo Gallery</h2>
-            <p className="text-xs text-muted-foreground">{mobileGalleryImages.length} photos</p>
+            <p className="text-xs text-muted-foreground">{galleryImages.length} photos</p>
           </div>
         </div>
         
