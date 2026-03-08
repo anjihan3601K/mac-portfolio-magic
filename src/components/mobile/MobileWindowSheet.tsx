@@ -173,11 +173,29 @@ const finderData: FolderItem[] = [
 
 const MobileFinderContent = ({ onClose, onOpenResume, onOpenAbout }: { onClose: () => void; onOpenResume: () => void; onOpenAbout: () => void }) => {
   const [currentPath, setCurrentPath] = useState<string[]>([]);
+  const { data: dbProjects, isLoading: projectsLoading } = useProjects();
+
+  // Build projects children from DB or fallback
+  const projectChildren: FolderItem[] = dbProjects && dbProjects.length > 0
+    ? dbProjects.map(p => ({
+        id: p.id,
+        name: p.name,
+        type: 'link' as const,
+        category: p.category || undefined,
+        gitUrl: p.github_url || undefined,
+        deployedUrl: p.demo_url || undefined,
+      }))
+    : finderData.find(f => f.id === 'work')?.children || [];
+
+  // Replace the work folder's children dynamically
+  const dynamicFinderData = finderData.map(item => 
+    item.id === 'work' ? { ...item, children: projectChildren } : item
+  );
 
   const getCurrentItems = (): FolderItem[] => {
-    if (currentPath.length === 0) return finderData;
+    if (currentPath.length === 0) return dynamicFinderData;
     
-    let items: FolderItem[] = finderData;
+    let items: FolderItem[] = dynamicFinderData;
     for (const pathId of currentPath) {
       const folder = items.find(item => item.id === pathId);
       if (folder?.children) {
@@ -212,7 +230,7 @@ const MobileFinderContent = ({ onClose, onOpenResume, onOpenAbout }: { onClose: 
   const getTitle = (): string => {
     if (currentPath.length === 0) return 'Portfolio';
     const lastPath = currentPath[currentPath.length - 1];
-    const folder = finderData.find(f => f.id === lastPath);
+    const folder = dynamicFinderData.find(f => f.id === lastPath);
     return folder?.name || 'Portfolio';
   };
 
