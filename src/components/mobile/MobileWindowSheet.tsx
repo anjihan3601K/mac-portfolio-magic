@@ -945,8 +945,8 @@ const MobileGalleryContent = () => {
   const categories = ['All', ...new Set(galleryImages.map(img => img.category))];
   
   const filteredImages = activeCategory === 'All' 
-    ? mobileGalleryImages 
-    : mobileGalleryImages.filter(img => img.category === activeCategory);
+    ? galleryImages 
+    : galleryImages.filter(img => img.category === activeCategory);
 
   const handlePrev = () => {
     if (!selectedImage) return;
