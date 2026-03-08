@@ -257,6 +257,11 @@ const MobileFinderContent = ({ onClose, onOpenResume, onOpenAbout }: { onClose: 
 
       {isInProjects ? (
         // Projects List View - Name, Git Repo, Deployed Link
+        projectsLoading ? (
+          <div className="flex items-center justify-center py-12">
+            <Loader2 className="w-6 h-6 animate-spin text-primary" />
+          </div>
+        ) : (
         <div className="p-4 space-y-3">
           {currentItems.map((item) => (
             <div
