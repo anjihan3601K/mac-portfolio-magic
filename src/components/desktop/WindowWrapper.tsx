@@ -29,34 +29,22 @@ export const WindowWrapper = ({
   const headerRef = useRef<HTMLDivElement>(null);
   const draggableRef = useRef<Draggable[] | null>(null);
   
-  const { windows, closeWindow, focusWindow, updatePosition } = useWindowStore();
+  const { windows, closeWindow, focusWindow, minimizeWindow, toggleMaximize, updatePosition } = useWindowStore();
   const windowState = windows[id];
 
   useLayoutEffect(() => {
-    if (!windowState.isOpen || !windowRef.current) return;
+    if (!windowState.isOpen || windowState.isMinimized || !windowRef.current) return;
 
-    // Opening animation
     gsap.fromTo(
       windowRef.current,
-      {
-        scale: 0.95,
-        opacity: 0,
-        y: 20,
-      },
-      {
-        scale: 1,
-        opacity: 1,
-        y: 0,
-        duration: 0.3,
-        ease: 'power2.out',
-      }
+      { scale: 0.95, opacity: 0, y: 20 },
+      { scale: 1, opacity: 1, y: 0, duration: 0.3, ease: 'power2.out' }
     );
-  }, [windowState.isOpen]);
+  }, [windowState.isOpen, windowState.isMinimized]);
 
   useEffect(() => {
-    if (!windowState.isOpen || !windowRef.current || !headerRef.current) return;
+    if (!windowState.isOpen || windowState.isMinimized || !windowRef.current || !headerRef.current) return;
 
-    // Initialize draggable
     draggableRef.current = Draggable.create(windowRef.current, {
       type: 'x,y',
       trigger: headerRef.current,
@@ -71,16 +59,24 @@ export const WindowWrapper = ({
     return () => {
       draggableRef.current?.forEach((d) => d.kill());
     };
-  }, [windowState.isOpen, id, focusWindow, updatePosition]);
+  }, [windowState.isOpen, windowState.isMinimized, windowState.isMaximized, id, focusWindow, updatePosition]);
 
-  // Genie effect for macOS-style minimize/close animation
+  // Sync GSAP position when maximized/restored
+  useEffect(() => {
+    if (!windowRef.current || !windowState.isOpen || windowState.isMinimized) return;
+    if (windowState.isMaximized) {
+      gsap.set(windowRef.current, { x: 0, y: 0 });
+    } else {
+      gsap.set(windowRef.current, { x: 0, y: 0 });
+    }
+  }, [windowState.isMaximized, windowState.isOpen, windowState.isMinimized]);
+
   const handleClose = () => {
     if (!windowRef.current) {
       closeWindow(id);
       return;
     }
 
-    // Get dock position for genie effect target
     const dock = document.querySelector('.dock-container');
     const dockRect = dock?.getBoundingClientRect();
     const windowRect = windowRef.current.getBoundingClientRect();
@@ -92,16 +88,11 @@ export const WindowWrapper = ({
       ? dockRect.top - windowRect.top
       : window.innerHeight;
 
-    // Genie effect animation
     gsap.to(windowRef.current, {
-      scaleX: 0.1,
-      scaleY: 0.05,
-      x: targetX,
-      y: targetY,
-      opacity: 0,
+      scaleX: 0.1, scaleY: 0.05,
+      x: targetX, y: targetY, opacity: 0,
       transformOrigin: 'bottom center',
-      duration: 0.4,
-      ease: 'power3.in',
+      duration: 0.4, ease: 'power3.in',
       onComplete: () => {
         gsap.set(windowRef.current, { clearProps: 'all' });
         closeWindow(id);
@@ -109,24 +100,57 @@ export const WindowWrapper = ({
     });
   };
 
+  const handleMinimize = () => {
+    if (!windowRef.current) return;
+
+    const dock = document.querySelector('.dock-container');
+    const dockRect = dock?.getBoundingClientRect();
+    const windowRect = windowRef.current.getBoundingClientRect();
+
+    const targetX = dockRect
+      ? dockRect.left + dockRect.width / 2 - windowRect.left - windowRect.width / 2
+      : 0;
+    const targetY = dockRect
+      ? dockRect.top - windowRect.top
+      : window.innerHeight;
+
+    gsap.to(windowRef.current, {
+      scaleX: 0.15, scaleY: 0.08,
+      x: targetX, y: targetY, opacity: 0,
+      transformOrigin: 'bottom center',
+      duration: 0.35, ease: 'power3.in',
+      onComplete: () => {
+        gsap.set(windowRef.current, { clearProps: 'all' });
+        minimizeWindow(id);
+      },
+    });
+  };
+
+  const handleMaximize = () => {
+    toggleMaximize(id);
+  };
+
   const handleFocus = () => {
     focusWindow(id);
   };
 
-  if (!windowState.isOpen) return null;
+  if (!windowState.isOpen || windowState.isMinimized) return null;
+
+  const isMax = windowState.isMaximized;
 
   return (
     <div
       ref={windowRef}
-      className="window-glass fixed overflow-hidden"
+      className={`window-glass fixed overflow-hidden ${isMax ? 'rounded-none' : ''}`}
       style={{
-        width,
-        height,
-        minWidth,
-        minHeight,
+        width: isMax ? '100vw' : width,
+        height: isMax ? 'calc(100vh - 28px)' : height,
+        minWidth: isMax ? undefined : minWidth,
+        minHeight: isMax ? undefined : minHeight,
         zIndex: windowState.zIndex,
         left: windowState.position.x,
         top: windowState.position.y,
+        transition: isMax ? 'width 0.3s, height 0.3s, left 0.3s, top 0.3s' : undefined,
       }}
       onMouseDown={handleFocus}
     >
@@ -143,10 +167,16 @@ export const WindowWrapper = ({
           >
             <X className="w-2 h-2 opacity-0 group-hover:opacity-100 text-black/60" />
           </button>
-          <button className="traffic-light traffic-minimize group flex items-center justify-center">
+          <button
+            onClick={handleMinimize}
+            className="traffic-light traffic-minimize group flex items-center justify-center"
+          >
             <Minus className="w-2 h-2 opacity-0 group-hover:opacity-100 text-black/60" />
           </button>
-          <button className="traffic-light traffic-maximize group flex items-center justify-center">
+          <button
+            onClick={handleMaximize}
+            className="traffic-light traffic-maximize group flex items-center justify-center"
+          >
             <Square className="w-1.5 h-1.5 opacity-0 group-hover:opacity-100 text-black/60" />
           </button>
         </div>
