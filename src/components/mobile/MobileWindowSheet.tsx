@@ -129,15 +129,15 @@ const finderData: FolderItem[] = [
     name: 'Projects',
     type: 'folder',
     children: [
-      { id: 'pneumonia', name: 'Pneumonia Prediction', type: 'link', gitUrl: 'https://github.com/anjani3601K', deployedUrl: 'https://github.com/anjani3601K', category: 'Healthcare AI' },
-      { id: 'genai', name: 'GenAI Application', type: 'link', gitUrl: 'https://github.com/anjani3601K', deployedUrl: 'https://github.com/anjani3601K', category: 'Generative AI' },
-      { id: 'stock-pred', name: 'Stock Price Prediction', type: 'link', gitUrl: 'https://github.com/anjani3601K', deployedUrl: 'https://github.com/anjani3601K', category: 'Financial AI' },
-      { id: 'stock-analyzer', name: 'Stock Analyzer', type: 'link', gitUrl: 'https://github.com/anjani3601K', deployedUrl: 'https://github.com/anjani3601K', category: 'Financial AI' },
-      { id: 'privacy-chat', name: 'Privacy Chat', type: 'link', gitUrl: 'https://github.com/anjani3601K', deployedUrl: 'https://github.com/anjani3601K', category: 'Security' },
-      { id: 'car-price', name: 'Car Price Predictor', type: 'link', gitUrl: 'https://github.com/anjani3601K', deployedUrl: 'https://github.com/anjani3601K', category: 'Predictive Analytics' },
-      { id: 'dynamic-pricing', name: 'Dynamic Pricing', type: 'link', gitUrl: 'https://github.com/anjani3601K', deployedUrl: 'https://github.com/anjani3601K', category: 'Business Intelligence' },
-      { id: 'disaster', name: 'Disaster Management', type: 'link', gitUrl: 'https://github.com/anjani3601K', deployedUrl: 'https://github.com/anjani3601K', category: 'Social Impact' },
-      { id: 'suraksha', name: 'Suraksha ML Models', type: 'link', gitUrl: 'https://github.com/anjani3601K', deployedUrl: 'https://github.com/anjani3601K', category: 'Security' },
+      { id: 'pneumonia', name: 'Pneumonia Prediction', type: 'link', gitUrl: 'https://github.com/anjihan3601K', deployedUrl: 'https://github.com/anjihan3601K', category: 'Healthcare AI' },
+      { id: 'genai', name: 'GenAI Application', type: 'link', gitUrl: 'https://github.com/anjihan3601K', deployedUrl: 'https://github.com/anjihan3601K', category: 'Generative AI' },
+      { id: 'stock-pred', name: 'Stock Price Prediction', type: 'link', gitUrl: 'https://github.com/anjihan3601K', deployedUrl: 'https://github.com/anjihan3601K', category: 'Financial AI' },
+      { id: 'stock-analyzer', name: 'Stock Analyzer', type: 'link', gitUrl: 'https://github.com/anjihan3601K', deployedUrl: 'https://github.com/anjihan3601K', category: 'Financial AI' },
+      { id: 'privacy-chat', name: 'Privacy Chat', type: 'link', gitUrl: 'https://github.com/anjihan3601K', deployedUrl: 'https://github.com/anjihan3601K', category: 'Security' },
+      { id: 'car-price', name: 'Car Price Predictor', type: 'link', gitUrl: 'https://github.com/anjihan3601K', deployedUrl: 'https://github.com/anjihan3601K', category: 'Predictive Analytics' },
+      { id: 'dynamic-pricing', name: 'Dynamic Pricing', type: 'link', gitUrl: 'https://github.com/anjihan3601K', deployedUrl: 'https://github.com/anjihan3601K', category: 'Business Intelligence' },
+      { id: 'disaster', name: 'Disaster Management', type: 'link', gitUrl: 'https://github.com/anjihan3601K', deployedUrl: 'https://github.com/anjihan3601K', category: 'Social Impact' },
+      { id: 'suraksha', name: 'Suraksha ML Models', type: 'link', gitUrl: 'https://github.com/anjihan3601K', deployedUrl: 'https://github.com/anjihan3601K', category: 'Security' },
     ]
   },
   {
@@ -147,7 +147,7 @@ const finderData: FolderItem[] = [
     children: [
       { id: 'aboutme-file', name: 'aboutme.txt', type: 'aboutfile' },
       { id: 'linkedin', name: 'LinkedIn Profile', type: 'link', url: 'https://www.linkedin.com/in/anjani-kumar-kanamarlapudi-3b5a002b9' },
-      { id: 'github', name: 'GitHub Profile', type: 'link', url: 'https://github.com/anjani3601K' },
+      { id: 'github', name: 'GitHub Profile', type: 'link', url: 'https://github.com/anjihan3601K' },
       { id: 'kaggle', name: 'Kaggle Profile', type: 'link', url: 'https://kaggle.com' },
     ]
   },
@@ -402,7 +402,7 @@ const MobileContactContent = () => {
 
           <div className="grid grid-cols-2 gap-3 w-full">
             {[
-              { name: 'GitHub', color: 'bg-gray-800', url: 'https://github.com/anjani3601K' },
+              { name: 'GitHub', color: 'bg-gray-800', url: 'https://github.com/anjihan3601K' },
               { name: 'LinkedIn', color: 'bg-blue-600', url: 'https://www.linkedin.com/in/anjani-kumar-kanamarlapudi-3b5a002b9' },
               { name: 'Portfolio', color: 'bg-purple-600', url: '#' },
               { name: 'Kaggle', color: 'bg-cyan-500', url: 'https://kaggle.com' },
@@ -584,7 +584,7 @@ const MobileAboutContent = () => {
       <h2 className="text-sm font-bold text-[#000] dark:text-[#dcdcaa] mb-1.5 mt-3">## CONNECT</h2>
       <div className="flex gap-3 text-[11px]">
         <a 
-          href="https://github.com/anjani3601K" 
+          href="https://github.com/anjihan3601K" 
           target="_blank" 
           rel="noopener noreferrer"
           className="flex items-center gap-1 text-[#0066cc] dark:text-[#569cd6]"
