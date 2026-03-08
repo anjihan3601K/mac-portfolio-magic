@@ -402,7 +402,7 @@ const MobileContactContent = () => {
 
           <div className="grid grid-cols-2 gap-3 w-full">
             {[
-              { name: 'GitHub', color: 'bg-gray-800', url: 'https://github.com/anjani3601K' },
+              { name: 'GitHub', color: 'bg-gray-800', url: 'https://github.com/anjihan3601K' },
               { name: 'LinkedIn', color: 'bg-blue-600', url: 'https://www.linkedin.com/in/anjani-kumar-kanamarlapudi-3b5a002b9' },
               { name: 'Portfolio', color: 'bg-purple-600', url: '#' },
               { name: 'Kaggle', color: 'bg-cyan-500', url: 'https://kaggle.com' },
