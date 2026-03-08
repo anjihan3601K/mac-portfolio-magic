@@ -241,6 +241,11 @@ export const ProjectsManager = () => {
                     {project.category}
                   </span>
                 )}
+                {project.show_on_desktop && (
+                  <span className="text-xs px-2 py-0.5 bg-accent text-accent-foreground rounded-full">
+                    🖥 Desktop
+                  </span>
+                )}
               </div>
               {project.description && (
                 <p className="text-sm text-muted-foreground mb-2 line-clamp-2">{project.description}</p>
