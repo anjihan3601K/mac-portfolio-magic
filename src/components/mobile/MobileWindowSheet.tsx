@@ -503,6 +503,7 @@ const MobileAboutContent = () => {
   const { data: uploadedPhotoUrl } = useProfilePhotoUrl();
   const profilePhoto = uploadedPhotoUrl || defaultProfilePhoto;
   return (
+  <div className="min-h-full bg-[#fefefe] dark:bg-[#1e1e1e] overflow-auto">
     {/* TextEdit-style Toolbar */}
     <div className="sticky top-0 z-10 h-8 bg-gradient-to-b from-[#f6f6f6] to-[#ebebeb] dark:from-[#3c3c3c] dark:to-[#323232] border-b border-[#c8c8c8] dark:border-[#2a2a2a] px-3 flex items-center">
       <span className="px-1.5 py-0.5 bg-[#fff] dark:bg-[#2d2d2d] border border-[#ccc] dark:border-[#4a4a4a] rounded text-[9px] text-[#666] dark:text-[#999]">
