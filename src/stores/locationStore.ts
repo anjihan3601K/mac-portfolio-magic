@@ -154,7 +154,24 @@ export const fileSystem: FileItem[] = [
       },
     ],
   },
-...
+  {
+    id: 'about',
+    name: 'About Me',
+    type: 'file',
+    content: 'I am a passionate AI Developer and Data Scientist with expertise in machine learning, deep learning, and data analytics. Experienced in building predictive models, GenAI applications, and data-driven solutions across healthcare, finance, and various domains.',
+  },
+  {
+    id: 'resume',
+    name: 'Resume.pdf',
+    type: 'pdf',
+    url: '/resume/Resume_Data_Scientist.pdf',
+    isDownload: false,
+  },
+  {
+    id: 'links',
+    name: 'Links',
+    type: 'folder',
+    children: [
       { id: 'github', name: 'GitHub', type: 'link', url: 'https://github.com/anjihan3601K' },
       { id: 'linkedin', name: 'LinkedIn', type: 'link', url: 'https://www.linkedin.com/in/anjani-kumar-kanamarlapudi-3b5a002b9' },
       { id: 'kaggle', name: 'Kaggle', type: 'link', url: 'https://kaggle.com' },
