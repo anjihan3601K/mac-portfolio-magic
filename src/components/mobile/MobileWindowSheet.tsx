@@ -928,10 +928,21 @@ const mobileGalleryImages: GalleryImage[] = [
 ];
 
 const MobileGalleryContent = () => {
+  const { data: dbGallery, isLoading } = useGallery();
   const [selectedImage, setSelectedImage] = useState<GalleryImage | null>(null);
   const [activeCategory, setActiveCategory] = useState<string>('All');
 
-  const categories = ['All', ...new Set(mobileGalleryImages.map(img => img.category))];
+  const galleryImages = dbGallery && dbGallery.length > 0
+    ? dbGallery.map(img => ({
+        id: img.id,
+        title: img.title,
+        src: img.src,
+        category: img.category,
+        description: img.description || undefined,
+      }))
+    : mobileGalleryImages;
+
+  const categories = ['All', ...new Set(galleryImages.map(img => img.category))];
   
   const filteredImages = activeCategory === 'All' 
     ? mobileGalleryImages 
