@@ -2,7 +2,9 @@
 
 An interactive, macOS-inspired portfolio website built with React, featuring a dynamic backend powered by Lovable Cloud (Supabase).
 
-**Live URL**: [mac-portfolio-magic.lovable.app](https://mac-portfolio-magic.lovable.app)
+**Live URL (Lovable)**: [mac-portfolio-magic.lovable.app](https://mac-portfolio-magic.lovable.app)
+**Live URL (Vercel)**: [anjani-portfolio-sand.vercel.app](https://anjani-portfolio-sand.vercel.app)
+**GitHub**: [github.com/anjihan3601K](https://github.com/anjihan3601K)
 
 ---
 
