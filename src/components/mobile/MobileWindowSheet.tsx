@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { useWindowStore, WindowId } from '@/stores/windowStore';
 import { useProjects, useAchievements, useGallery } from '@/hooks/usePortfolioData';
 import { X, ChevronLeft, ExternalLink, Calendar, Download, FileText, Briefcase, GraduationCap, Code2, Brain, Database, Cloud, MapPin, Mail, Github, Linkedin, Image, Award, Trophy, Medal, Star, ChevronRight, ZoomIn, Phone, Loader2 } from 'lucide-react';
