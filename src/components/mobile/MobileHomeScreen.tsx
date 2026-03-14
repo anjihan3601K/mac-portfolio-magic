@@ -88,7 +88,7 @@ export const MobileHomeScreen = () => {
               onClick={() => handleAppTap(app.id)}
               className="flex flex-col items-center gap-1.5 active:scale-95 transition-transform"
             >
-              <div className="w-14 h-14 rounded-[16px] overflow-hidden shadow-lg bg-black/20 backdrop-blur-sm">
+              <div className="w-14 h-14 rounded-[16px] overflow-hidden shadow-lg bg-white/10 backdrop-blur-xl border border-white/20">
                 <img 
                   src={app.icon} 
                   alt={app.name}
