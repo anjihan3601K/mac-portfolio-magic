@@ -112,7 +112,13 @@ export const MobileHomeScreen = () => {
 
       {/* iOS Dock - Fixed at bottom */}
       <div className="relative z-10 px-4 pb-6 shrink-0">
-        <div className="bg-foreground/10 backdrop-blur-xl rounded-[28px] p-3 mx-auto max-w-xs">
+        <div className="backdrop-blur-2xl rounded-[28px] p-3 mx-auto max-w-xs border border-white/20"
+          style={{
+            background: 'rgba(255, 255, 255, 0.12)',
+            backdropFilter: 'blur(40px) saturate(180%)',
+            WebkitBackdropFilter: 'blur(40px) saturate(180%)',
+          }}
+        >
           <div className="flex justify-around items-center">
             {dockApps.map((app) => (
               <button
