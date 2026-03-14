@@ -57,8 +57,8 @@ export const MobileHomeScreen = () => {
         className="absolute inset-0 bg-cover bg-center bg-no-repeat"
         style={{ backgroundImage: `url(${wallpaper})` }}
       />
-      {/* Subtle overlay for readability */}
-      <div className="absolute inset-0 bg-black/20" />
+      {/* Glassmorphism overlay for readability */}
+      <div className="absolute inset-0 bg-black/10 backdrop-blur-[1px]" />
 
       {/* iOS Status Bar */}
       <div className="relative z-50 flex items-center justify-between px-6 pt-3 pb-2 shrink-0">
@@ -88,7 +88,7 @@ export const MobileHomeScreen = () => {
               onClick={() => handleAppTap(app.id)}
               className="flex flex-col items-center gap-1.5 active:scale-95 transition-transform"
             >
-              <div className="w-14 h-14 rounded-[16px] overflow-hidden shadow-lg bg-black/20 backdrop-blur-sm">
+              <div className="w-14 h-14 rounded-[16px] overflow-hidden shadow-lg bg-white/10 backdrop-blur-xl border border-white/20">
                 <img 
                   src={app.icon} 
                   alt={app.name}
@@ -112,7 +112,13 @@ export const MobileHomeScreen = () => {
 
       {/* iOS Dock - Fixed at bottom */}
       <div className="relative z-10 px-4 pb-6 shrink-0">
-        <div className="bg-foreground/10 backdrop-blur-xl rounded-[28px] p-3 mx-auto max-w-xs">
+        <div className="backdrop-blur-2xl rounded-[28px] p-3 mx-auto max-w-xs border border-white/20"
+          style={{
+            background: 'rgba(255, 255, 255, 0.12)',
+            backdropFilter: 'blur(40px) saturate(180%)',
+            WebkitBackdropFilter: 'blur(40px) saturate(180%)',
+          }}
+        >
           <div className="flex justify-around items-center">
             {dockApps.map((app) => (
               <button

@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { useWindowStore, WindowId } from '@/stores/windowStore';
 import { useProjects, useAchievements, useGallery } from '@/hooks/usePortfolioData';
 import { X, ChevronLeft, ExternalLink, Calendar, Download, FileText, Briefcase, GraduationCap, Code2, Brain, Database, Cloud, MapPin, Mail, Github, Linkedin, Image, Award, Trophy, Medal, Star, ChevronRight, ZoomIn, Phone, Loader2 } from 'lucide-react';
@@ -20,21 +20,39 @@ const windowTitles: Record<WindowId, string> = {
 
 export const MobileWindowSheet = () => {
   const { windows, closeWindow, openWindow } = useWindowStore();
+  const [isAnimating, setIsAnimating] = useState(false);
+  const [visibleWindow, setVisibleWindow] = useState<WindowId | null>(null);
+  const prevActiveRef = useRef<WindowId | null>(null);
   
   // Get the topmost open window by zIndex
   const openWindowsList = Object.values(windows).filter(w => w.isOpen);
   const activeWindow = openWindowsList.length > 0 
     ? openWindowsList.reduce((a, b) => a.zIndex > b.zIndex ? a : b).id 
     : null;
-  
-  if (!activeWindow) return null;
+
+  // Only trigger animation when a NEW window opens (not on every re-render)
+  useEffect(() => {
+    if (activeWindow && activeWindow !== prevActiveRef.current) {
+      setIsAnimating(true);
+      setVisibleWindow(activeWindow);
+      const timer = setTimeout(() => setIsAnimating(false), 300);
+      prevActiveRef.current = activeWindow;
+      return () => clearTimeout(timer);
+    }
+    if (!activeWindow) {
+      prevActiveRef.current = null;
+      setVisibleWindow(null);
+    }
+  }, [activeWindow]);
+
+  if (!visibleWindow) return null;
 
   const renderWindowContent = (windowId: WindowId) => {
     switch (windowId) {
       case 'terminal':
         return <MobileTerminalContent />;
       case 'finder':
-        return <MobileFinderContent onClose={() => closeWindow(activeWindow)} onOpenResume={() => { closeWindow('finder'); openWindow('resume'); }} onOpenAbout={() => { closeWindow('finder'); openWindow('about'); }} />;
+        return <MobileFinderContent onClose={() => closeWindow(visibleWindow)} onOpenResume={() => { closeWindow('finder'); openWindow('resume'); }} onOpenAbout={() => { closeWindow('finder'); openWindow('about'); }} />;
       case 'contact':
         return <MobileContactContent />;
       case 'about':
@@ -55,29 +73,35 @@ export const MobileWindowSheet = () => {
   };
 
   return (
-    <div className="fixed inset-0 z-50 animate-slide-up">
-      {/* Backdrop */}
+    <div className={`fixed inset-0 z-50 ${isAnimating ? 'animate-slide-up' : ''}`}>
+      {/* Backdrop with glassmorphism */}
       <div 
-        className="absolute inset-0 bg-black/50 backdrop-blur-sm"
-        onClick={() => closeWindow(activeWindow)}
+        className="absolute inset-0 bg-black/40 backdrop-blur-md"
+        onClick={() => closeWindow(visibleWindow)}
       />
       
-      {/* Sheet Content */}
-      <div className="absolute inset-x-0 bottom-0 top-12 bg-background rounded-t-3xl overflow-hidden shadow-2xl">
+      {/* Sheet Content - Glassmorphism */}
+      <div className="absolute inset-x-0 bottom-0 top-12 rounded-t-3xl overflow-hidden shadow-2xl border-t border-border/30"
+        style={{
+          background: 'hsl(var(--background) / 0.75)',
+          backdropFilter: 'blur(40px) saturate(180%)',
+          WebkitBackdropFilter: 'blur(40px) saturate(180%)',
+        }}
+      >
         {/* Handle */}
         <div className="flex justify-center pt-3 pb-2">
           <div className="w-10 h-1 bg-foreground/20 rounded-full" />
         </div>
         
         {/* Header - Only for non-finder windows */}
-        {activeWindow !== 'finder' && (
-          <div className="flex items-center justify-between px-4 pb-3 border-b border-border">
+        {visibleWindow !== 'finder' && (
+          <div className="flex items-center justify-between px-4 pb-3 border-b border-border/30">
             <span className="text-lg font-semibold text-foreground">
-              {windowTitles[activeWindow]}
+              {windowTitles[visibleWindow]}
             </span>
             <button 
-              onClick={() => closeWindow(activeWindow)}
-              className="w-8 h-8 rounded-full bg-foreground/10 flex items-center justify-center"
+              onClick={() => closeWindow(visibleWindow)}
+              className="w-8 h-8 rounded-full bg-foreground/10 backdrop-blur-sm flex items-center justify-center"
             >
               <X className="w-4 h-4 text-foreground" />
             </button>
@@ -85,8 +109,8 @@ export const MobileWindowSheet = () => {
         )}
         
         {/* Content */}
-        <div className={`flex-1 overflow-auto ${activeWindow !== 'finder' ? 'h-[calc(100%-80px)]' : 'h-[calc(100%-40px)]'}`}>
-          {renderWindowContent(activeWindow)}
+        <div className={`flex-1 overflow-auto ${visibleWindow !== 'finder' ? 'h-[calc(100%-80px)]' : 'h-[calc(100%-40px)]'}`}>
+          {renderWindowContent(visibleWindow)}
         </div>
       </div>
     </div>
