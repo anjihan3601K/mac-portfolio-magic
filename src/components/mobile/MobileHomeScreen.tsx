@@ -126,8 +126,7 @@ export const MobileHomeScreen = () => {
         </div>
       </div>
 
-      {/* Home Indicator */}
-      <div className="absolute bottom-2 left-1/2 -translate-x-1/2 w-32 h-1 bg-foreground/50 rounded-full z-20" />
+      {/* Home indicator handled by MobilePageCarousel */}
     </div>
   );
 };
