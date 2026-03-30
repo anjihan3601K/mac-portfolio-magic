@@ -2,7 +2,7 @@ import { useState } from 'react';
 import { useWindowStore, WindowId } from '@/stores/windowStore';
 import { Battery, Wifi, Signal } from 'lucide-react';
 import { haptics } from '@/lib/haptics';
-import wallpaper from '@/assets/wallpaper.jpg';
+
 
 // Import dock icons
 import finderIcon from '@/assets/dock-icons/finder.png';
