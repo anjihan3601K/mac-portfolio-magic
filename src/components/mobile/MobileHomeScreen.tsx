@@ -103,12 +103,7 @@ export const MobileHomeScreen = () => {
         </div>
       </div>
 
-      {/* Page Indicators */}
-      <div className="relative z-10 flex justify-center gap-1.5 py-3 shrink-0">
-        <div className="w-2 h-2 rounded-full bg-foreground" />
-        <div className="w-2 h-2 rounded-full bg-foreground/30" />
-        <div className="w-2 h-2 rounded-full bg-foreground/30" />
-      </div>
+      {/* Page indicators handled by MobilePageCarousel */}
 
       {/* iOS Dock - Fixed at bottom */}
       <div className="relative z-10 px-4 pb-6 shrink-0">
