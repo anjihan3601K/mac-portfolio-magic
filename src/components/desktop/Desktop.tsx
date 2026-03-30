@@ -101,7 +101,7 @@ export const Desktop = () => {
         {showWelcome && <MobileWelcomeScreen onComplete={() => setShowWelcome(false)} />}
         {!showWelcome && (
           <>
-            <MobileHomeScreen />
+            <MobilePageCarousel />
             <MobileWindowSheet />
           </>
         )}
