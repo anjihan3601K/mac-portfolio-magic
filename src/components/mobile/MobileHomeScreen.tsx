@@ -51,14 +51,8 @@ export const MobileHomeScreen = () => {
   };
 
   return (
-    <div className="relative w-full h-screen flex flex-col overflow-hidden">
-      {/* Wallpaper Background */}
-      <div 
-        className="absolute inset-0 bg-cover bg-center bg-no-repeat"
-        style={{ backgroundImage: `url(${wallpaper})` }}
-      />
-      {/* Glassmorphism overlay for readability */}
-      <div className="absolute inset-0 bg-black/10 backdrop-blur-[1px]" />
+    <div className="relative w-full h-full flex flex-col overflow-hidden">
+      {/* Wallpaper is handled by MobilePageCarousel parent */}
 
       {/* iOS Status Bar */}
       <div className="relative z-50 flex items-center justify-between px-6 pt-3 pb-2 shrink-0">
