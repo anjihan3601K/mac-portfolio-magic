@@ -2,7 +2,7 @@ import { useState } from 'react';
 import { useWindowStore, WindowId } from '@/stores/windowStore';
 import { Battery, Wifi, Signal } from 'lucide-react';
 import { haptics } from '@/lib/haptics';
-import wallpaper from '@/assets/wallpaper.jpg';
+
 
 // Import dock icons
 import finderIcon from '@/assets/dock-icons/finder.png';
@@ -51,14 +51,8 @@ export const MobileHomeScreen = () => {
   };
 
   return (
-    <div className="relative w-full h-screen flex flex-col overflow-hidden">
-      {/* Wallpaper Background */}
-      <div 
-        className="absolute inset-0 bg-cover bg-center bg-no-repeat"
-        style={{ backgroundImage: `url(${wallpaper})` }}
-      />
-      {/* Glassmorphism overlay for readability */}
-      <div className="absolute inset-0 bg-black/10 backdrop-blur-[1px]" />
+    <div className="relative w-full h-full flex flex-col overflow-hidden">
+      {/* Wallpaper is handled by MobilePageCarousel parent */}
 
       {/* iOS Status Bar */}
       <div className="relative z-50 flex items-center justify-between px-6 pt-3 pb-2 shrink-0">
@@ -103,12 +97,7 @@ export const MobileHomeScreen = () => {
         </div>
       </div>
 
-      {/* Page Indicators */}
-      <div className="relative z-10 flex justify-center gap-1.5 py-3 shrink-0">
-        <div className="w-2 h-2 rounded-full bg-foreground" />
-        <div className="w-2 h-2 rounded-full bg-foreground/30" />
-        <div className="w-2 h-2 rounded-full bg-foreground/30" />
-      </div>
+      {/* Page indicators handled by MobilePageCarousel */}
 
       {/* iOS Dock - Fixed at bottom */}
       <div className="relative z-10 px-4 pb-6 shrink-0">
@@ -137,8 +126,7 @@ export const MobileHomeScreen = () => {
         </div>
       </div>
 
-      {/* Home Indicator */}
-      <div className="absolute bottom-2 left-1/2 -translate-x-1/2 w-32 h-1 bg-foreground/50 rounded-full z-20" />
+      {/* Home indicator handled by MobilePageCarousel */}
     </div>
   );
 };

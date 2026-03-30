@@ -1,5 +1,6 @@
 import { WindowWrapper } from '@/components/desktop/WindowWrapper';
 import { Briefcase, GraduationCap, MapPin, Mail, Linkedin, Github, Phone } from 'lucide-react';
+import { SkillsRadarChart } from '@/components/mobile/SkillsRadarChart';
 import defaultProfilePhoto from '@/assets/profile-photo.png';
 import { useProfilePhotoUrl } from '@/components/admin/ProfilePhotoManager';
 
@@ -122,13 +123,16 @@ export const AboutWindow = () => {
             <h2 className="text-base font-bold text-[#000] dark:text-[#dcdcaa] mb-2">
               ## TECHNICAL SKILLS
             </h2>
-            <div className="space-y-1.5">
+            <div className="space-y-1.5 mb-4">
               {skillCategories.map((category) => (
                 <div key={category.name} className="flex">
                   <span className="w-24 text-[#888] dark:text-[#858585] shrink-0">{category.name}:</span>
                   <span className="text-[#444] dark:text-[#9cdcfe]">{category.skills.join(', ')}</span>
                 </div>
               ))}
+            </div>
+            <div className="bg-[#f8f8f8] dark:bg-[#1a1a2e] rounded-lg p-2">
+              <SkillsRadarChart size="sm" />
             </div>
           </div>
 
