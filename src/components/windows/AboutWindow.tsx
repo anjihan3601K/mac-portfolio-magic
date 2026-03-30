@@ -1,5 +1,6 @@
 import { WindowWrapper } from '@/components/desktop/WindowWrapper';
 import { Briefcase, GraduationCap, MapPin, Mail, Linkedin, Github, Phone } from 'lucide-react';
+import { SkillsRadarChart } from '@/components/mobile/SkillsRadarChart';
 import defaultProfilePhoto from '@/assets/profile-photo.png';
 import { useProfilePhotoUrl } from '@/components/admin/ProfilePhotoManager';
 
