@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { WindowWrapper } from '@/components/desktop/WindowWrapper';
 import { useGallery } from '@/hooks/usePortfolioData';
-import { Image, X, ChevronLeft, ChevronRight, ZoomIn, Loader2 } from 'lucide-react';
+import { Image, X, ChevronLeft, ChevronRight, ZoomIn, Loader2, ImageOff } from 'lucide-react';
 import defaultProfilePhoto from '@/assets/profile-photo.png';
 import { useProfilePhotoUrl } from '@/components/admin/ProfilePhotoManager';
 
@@ -13,67 +13,30 @@ interface GalleryImage {
   description?: string | null;
 }
 
-// Fallback gallery images if database is empty
-const fallbackGalleryImages: GalleryImage[] = [
-  {
-    id: 'profile',
-    title: 'Profile Photo',
-    src: defaultProfilePhoto,
-    category: 'Personal',
-    description: 'Professional headshot'
-  },
-  {
-    id: 'hackathon',
-    title: 'Hackathon Winner 2024',
-    src: 'https://images.unsplash.com/photo-1504384308090-c894fdcc538d?w=800&h=600&fit=crop',
-    category: 'Achievements',
-    description: 'First place at Tech Innovation Summit'
-  },
-  {
-    id: 'ai-competition',
-    title: 'AI Competition 2024',
-    src: 'https://images.unsplash.com/photo-1485827404703-89b55fcc595e?w=800&h=600&fit=crop',
-    category: 'Achievements',
-    description: 'AI & ML National Competition'
-  },
-  {
-    id: 'conference',
-    title: 'Tech Conference Speaker',
-    src: 'https://images.unsplash.com/photo-1540575467063-178a50c2df87?w=800&h=600&fit=crop',
-    category: 'Events',
-    description: 'Speaking at Developer Summit 2024'
-  },
-  {
-    id: 'team-project',
-    title: 'Team Project',
-    src: 'https://images.unsplash.com/photo-1522071820081-009f0129c71c?w=800&h=600&fit=crop',
-    category: 'Work',
-    description: 'Collaborative ML research project'
-  },
-  {
-    id: 'workshop',
-    title: 'AI Workshop',
-    src: 'https://images.unsplash.com/photo-1531482615713-2afd69097998?w=800&h=600&fit=crop',
-    category: 'Events',
-    description: 'Teaching AI fundamentals to students'
-  },
-];
-
 export const GalleryWindow = () => {
   const { data: dbGallery, isLoading } = useGallery();
+  const profilePhotoUrl = useProfilePhotoUrl();
   const [selectedImage, setSelectedImage] = useState<GalleryImage | null>(null);
   const [activeCategory, setActiveCategory] = useState<string>('All');
 
-  // Use database gallery if available, otherwise fall back to hardcoded
-  const galleryImages = dbGallery && dbGallery.length > 0 
-    ? dbGallery.map(img => ({
-        id: img.id,
-        title: img.title,
-        src: img.src,
-        category: img.category,
-        description: img.description
-      }))
-    : fallbackGalleryImages;
+  // Build gallery: profile photo + DB images only
+  const profileImage: GalleryImage = {
+    id: 'profile',
+    title: 'Profile Photo',
+    src: profilePhotoUrl || defaultProfilePhoto,
+    category: 'Personal',
+    description: 'Professional headshot'
+  };
+
+  const dbImages: GalleryImage[] = (dbGallery || []).map(img => ({
+    id: img.id,
+    title: img.title,
+    src: img.src,
+    category: img.category,
+    description: img.description
+  }));
+
+  const galleryImages = [profileImage, ...dbImages];
 
   const categories = ['All', ...new Set(galleryImages.map(img => img.category))];
   
@@ -110,7 +73,6 @@ export const GalleryWindow = () => {
             </div>
           </div>
           
-          {/* Category Filter */}
           <div className="flex gap-2 overflow-x-auto pb-1">
             {categories.map((category) => (
               <button
@@ -133,6 +95,11 @@ export const GalleryWindow = () => {
           {isLoading ? (
             <div className="flex items-center justify-center h-full">
               <Loader2 className="w-8 h-8 animate-spin text-primary" />
+            </div>
+          ) : filteredImages.length === 0 ? (
+            <div className="flex flex-col items-center justify-center h-full text-muted-foreground gap-3">
+              <ImageOff className="w-12 h-12 opacity-50" />
+              <p className="text-sm">No photos yet. Upload some from the admin panel!</p>
             </div>
           ) : (
             <div className="grid grid-cols-3 gap-3">
@@ -161,11 +128,6 @@ export const GalleryWindow = () => {
                   </div>
                 </button>
               ))}
-            </div>
-          )}
-          {!isLoading && filteredImages.length === 0 && (
-            <div className="flex items-center justify-center h-full text-muted-foreground">
-              No images in this category
             </div>
           )}
         </div>
