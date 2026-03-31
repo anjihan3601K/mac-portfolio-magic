@@ -47,7 +47,8 @@ export const MobilePageCarousel = () => {
     touchEndX.current = 0;
   }, [currentPage]);
 
-  const translateX = -(currentPage * 100) + (dragOffset / (window.innerWidth || 390)) * 100;
+  const pageWidthPercent = 100 / totalPages;
+  const translateX = -(currentPage * pageWidthPercent) + (dragOffset / (window.innerWidth || 390)) * pageWidthPercent;
 
   return (
     <div className="relative w-full h-screen overflow-hidden">
