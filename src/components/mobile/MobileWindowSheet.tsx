@@ -709,20 +709,124 @@ const MobileSafariContent = () => (
   </div>
 );
 
-const MobileNotesContent = () => (
-  <div className="p-4 min-h-full bg-background">
-    <div className="space-y-3">
-      <div className="p-4 rounded-xl bg-yellow-500/10 border border-yellow-500/20">
-        <h3 className="font-medium text-foreground">Skills & Technologies</h3>
-        <p className="text-sm text-foreground/60 mt-1">Python, TensorFlow, PyTorch...</p>
+const MobileNotesContent = () => {
+  const [activeNote, setActiveNote] = useState<'skills' | 'learning' | null>(null);
+
+  if (activeNote === 'skills') {
+    return (
+      <div className="p-4 min-h-full bg-background">
+        <button onClick={() => setActiveNote(null)} className="text-sm text-primary mb-4 flex items-center gap-1">
+          ← Back to Notes
+        </button>
+        <h2 className="text-xl font-bold text-foreground mb-5">Skills & Technologies</h2>
+        <div className="space-y-5">
+          <div>
+            <h3 className="text-sm font-semibold text-foreground mb-2">Programming Languages</h3>
+            <div className="flex flex-wrap gap-2">
+              {['Python', 'JavaScript', 'TypeScript', 'SQL', 'C++', 'Java'].map(s => (
+                <span key={s} className="px-3 py-1.5 rounded-full bg-blue-500/10 text-blue-400 text-xs font-medium border border-blue-500/20">{s}</span>
+              ))}
+            </div>
+          </div>
+          <div>
+            <h3 className="text-sm font-semibold text-foreground mb-2">AI / ML Frameworks</h3>
+            <div className="flex flex-wrap gap-2">
+              {['TensorFlow', 'PyTorch', 'Scikit-learn', 'Keras', 'OpenCV', 'Hugging Face'].map(s => (
+                <span key={s} className="px-3 py-1.5 rounded-full bg-purple-500/10 text-purple-400 text-xs font-medium border border-purple-500/20">{s}</span>
+              ))}
+            </div>
+          </div>
+          <div>
+            <h3 className="text-sm font-semibold text-foreground mb-2">Web & Tools</h3>
+            <div className="flex flex-wrap gap-2">
+              {['React', 'Node.js', 'Tailwind CSS', 'Git', 'Docker', 'AWS', 'MongoDB', 'PostgreSQL'].map(s => (
+                <span key={s} className="px-3 py-1.5 rounded-full bg-green-500/10 text-green-400 text-xs font-medium border border-green-500/20">{s}</span>
+              ))}
+            </div>
+          </div>
+          <div>
+            <h3 className="text-sm font-semibold text-foreground mb-2">Data & Analytics</h3>
+            <div className="flex flex-wrap gap-2">
+              {['Pandas', 'NumPy', 'Matplotlib', 'Seaborn', 'Power BI', 'Tableau'].map(s => (
+                <span key={s} className="px-3 py-1.5 rounded-full bg-orange-500/10 text-orange-400 text-xs font-medium border border-orange-500/20">{s}</span>
+              ))}
+            </div>
+          </div>
+        </div>
       </div>
-      <div className="p-4 rounded-xl bg-blue-500/10 border border-blue-500/20">
-        <h3 className="font-medium text-foreground">Current Learning</h3>
-        <p className="text-sm text-foreground/60 mt-1">LLMs, Transformers, RAG...</p>
+    );
+  }
+
+  if (activeNote === 'learning') {
+    return (
+      <div className="p-4 min-h-full bg-background">
+        <button onClick={() => setActiveNote(null)} className="text-sm text-primary mb-4 flex items-center gap-1">
+          ← Back to Notes
+        </button>
+        <h2 className="text-xl font-bold text-foreground mb-5">Current Learning</h2>
+        <div className="space-y-5">
+          <div>
+            <h3 className="text-sm font-semibold text-foreground mb-1">Large Language Models</h3>
+            <p className="text-xs text-muted-foreground mb-2">Deep diving into the architecture and fine-tuning of modern LLMs</p>
+            <div className="flex flex-wrap gap-2">
+              {['GPT Architecture', 'Fine-tuning', 'Prompt Engineering', 'LangChain'].map(s => (
+                <span key={s} className="px-3 py-1.5 rounded-full bg-cyan-500/10 text-cyan-400 text-xs font-medium border border-cyan-500/20">{s}</span>
+              ))}
+            </div>
+          </div>
+          <div>
+            <h3 className="text-sm font-semibold text-foreground mb-1">Transformers & Attention</h3>
+            <p className="text-xs text-muted-foreground mb-2">Understanding self-attention mechanisms and transformer variants</p>
+            <div className="flex flex-wrap gap-2">
+              {['Self-Attention', 'Multi-Head Attention', 'BERT', 'Vision Transformers'].map(s => (
+                <span key={s} className="px-3 py-1.5 rounded-full bg-pink-500/10 text-pink-400 text-xs font-medium border border-pink-500/20">{s}</span>
+              ))}
+            </div>
+          </div>
+          <div>
+            <h3 className="text-sm font-semibold text-foreground mb-1">RAG & Vector Databases</h3>
+            <p className="text-xs text-muted-foreground mb-2">Building retrieval-augmented generation pipelines</p>
+            <div className="flex flex-wrap gap-2">
+              {['RAG Pipeline', 'Pinecone', 'ChromaDB', 'Embeddings', 'Semantic Search'].map(s => (
+                <span key={s} className="px-3 py-1.5 rounded-full bg-yellow-500/10 text-yellow-400 text-xs font-medium border border-yellow-500/20">{s}</span>
+              ))}
+            </div>
+          </div>
+          <div>
+            <h3 className="text-sm font-semibold text-foreground mb-1">MLOps & Deployment</h3>
+            <p className="text-xs text-muted-foreground mb-2">Learning to deploy and monitor ML models at scale</p>
+            <div className="flex flex-wrap gap-2">
+              {['MLflow', 'Kubernetes', 'CI/CD for ML', 'Model Monitoring'].map(s => (
+                <span key={s} className="px-3 py-1.5 rounded-full bg-emerald-500/10 text-emerald-400 text-xs font-medium border border-emerald-500/20">{s}</span>
+              ))}
+            </div>
+          </div>
+        </div>
+      </div>
+    );
+  }
+
+  return (
+    <div className="p-4 min-h-full bg-background">
+      <div className="space-y-3">
+        <button
+          onClick={() => setActiveNote('skills')}
+          className="w-full p-4 rounded-xl bg-yellow-500/10 border border-yellow-500/20 text-left active:scale-[0.98] transition-transform"
+        >
+          <h3 className="font-medium text-foreground">Skills & Technologies</h3>
+          <p className="text-sm text-foreground/60 mt-1">Python, TensorFlow, PyTorch...</p>
+        </button>
+        <button
+          onClick={() => setActiveNote('learning')}
+          className="w-full p-4 rounded-xl bg-blue-500/10 border border-blue-500/20 text-left active:scale-[0.98] transition-transform"
+        >
+          <h3 className="font-medium text-foreground">Current Learning</h3>
+          <p className="text-sm text-foreground/60 mt-1">LLMs, Transformers, RAG...</p>
+        </button>
       </div>
     </div>
-  </div>
-);
+  );
+};
 
 // Mobile Resume Viewer
 const MobileResumeContent = () => {
