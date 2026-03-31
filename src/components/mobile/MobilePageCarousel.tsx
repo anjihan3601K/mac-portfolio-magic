@@ -8,47 +8,82 @@ export const MobilePageCarousel = () => {
   const [currentPage, setCurrentPage] = useState(0);
   const containerRef = useRef<HTMLDivElement>(null);
   const touchStartX = useRef(0);
+  const touchStartY = useRef(0);
   const touchEndX = useRef(0);
   const isDragging = useRef(false);
+  const isHorizontal = useRef<boolean | null>(null);
   const [dragOffset, setDragOffset] = useState(0);
 
   const totalPages = 3;
 
   const handleTouchStart = useCallback((e: React.TouchEvent) => {
     touchStartX.current = e.touches[0].clientX;
+    touchStartY.current = e.touches[0].clientY;
+    touchEndX.current = e.touches[0].clientX;
     isDragging.current = true;
+    isHorizontal.current = null;
     setDragOffset(0);
   }, []);
 
   const handleTouchMove = useCallback((e: React.TouchEvent) => {
     if (!isDragging.current) return;
+
+    const diffX = e.touches[0].clientX - touchStartX.current;
+    const diffY = e.touches[0].clientY - touchStartY.current;
+
+    // Determine swipe direction on first meaningful movement
+    if (isHorizontal.current === null) {
+      if (Math.abs(diffX) < 5 && Math.abs(diffY) < 5) return;
+      isHorizontal.current = Math.abs(diffX) > Math.abs(diffY);
+    }
+
+    // If vertical or tap — don't hijack touch
+    if (!isHorizontal.current) {
+      isDragging.current = false;
+      setDragOffset(0);
+      return;
+    }
+
+    // Ignore tiny movements (taps)
+    if (Math.abs(diffX) < 10) return;
+
+    e.preventDefault();
     touchEndX.current = e.touches[0].clientX;
-    const diff = touchEndX.current - touchStartX.current;
-    // Limit drag at edges
-    if ((currentPage === 0 && diff > 0) || (currentPage === totalPages - 1 && diff < 0)) {
-      setDragOffset(diff * 0.3); // rubber-band effect
+
+    // Rubber-band effect at edges
+    if ((currentPage === 0 && diffX > 0) || (currentPage === totalPages - 1 && diffX < 0)) {
+      setDragOffset(diffX * 0.3);
     } else {
-      setDragOffset(diff);
+      setDragOffset(diffX);
     }
   }, [currentPage]);
 
   const handleTouchEnd = useCallback(() => {
     isDragging.current = false;
-    const threshold = 60;
-    const diff = touchEndX.current - touchStartX.current;
+    isHorizontal.current = null;
 
-    if (diff < -threshold && currentPage < totalPages - 1) {
-      setCurrentPage((p) => p + 1);
-    } else if (diff > threshold && currentPage > 0) {
-      setCurrentPage((p) => p - 1);
+    const diff = touchEndX.current - touchStartX.current;
+    const threshold = 60;
+
+    // Only switch page if horizontal swipe was significant
+    if (Math.abs(diff) > threshold) {
+      if (diff < -threshold && currentPage < totalPages - 1) {
+        setCurrentPage((p) => p + 1);
+      } else if (diff > threshold && currentPage > 0) {
+        setCurrentPage((p) => p - 1);
+      }
     }
+
     setDragOffset(0);
     touchStartX.current = 0;
+    touchStartY.current = 0;
     touchEndX.current = 0;
   }, [currentPage]);
 
   const pageWidthPercent = 100 / totalPages;
-  const translateX = -(currentPage * pageWidthPercent) + (dragOffset / (window.innerWidth || 390)) * pageWidthPercent;
+  const translateX =
+    -(currentPage * pageWidthPercent) +
+    (dragOffset / (window.innerWidth || 390)) * pageWidthPercent;
 
   return (
     <div className="relative w-full h-screen overflow-hidden">
@@ -72,27 +107,38 @@ export const MobilePageCarousel = () => {
           style={{
             width: `${totalPages * 100}%`,
             transform: `translateX(${translateX}%)`,
-            transition: isDragging.current ? 'none' : 'transform 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94)',
+            transition: isDragging.current
+              ? 'none'
+              : 'transform 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94)',
           }}
         >
           {/* Page 1: Home */}
-          <div className="w-full h-full flex-shrink-0" style={{ width: `${100 / totalPages}%` }}>
+          <div
+            className="w-full h-full flex-shrink-0"
+            style={{ width: `${100 / totalPages}%` }}
+          >
             <MobileHomeScreen />
           </div>
 
           {/* Page 2: About + Skills */}
-          <div className="w-full h-full flex-shrink-0 overflow-auto" style={{ width: `${100 / totalPages}%` }}>
+          <div
+            className="w-full h-full flex-shrink-0 overflow-auto"
+            style={{ width: `${100 / totalPages}%` }}
+          >
             <MobileAboutPage />
           </div>
 
           {/* Page 3: Contact */}
-          <div className="w-full h-full flex-shrink-0 overflow-auto" style={{ width: `${100 / totalPages}%` }}>
+          <div
+            className="w-full h-full flex-shrink-0 overflow-auto"
+            style={{ width: `${100 / totalPages}%` }}
+          >
             <MobileContactPage />
           </div>
         </div>
       </div>
 
-      {/* Page Indicators - positioned above home indicator */}
+      {/* Page Indicators */}
       <div className="absolute bottom-8 left-1/2 -translate-x-1/2 flex gap-1.5 z-20">
         {Array.from({ length: totalPages }).map((_, i) => (
           <button
