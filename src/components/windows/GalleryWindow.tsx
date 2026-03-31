@@ -15,7 +15,7 @@ interface GalleryImage {
 
 export const GalleryWindow = () => {
   const { data: dbGallery, isLoading } = useGallery();
-  const profilePhotoUrl = useProfilePhotoUrl();
+  const { data: profilePhotoUrl } = useProfilePhotoUrl();
   const [selectedImage, setSelectedImage] = useState<GalleryImage | null>(null);
   const [activeCategory, setActiveCategory] = useState<string>('All');
 
