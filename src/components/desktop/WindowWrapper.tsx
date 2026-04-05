@@ -160,24 +160,24 @@ export const WindowWrapper = ({
         className="h-11 px-4 flex items-center gap-3 bg-card/50 border-b border-border cursor-move select-none"
       >
         {/* Traffic Lights */}
-        <div className="flex items-center gap-2">
+        <div className="flex items-center gap-2 group/traffic">
           <button
             onClick={handleClose}
-            className="traffic-light traffic-close group flex items-center justify-center"
+            className="traffic-light traffic-close group flex items-center justify-center w-3.5 h-3.5 min-w-[14px]"
           >
-            <X className="w-2 h-2 opacity-0 group-hover:opacity-100 text-black/60" />
+            <X className="w-2 h-2 opacity-0 group-hover/traffic:opacity-100 text-black/60" />
           </button>
           <button
             onClick={handleMinimize}
-            className="traffic-light traffic-minimize group flex items-center justify-center"
+            className="traffic-light traffic-minimize group flex items-center justify-center w-3.5 h-3.5 min-w-[14px]"
           >
-            <Minus className="w-2 h-2 opacity-0 group-hover:opacity-100 text-black/60" />
+            <Minus className="w-2 h-2 opacity-0 group-hover/traffic:opacity-100 text-black/60" />
           </button>
           <button
             onClick={handleMaximize}
-            className="traffic-light traffic-maximize group flex items-center justify-center"
+            className="traffic-light traffic-maximize group flex items-center justify-center w-3.5 h-3.5 min-w-[14px]"
           >
-            <Square className="w-1.5 h-1.5 opacity-0 group-hover:opacity-100 text-black/60" />
+            <Square className="w-1.5 h-1.5 opacity-0 group-hover/traffic:opacity-100 text-black/60" />
           </button>
         </div>
 
