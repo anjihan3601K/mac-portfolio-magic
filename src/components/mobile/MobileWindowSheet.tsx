@@ -1016,65 +1016,29 @@ interface GalleryImage {
   description?: string;
 }
 
-const mobileGalleryImages: GalleryImage[] = [
-  {
-    id: 'profile',
-    title: 'Profile Photo',
-    src: defaultProfilePhoto,
-    category: 'Personal',
-    description: 'Professional headshot'
-  },
-  {
-    id: 'hackathon',
-    title: 'Hackathon Winner 2024',
-    src: 'https://images.unsplash.com/photo-1504384308090-c894fdcc538d?w=800&h=600&fit=crop',
-    category: 'Achievements',
-    description: 'First place at Tech Innovation Summit'
-  },
-  {
-    id: 'ai-competition',
-    title: 'AI Competition 2024',
-    src: 'https://images.unsplash.com/photo-1485827404703-89b55fcc595e?w=800&h=600&fit=crop',
-    category: 'Achievements',
-    description: 'AI & ML National Competition'
-  },
-  {
-    id: 'conference',
-    title: 'Tech Conference Speaker',
-    src: 'https://images.unsplash.com/photo-1540575467063-178a50c2df87?w=800&h=600&fit=crop',
-    category: 'Events',
-    description: 'Speaking at Developer Summit 2024'
-  },
-  {
-    id: 'team-project',
-    title: 'Team Project',
-    src: 'https://images.unsplash.com/photo-1522071820081-009f0129c71c?w=800&h=600&fit=crop',
-    category: 'Work',
-    description: 'Collaborative ML research project'
-  },
-  {
-    id: 'workshop',
-    title: 'AI Workshop',
-    src: 'https://images.unsplash.com/photo-1531482615713-2afd69097998?w=800&h=600&fit=crop',
-    category: 'Events',
-    description: 'Teaching AI fundamentals to students'
-  },
-];
-
 const MobileGalleryContent = () => {
   const { data: dbGallery, isLoading } = useGallery();
+  const { data: profilePhotoUrl } = useProfilePhotoUrl();
   const [selectedImage, setSelectedImage] = useState<GalleryImage | null>(null);
   const [activeCategory, setActiveCategory] = useState<string>('All');
 
-  const galleryImages = dbGallery && dbGallery.length > 0
-    ? dbGallery.map(img => ({
-        id: img.id,
-        title: img.title,
-        src: img.src,
-        category: img.category,
-        description: img.description || undefined,
-      }))
-    : mobileGalleryImages;
+  const profileImage: GalleryImage = {
+    id: 'profile',
+    title: 'Profile Photo',
+    src: profilePhotoUrl || defaultProfilePhoto,
+    category: 'Personal',
+    description: 'Professional headshot'
+  };
+
+  const dbImages: GalleryImage[] = (dbGallery || []).map(img => ({
+    id: img.id,
+    title: img.title,
+    src: img.src,
+    category: img.category,
+    description: img.description || undefined,
+  }));
+
+  const galleryImages = [profileImage, ...dbImages];
 
   const categories = ['All', ...new Set(galleryImages.map(img => img.category))];
   
