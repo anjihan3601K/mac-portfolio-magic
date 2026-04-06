@@ -132,6 +132,9 @@ export const AboutWindow = () => {
               ))}
             </div>
             <div className="bg-[#f8f8f8] dark:bg-[#1a1a2e] rounded-lg p-2">
+              <p className="text-[10px] text-[#888] dark:text-[#999] text-center mb-1 italic">
+                Percentages indicate self-assessed proficiency based on project experience & coursework
+              </p>
               <SkillsRadarChart size="sm" />
             </div>
           </div>

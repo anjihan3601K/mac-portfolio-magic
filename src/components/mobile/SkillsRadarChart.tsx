@@ -63,8 +63,12 @@ export const SkillsRadarChart = ({ size = 'md' }: SkillsRadarChartProps) => {
   const outerRadius = size === 'sm' ? 75 : 105;
 
   return (
-    <ResponsiveContainer width="100%" height={height}>
-      <RadarChart data={skillsData} cx="50%" cy="50%" outerRadius={outerRadius}>
+    <div>
+      <p className="text-[10px] text-white/50 text-center italic mb-0.5">
+        % = Self-assessed proficiency from projects & hands-on experience
+      </p>
+      <ResponsiveContainer width="100%" height={height}>
+        <RadarChart data={skillsData} cx="50%" cy="50%" outerRadius={outerRadius}>
         <defs>
           <linearGradient id="skillGradient" x1="0" y1="0" x2="0" y2="1">
             <stop offset="0%" stopColor="hsl(211, 100%, 65%)" stopOpacity={0.8} />
