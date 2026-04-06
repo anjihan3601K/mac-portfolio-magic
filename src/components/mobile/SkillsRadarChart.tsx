@@ -19,25 +19,26 @@ const CustomTick = ({ x, y, payload, size }: any) => {
   const skill = payload.value;
   const dataItem = skillsData.find(d => d.skill === skill);
   const level = dataItem?.level || 0;
-  const fontSize = size === 'sm' ? 10 : 12;
+  const fontSize = size === 'sm' ? 9 : 11;
 
   return (
     <g transform={`translate(${x},${y})`}>
       <text
         textAnchor="middle"
-        dy={-4}
-        fill="rgba(255,255,255,0.9)"
+        dy={-2}
+        fill="#e2e8f0"
         fontSize={fontSize}
-        fontWeight={600}
+        fontWeight={700}
+        style={{ textShadow: '0 1px 3px rgba(0,0,0,0.5)' }}
       >
         {skill}
       </text>
       <text
         textAnchor="middle"
-        dy={fontSize + 2}
-        fill="rgba(120,180,255,0.85)"
-        fontSize={fontSize - 2}
-        fontWeight={500}
+        dy={fontSize + 4}
+        fill="#60a5fa"
+        fontSize={fontSize}
+        fontWeight={700}
       >
         {level}%
       </text>
