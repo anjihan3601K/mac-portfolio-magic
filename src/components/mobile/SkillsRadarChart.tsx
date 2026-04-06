@@ -121,5 +121,6 @@ export const SkillsRadarChart = ({ size = 'md' }: SkillsRadarChartProps) => {
         <Tooltip content={<CustomTooltip />} />
       </RadarChart>
     </ResponsiveContainer>
+    </div>
   );
 };
