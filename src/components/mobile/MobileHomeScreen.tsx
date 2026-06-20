@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import { useWindowStore, WindowId } from '@/stores/windowStore';
+import { useAIStore } from '@/stores/aiStore';
 import { Battery, Wifi, Signal } from 'lucide-react';
 import { haptics } from '@/lib/haptics';
 
@@ -39,6 +40,7 @@ const dockApps: AppItem[] = [
 
 export const MobileHomeScreen = () => {
   const { openWindow } = useWindowStore();
+  const { openIntro } = useAIStore();
   const [currentTime] = useState(() => {
     const now = new Date();
     return now.toLocaleTimeString('en-US', { hour: 'numeric', minute: '2-digit' });
@@ -47,6 +49,10 @@ export const MobileHomeScreen = () => {
   const handleAppTap = (e: React.MouseEvent | React.TouchEvent, id: WindowId) => {
     e.stopPropagation(); // prevent carousel from stealing the tap
     haptics.light();
+    if (id === 'about') {
+      openIntro();
+      return;
+    }
     openWindow(id);
   };
 
