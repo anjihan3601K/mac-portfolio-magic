@@ -4,6 +4,7 @@ import { X, Volume2, VolumeX, SkipForward } from 'lucide-react';
 import { useAIStore } from '@/stores/aiStore';
 import { useWindowStore } from '@/stores/windowStore';
 import defaultProfilePhoto from '@/assets/profile-photo.png';
+import aiAvatar from '@/assets/ai-avatar.png';
 import { useProfilePhotoUrl } from '@/components/admin/ProfilePhotoManager';
 
 const SCRIPT = `Hi, I'm Anjani Kumar. I'm a final-year Artificial Intelligence and Data Science student passionate about building AI-powered solutions that solve real-world problems. Through internships and projects, I've worked on machine learning, computer vision, predictive analytics, and full-stack AI applications. Feel free to explore my work, skills, and achievements. If you have any questions, my AI assistant will be happy to help.`;
@@ -14,8 +15,11 @@ const CHUNKS = SCRIPT.split(/(?<=[.,])\s+/);
 export const AIIntroModal = () => {
   const { introOpen, closeIntro, openChat } = useAIStore();
   const { openWindow } = useWindowStore();
-  const { data: uploadedPhotoUrl } = useProfilePhotoUrl();
-  const profilePhoto = uploadedPhotoUrl || defaultProfilePhoto;
+  // AI-stylized avatar for the intro only; rest of portfolio uses the real photo
+  const profilePhoto = aiAvatar;
+  // keep hook call for future fallback compat
+  useProfilePhotoUrl();
+  void defaultProfilePhoto;
 
   const [muted, setMuted] = useState(false);
   const [subtitleIdx, setSubtitleIdx] = useState(0);
