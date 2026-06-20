@@ -12,6 +12,8 @@ import { NotesWindow } from '@/components/windows/NotesWindow';
 import { ResumeViewer } from '@/components/windows/ResumeViewer';
 import { AchievementsWindow } from '@/components/windows/AchievementsWindow';
 import { GalleryWindow } from '@/components/windows/GalleryWindow';
+import { AIIntroModal } from '@/components/ai/AIIntroModal';
+import { RecruiterChat } from '@/components/ai/RecruiterChat';
 import { MobilePageCarousel } from '@/components/mobile/MobilePageCarousel';
 import { MobileWindowSheet } from '@/components/mobile/MobileWindowSheet';
 import { MobileWelcomeScreen } from '@/components/mobile/MobileWelcomeScreen';
@@ -105,6 +107,8 @@ export const Desktop = () => {
             <MobileWindowSheet />
           </>
         )}
+        <AIIntroModal />
+        <RecruiterChat />
       </>
     );
   }
@@ -193,6 +197,10 @@ export const Desktop = () => {
 
       {/* Dock */}
       {!showWelcome && <Dock />}
+
+      {/* AI Recruiter Experience */}
+      <AIIntroModal />
+      <RecruiterChat />
     </div>
   );
 };

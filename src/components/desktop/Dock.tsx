@@ -1,6 +1,7 @@
 import { useRef, useState, useCallback } from 'react';
 import { Tooltip } from 'react-tooltip';
 import { useWindowStore, WindowId } from '@/stores/windowStore';
+import { useAIStore } from '@/stores/aiStore';
 import { haptics } from '@/lib/haptics';
 
 // Import dock icons
@@ -33,6 +34,7 @@ export const Dock = () => {
   const dockRef = useRef<HTMLDivElement>(null);
   const [mouseX, setMouseX] = useState<number | null>(null);
   const { windows, openWindow, focusWindow } = useWindowStore();
+  const { openIntro } = useAIStore();
 
   const handleMouseMove = useCallback((e: React.MouseEvent) => {
     if (dockRef.current) {
@@ -47,6 +49,10 @@ export const Dock = () => {
 
   const handleClick = (id: WindowId) => {
     haptics.light();
+    if (id === 'about') {
+      openIntro();
+      return;
+    }
     if (windows[id].isOpen) {
       focusWindow(id);
     } else {
