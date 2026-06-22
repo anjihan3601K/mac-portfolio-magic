@@ -1,12 +1,10 @@
-import { useState } from 'react';
 import { WindowWrapper } from '@/components/desktop/WindowWrapper';
-import { Download, ExternalLink, FileText } from 'lucide-react';
+import { Download, ExternalLink } from 'lucide-react';
 import { useResumeUrl } from '@/components/admin/ResumeManager';
 
 export const ResumeViewer = () => {
   const { data: resumeUrl } = useResumeUrl();
   const currentUrl = resumeUrl || '/resume/Resume_Data_Scientist.pdf';
-  const [pdfError, setPdfError] = useState(false);
 
   const handleDownload = () => {
     const link = document.createElement('a');
