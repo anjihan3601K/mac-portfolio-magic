@@ -1,12 +1,10 @@
-import { useState } from 'react';
 import { WindowWrapper } from '@/components/desktop/WindowWrapper';
-import { Download, ExternalLink, FileText } from 'lucide-react';
+import { Download, ExternalLink } from 'lucide-react';
 import { useResumeUrl } from '@/components/admin/ResumeManager';
 
 export const ResumeViewer = () => {
   const { data: resumeUrl } = useResumeUrl();
   const currentUrl = resumeUrl || '/resume/Resume_Data_Scientist.pdf';
-  const [pdfError, setPdfError] = useState(false);
 
   const handleDownload = () => {
     const link = document.createElement('a');
@@ -45,46 +43,27 @@ export const ResumeViewer = () => {
           </div>
         </div>
         
-        {/* PDF Viewer with fallback */}
-        <div className="flex-1 overflow-hidden relative">
-          {!pdfError ? (
-            <object
-              data={currentUrl}
-              type="application/pdf"
-              className="w-full h-full"
-              onError={() => setPdfError(true)}
+        {/* PDF Viewer */}
+        <div className="flex-1 overflow-hidden relative bg-secondary/10">
+          <iframe
+            src={currentUrl}
+            title="Resume PDF"
+            className="w-full h-full border-0"
+          />
+          <div className="absolute bottom-3 right-3 flex gap-2 pointer-events-none">
+            <button
+              onClick={handleOpenInNewTab}
+              className="pointer-events-auto flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-background/90 backdrop-blur border border-border text-foreground text-xs shadow-md hover:bg-background"
             >
-              <div className="absolute inset-0 flex flex-col items-center justify-center bg-secondary/20 p-8 text-center">
-                <FileText className="w-16 h-16 text-primary mb-4" />
-                <h3 className="text-lg font-semibold text-foreground mb-2">Resume Preview</h3>
-                <p className="text-muted-foreground mb-6 max-w-sm">
-                  Your browser doesn't support PDF preview. Click below to view or download.
-                </p>
-                <div className="flex gap-3">
-                  <button onClick={handleOpenInNewTab} className="flex items-center gap-2 px-4 py-2 rounded-lg bg-secondary text-foreground">
-                    <ExternalLink className="w-4 h-4" /> Open in New Tab
-                  </button>
-                  <button onClick={handleDownload} className="flex items-center gap-2 px-4 py-2 rounded-lg bg-primary text-primary-foreground">
-                    <Download className="w-4 h-4" /> Download PDF
-                  </button>
-                </div>
-              </div>
-            </object>
-          ) : (
-            <div className="absolute inset-0 flex flex-col items-center justify-center bg-secondary/20 p-8 text-center">
-              <FileText className="w-16 h-16 text-primary mb-4" />
-              <h3 className="text-lg font-semibold text-foreground mb-2">Resume Preview</h3>
-              <p className="text-muted-foreground mb-6 max-w-sm">Click below to view or download the resume.</p>
-              <div className="flex gap-3">
-                <button onClick={handleOpenInNewTab} className="flex items-center gap-2 px-4 py-2 rounded-lg bg-secondary text-foreground">
-                  <ExternalLink className="w-4 h-4" /> Open in New Tab
-                </button>
-                <button onClick={handleDownload} className="flex items-center gap-2 px-4 py-2 rounded-lg bg-primary text-primary-foreground">
-                  <Download className="w-4 h-4" /> Download PDF
-                </button>
-              </div>
-            </div>
-          )}
+              <ExternalLink className="w-3.5 h-3.5" /> Open
+            </button>
+            <button
+              onClick={handleDownload}
+              className="pointer-events-auto flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-primary text-primary-foreground text-xs shadow-md hover:bg-primary/90"
+            >
+              <Download className="w-3.5 h-3.5" /> Download
+            </button>
+          </div>
         </div>
       </div>
     </WindowWrapper>
