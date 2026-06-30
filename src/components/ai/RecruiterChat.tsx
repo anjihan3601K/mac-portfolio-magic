@@ -88,7 +88,7 @@ export const RecruiterChat = () => {
 
       {/* Chat panel */}
       {chatOpen && (
-        <div className="fixed bottom-6 right-6 z-[9991] w-[min(92vw,400px)] h-[min(80vh,600px)] flex flex-col rounded-2xl overflow-hidden backdrop-blur-2xl bg-white/85 dark:bg-zinc-900/90 border border-white/30 shadow-2xl animate-scale-in">
+        <div className="fixed bottom-6 right-6 z-[9991] w-[min(92vw,400px)] h-[min(calc(100vh-80px),600px)] flex flex-col rounded-2xl overflow-hidden backdrop-blur-2xl bg-white/85 dark:bg-zinc-900/90 border border-white/30 shadow-2xl animate-scale-in">
             {/* Header */}
             <div className="flex items-center justify-between px-4 py-3 bg-gradient-to-r from-blue-600 to-purple-600 text-white">
               <div className="flex items-center gap-2">
