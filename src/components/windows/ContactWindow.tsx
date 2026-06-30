@@ -52,7 +52,7 @@ export const ContactWindow = () => {
       return;
     }
 
-    const mailtoLink = `mailto:anjani.kanamarlapudi@gmail.com?subject=${encodeURIComponent(subject || `Message from ${name}`)}&body=${encodeURIComponent(`Name: ${name}\nEmail: ${email}\n\n${message}`)}`;
+    const mailtoLink = `mailto:venkat.kanamarlapudi1906@gmail.com?subject=${encodeURIComponent(subject || `Message from ${name}`)}&body=${encodeURIComponent(`Name: ${name}\nEmail: ${email}\n\n${message}`)}`;
     window.open(mailtoLink, '_blank');
     
     toast({

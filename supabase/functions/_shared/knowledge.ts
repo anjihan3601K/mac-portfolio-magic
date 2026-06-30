@@ -4,7 +4,7 @@
 export const KNOWLEDGE_CHUNKS: { id: string; text: string }[] = [
   {
     id: "identity",
-    text: `Identity: Anjani Kumar Kanamarlapudi. Title: AI Developer & Data Scientist. Status: Final-year B.Tech student in Artificial Intelligence & Data Science. Location: India. Email: anjani.kanamarlapudi@gmail.com. Phone: +91-9381861326. GitHub: https://github.com/anjihan3601K. LinkedIn: https://www.linkedin.com/in/anjani-kumar-kanamarlapudi-3b5a002b9. Portfolio: https://anjani-portfolio-sand.vercel.app`,
+    text: `Identity: Anjani Kumar Kanamarlapudi. Title: AI Developer & Data Scientist. Status: Final-year B.Tech student in Artificial Intelligence & Data Science. Location: India. Email: venkat.kanamarlapudi1906@gmail.com. Phone: +91-9381861326. GitHub: https://github.com/anjihan3601K. LinkedIn: https://www.linkedin.com/in/anjani-kumar-kanamarlapudi-3b5a002b9. Portfolio: https://anjani-portfolio-sand.vercel.app`,
   },
   {
     id: "summary",
@@ -64,7 +64,7 @@ export const KNOWLEDGE_CHUNKS: { id: string; text: string }[] = [
   },
   {
     id: "contact-cta",
-    text: `Best ways to reach me: email anjani.kanamarlapudi@gmail.com, or LinkedIn https://www.linkedin.com/in/anjani-kumar-kanamarlapudi-3b5a002b9. I respond quickly to recruiters and collaboration requests.`,
+    text: `Best ways to reach me: email venkat.kanamarlapudi1906@gmail.com, or LinkedIn https://www.linkedin.com/in/anjani-kumar-kanamarlapudi-3b5a002b9. I respond quickly to recruiters and collaboration requests.`,
   },
 ];
 
