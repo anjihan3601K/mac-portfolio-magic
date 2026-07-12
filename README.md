@@ -1,300 +1,109 @@
-# 🖥️ Anjani Kumar — macOS-Style Portfolio
+# AK Portfolio — macOS/iOS Style Portfolio OS
 
-An interactive, macOS-inspired portfolio website built with React, featuring a dynamic backend powered by Lovable Cloud (Supabase).
+An immersive, dual-paradigm portfolio built by **Anjani Kumar** (AI & Data Science). The desktop experience mimics **macOS** (draggable windows, dock, menubar, genie animations) and the mobile experience mimics **iOS** (app grid, swipeable pages, bottom-sheets, haptic feedback). Powered by a **RAG-based AI Recruiter Assistant** grounded in a Pinecone vector store.
 
-**Live URL (Vercel)**: [anjani-portfolio-sand.vercel.app](https://anjani-portfolio-sand.vercel.app)
-**GitHub**: [github.com/anjihan3601K](https://github.com/anjihan3601K)
-
----
-
-## 📋 Table of Contents
-
-- [Tech Stack](#-tech-stack)
-- [Architecture Overview](#-architecture-overview)
-- [Database Setup — Step by Step](#-database-setup--step-by-step)
-- [Authentication & Admin System](#-authentication--admin-system)
-- [Key Concepts Used](#-key-concepts-used)
-- [Project Structure](#-project-structure)
-- [Local Development](#-local-development)
+**Live:** https://mac-portfolio-magic.lovable.app
 
 ---
 
-## 🛠️ Tech Stack
+## ✨ Features
 
-| Layer | Technology |
-|-------|-----------|
-| **Frontend** | React 18, TypeScript, Vite |
-| **Styling** | Tailwind CSS, shadcn/ui, GSAP (animations) |
-| **State Management** | Zustand (UI state), TanStack Query (server state) |
-| **Backend / Database** | Supabase (PostgreSQL) via Lovable Cloud |
-| **Auth** | Supabase Auth (email/password) |
-| **File Storage** | Supabase Storage (resume, profile photo) |
-| **Routing** | React Router v6 |
-| **Deployment** | Lovable Publish / Vercel |
+### Desktop (macOS-style)
+- Draggable, resizable, minimizable windows with **traffic-light controls** and **genie effect** animations.
+- **Dock** with real macOS-style PNG icons + magnification.
+- **MenuBar** with fully-interactive dropdowns (File, Edit, View, Window, Help, Wi-Fi, Battery, Clock/Calendar, Spotlight ⌘K).
+- **Desktop folders** (draggable, database-driven shortcuts).
+- Persistent GSAP-animated welcome message.
 
----
+### Mobile (iOS-style)
+- 3-page swipeable home carousel + app grid.
+- iOS-style bottom-sheet windows, glassmorphism, haptic vibration.
+- Dedicated mobile About page, Gallery, and Finder hierarchy.
 
-## 🏗️ Architecture Overview
+### Windows / Apps
+- **About Me** — TextEdit-styled document.
+- **Projects** — Table on desktop, list on mobile, full metadata.
+- **Skills Radar Chart** — Recharts self-assessed proficiency (with legend explaining %).
+- **Terminal** — CLI browsing of categorized AI/ML skills & projects.
+- **Notes** — Interactive tech stack sidebar.
+- **Gallery** — Supabase-driven lightbox photo gallery.
+- **Achievements & Certifications** — Dynamic dedicated folder + viewer.
+- **Resume Viewer** — iframe-based PDF viewer with open/download.
+- **Contact** — Native `mailto:` (no server email pipeline).
 
-```
-┌─────────────────────────────────────────────┐
-│                  Frontend                    │
-│  React + TypeScript + Tailwind + shadcn/ui  │
-│                                             │
-│  ┌──────────┐  ┌──────────┐  ┌───────────┐ │
-│  │ Desktop  │  │  Mobile  │  │   Admin   │ │
-│  │  (macOS) │  │  (iOS)   │  │ Dashboard │ │
-│  └──────────┘  └──────────┘  └───────────┘ │
-│         │              │            │        │
-│         └──────────────┼────────────┘        │
-│                        │                     │
-│              ┌─────────▼─────────┐           │
-│              │  Supabase Client  │           │
-│              │  (JS SDK)         │           │
-│              └─────────┬─────────┘           │
-└────────────────────────┼─────────────────────┘
-                         │
-              ┌──────────▼──────────┐
-              │   Supabase Backend  │
-              │                     │
-              │  ┌───────────────┐  │
-              │  │  PostgreSQL   │  │
-              │  │  (Tables +    │  │
-              │  │   RLS)        │  │
-              │  └───────────────┘  │
-              │  ┌───────────────┐  │
-              │  │  Auth System  │  │
-              │  │  (email/pwd)  │  │
-              │  └───────────────┘  │
-              │  ┌───────────────┐  │
-              │  │   Storage     │  │
-              │  │  (files/imgs) │  │
-              │  └───────────────┘  │
-              └─────────────────────┘
-```
+### 🤖 AI Recruiter Experience
+1. **AI Avatar Intro** — Clicking *About Me* triggers a fullscreen glassmorphism modal with a stylized AI avatar (breathing/blink/glow animations) that speaks a 15-second introduction via Web Speech TTS, with subtitles, mute, and skip.
+2. **Recruiter Assistant** — Floating chatbot (`🤖 Recruiter Assistant`) with quick actions (Projects, Experience, Skills, Achievements, Resume, Contact).
+3. **RAG-grounded answers** — Every response is retrieved from a **Pinecone** vector index of 16 curated knowledge chunks, then generated via the **Lovable AI Gateway** (`google/gemini-2.5-flash`).
+4. **Fresh session** — Chat history clears on every page refresh; no persistence.
 
 ---
 
-## 🗄️ Database Setup — Step by Step
+## 🏗 Architecture
 
-### Step 1: Enable Lovable Cloud
-- The project uses **Lovable Cloud** which provides a full Supabase backend automatically
-- This gives you: **Database**, **Authentication**, **Storage** — no external account needed
-
-### Step 2: Create Database Tables
-
-Four tables were created using SQL migrations:
-
-#### a) `projects` — Stores portfolio projects
-```sql
-CREATE TABLE public.projects (
-  id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
-  name TEXT NOT NULL,
-  description TEXT,
-  category TEXT,
-  technologies TEXT[],          -- PostgreSQL array type
-  github_url TEXT,
-  demo_url TEXT,
-  display_order INTEGER DEFAULT 0,
-  show_on_desktop BOOLEAN DEFAULT false,
-  created_at TIMESTAMPTZ DEFAULT now(),
-  updated_at TIMESTAMPTZ DEFAULT now()
-);
+```
+┌──────────────────────────────────────────────────────────────┐
+│                       Frontend (Vite + React 18)             │
+│                                                              │
+│  Desktop OS shell       Mobile OS shell     AI layer         │
+│  ├─ WindowManager       ├─ MobileHome       ├─ AIIntroModal  │
+│  ├─ Dock / MenuBar      ├─ MobileSheet      ├─ RecruiterChat │
+│  └─ Windows/*           └─ MobileAbout      └─ aiStore       │
+│                                                              │
+│  State: Zustand (windowStore, aiStore)                       │
+│  Data:  TanStack Query hooks → Supabase                      │
+│  Style: Tailwind + semantic tokens + GSAP animations         │
+└──────────────────────────────────────────────────────────────┘
+                              │
+                              ▼
+┌──────────────────────────────────────────────────────────────┐
+│                  Lovable Cloud (Supabase)                    │
+│                                                              │
+│  Postgres (RLS everywhere)                                   │
+│  ├─ profiles, projects, skills, gallery, certifications      │
+│  ├─ resume/photo assets in Storage                           │
+│  └─ user_roles + public.has_role() SECURITY DEFINER          │
+│                                                              │
+│  Edge Functions (Deno)                                       │
+│  ├─ recruiter-chat  → embed → Pinecone query → LLM answer    │
+│  └─ seed-knowledge  → embed 16 chunks → upsert to Pinecone   │
+└──────────────────────────────────────────────────────────────┘
+                              │
+                              ▼
+┌──────────────────────────────────────────────────────────────┐
+│  External services                                           │
+│  ├─ Pinecone (1024-dim vector index) — knowledge base        │
+│  └─ Lovable AI Gateway — embeddings + gemini-2.5-flash chat  │
+└──────────────────────────────────────────────────────────────┘
 ```
 
-#### b) `achievements` — Certifications & awards
-```sql
-CREATE TABLE public.achievements (
-  id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
-  title TEXT NOT NULL,
-  organization TEXT NOT NULL,
-  date TEXT NOT NULL,
-  type TEXT NOT NULL,            -- 'certification', 'award', 'achievement'
-  description TEXT,
-  credential_url TEXT,
-  display_order INTEGER DEFAULT 0,
-  created_at TIMESTAMPTZ DEFAULT now(),
-  updated_at TIMESTAMPTZ DEFAULT now()
-);
-```
+### RAG Flow
+1. User asks a question in the Recruiter Chat.
+2. `recruiter-chat` edge function embeds the query via the AI Gateway (truncated to 1024 dims to match Pinecone index).
+3. Top-K similar chunks are retrieved from **Pinecone**.
+4. Retrieved context + system prompt (human-like, first-person Anjani persona) is sent to `google/gemini-2.5-flash`.
+5. Grounded reply streamed back to the UI. Chat is session-only (no localStorage).
 
-#### c) `gallery` — Photo gallery images
-```sql
-CREATE TABLE public.gallery (
-  id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
-  title TEXT NOT NULL,
-  src TEXT NOT NULL,
-  category TEXT NOT NULL,
-  description TEXT,
-  display_order INTEGER DEFAULT 0,
-  created_at TIMESTAMPTZ DEFAULT now(),
-  updated_at TIMESTAMPTZ DEFAULT now()
-);
-```
-
-#### d) `user_roles` — Admin role management
-```sql
--- First, create a custom enum type
-CREATE TYPE public.app_role AS ENUM ('admin', 'user');
-
-CREATE TABLE public.user_roles (
-  id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
-  user_id UUID REFERENCES auth.users(id) ON DELETE CASCADE NOT NULL,
-  role app_role NOT NULL,
-  created_at TIMESTAMPTZ DEFAULT now(),
-  UNIQUE (user_id, role)      -- One role per user
-);
-```
-
-### Step 3: Row Level Security (RLS)
-
-RLS controls **who can read/write** each table at the database level.
-
-```sql
--- Enable RLS on each table
-ALTER TABLE public.projects ENABLE ROW LEVEL SECURITY;
-
--- PUBLIC READ: Anyone (even unauthenticated) can view
-CREATE POLICY "Anyone can view projects"
-  ON public.projects FOR SELECT
-  USING (true);
-
--- ADMIN WRITE: Only users with 'admin' role can modify
-CREATE POLICY "Admins can insert projects"
-  ON public.projects FOR INSERT
-  WITH CHECK (public.has_role(auth.uid(), 'admin'));
-
-CREATE POLICY "Admins can update projects"
-  ON public.projects FOR UPDATE
-  USING (public.has_role(auth.uid(), 'admin'))
-  WITH CHECK (public.has_role(auth.uid(), 'admin'));
-
-CREATE POLICY "Admins can delete projects"
-  ON public.projects FOR DELETE
-  USING (public.has_role(auth.uid(), 'admin'));
-```
-
-> Same pattern applied to `achievements`, `gallery`, and `user_roles` tables.
-
-### Step 4: Security Definer Function
-
-A helper function to check roles **without triggering recursive RLS**:
-
-```sql
-CREATE OR REPLACE FUNCTION public.has_role(_user_id UUID, _role app_role)
-RETURNS BOOLEAN
-LANGUAGE sql
-STABLE
-SECURITY DEFINER              -- Runs with owner privileges, bypasses RLS
-SET search_path = public      -- Prevents search_path injection
-AS $$
-  SELECT EXISTS (
-    SELECT 1 FROM public.user_roles
-    WHERE user_id = _user_id AND role = _role
-  )
-$$;
-```
-
-**Why `SECURITY DEFINER`?**
-- RLS policies on `user_roles` call `has_role()`
-- `has_role()` queries `user_roles`
-- Without `SECURITY DEFINER`, this creates an infinite loop
-- `SECURITY DEFINER` makes the function run as the DB owner, bypassing RLS
-
-### Step 5: File Storage Bucket
-
-```sql
--- Create a public bucket for portfolio assets
-INSERT INTO storage.buckets (id, name, public)
-VALUES ('portfolio-assets', 'portfolio-assets', true);
-
--- Anyone can view files
-CREATE POLICY "Anyone can view portfolio assets"
-  ON storage.objects FOR SELECT
-  USING (bucket_id = 'portfolio-assets');
-
--- Only admins can upload/update/delete
-CREATE POLICY "Admins can upload portfolio assets"
-  ON storage.objects FOR INSERT TO authenticated
-  WITH CHECK (
-    bucket_id = 'portfolio-assets'
-    AND public.has_role(auth.uid(), 'admin')
-  );
-```
-
-### Step 6: Seed Initial Data
-
-```sql
-INSERT INTO public.projects (name, description, category, technologies, display_order)
-VALUES
-  ('Car Price Prediction', 'Regression-based ML system...', 'Machine Learning',
-   ARRAY['Python','Scikit-learn','Pandas','NumPy'], 1),
-  ('Dynamic Pricing Model', '...', 'Machine Learning',
-   ARRAY['Python','Gradient Boosting','Pandas','Flask'], 2);
-
-INSERT INTO public.achievements (title, organization, date, type, display_order)
-VALUES
-  ('AWS Certified Cloud Practitioner', 'Amazon Web Services', '2024', 'certification', 1);
-```
+### Security
+- **RLS on every public table** with explicit `GRANT`s.
+- **Roles** stored in a separate `user_roles` table with `public.has_role(uuid, app_role)` SECURITY DEFINER to prevent recursive policies and privilege escalation.
+- **Leaked-password protection (HIBP)** enabled on Supabase Auth.
+- Admin dashboard `/admin` is role-gated (no public signup).
 
 ---
 
-## 🔐 Authentication & Admin System
+## 🧰 Tech Stack
 
-### Flow
-1. User navigates to `/admin` (secret route)
-2. Login form appears — **no sign-up** (admin-only)
-3. On sign-in, `useAuth` hook checks `user_roles` table for `admin` role
-4. If admin → show dashboard; if not → "Access Denied"
-
-### Auth Hook (`useAuth.tsx`)
-```typescript
-// Listens for auth state changes
-supabase.auth.onAuthStateChange((event, session) => {
-  setUser(session?.user ?? null);
-  if (session?.user) checkAdminStatus(session.user.id);
-});
-
-// Checks admin role in database
-const checkAdminStatus = async (userId: string) => {
-  const { data } = await supabase
-    .from('user_roles')
-    .select('role')
-    .eq('user_id', userId)
-    .eq('role', 'admin')
-    .maybeSingle();
-  setIsAdmin(!!data);
-};
-```
-
-### Assigning Admin Role
-```sql
--- After user signs up, manually assign admin role:
-INSERT INTO public.user_roles (user_id, role)
-VALUES ('user-uuid-from-auth', 'admin');
-```
-
----
-
-## 📚 Key Concepts Used
-
-| Concept | What It Does | Where Used |
-|---------|-------------|------------|
-| **PostgreSQL** | Relational database engine | All data storage |
-| **UUID** | Universally unique identifiers for primary keys | All table IDs |
-| **ENUM Types** | Restricts column values to predefined set | `app_role` ('admin', 'user') |
-| **Array Columns** | Store lists in a single column | `technologies TEXT[]` |
-| **RLS (Row Level Security)** | Database-level access control per row | All tables |
-| **SECURITY DEFINER** | Function runs with owner privileges | `has_role()` function |
-| **Foreign Keys** | Referential integrity between tables | `user_roles.user_id → auth.users.id` |
-| **ON DELETE CASCADE** | Auto-delete child rows when parent deleted | User deletion → roles cleanup |
-| **Storage Buckets** | File upload/management system | Resume PDF, profile photos |
-| **Supabase Auth** | Email/password authentication | Admin login |
-| **JWT Tokens** | Session management & API auth | Every authenticated request |
-| **Supabase JS Client** | Frontend SDK to query database | `supabase.from('table').select()` |
-| **TanStack Query** | Server state management with caching | `useQuery`, `useMutation` |
-| **Zustand** | Lightweight client state management | Window positions, open/close state |
-| **React Context** | Share auth state across components | `AuthProvider` + `useAuth` |
+| Layer | Tools |
+|---|---|
+| Frontend | React 18, Vite 5, TypeScript 5, Tailwind v3, shadcn/ui |
+| State | Zustand, TanStack Query |
+| Animation | GSAP, Framer Motion, CSS keyframes |
+| Charts | Recharts |
+| Backend | Lovable Cloud (Supabase) — Postgres, Auth, Storage, Edge Functions |
+| AI | Lovable AI Gateway (Gemini 2.5 Flash + embeddings) |
+| Vectors | Pinecone (1024-dim serverless index) |
+| Deploy | Lovable hosting (SPA) |
 
 ---
 
@@ -302,87 +111,51 @@ VALUES ('user-uuid-from-auth', 'admin');
 
 ```
 src/
-├── assets/                    # Static images (profile photo, dock icons)
+├── assets/               # Profile photo, AI avatar, icons, wallpaper
 ├── components/
-│   ├── admin/                 # Admin dashboard components
-│   │   ├── AdminDashboard.tsx
-│   │   ├── AdminLogin.tsx
-│   │   ├── ProjectsManager.tsx
-│   │   ├── AchievementsManager.tsx
-│   │   ├── GalleryManager.tsx
-│   │   ├── ResumeManager.tsx
-│   │   └── ProfilePhotoManager.tsx
-│   ├── desktop/               # macOS desktop UI
-│   │   ├── Desktop.tsx
-│   │   ├── Dock.tsx
-│   │   ├── MenuBar.tsx
-│   │   ├── WindowWrapper.tsx
-│   │   └── WelcomeScreen.tsx
-│   ├── mobile/                # iOS-style mobile UI
-│   │   ├── MobileHomeScreen.tsx
-│   │   └── MobileWindowSheet.tsx
-│   ├── windows/               # Individual window content
-│   │   ├── AboutWindow.tsx
-│   │   ├── FinderWindow.tsx
-│   │   ├── TerminalWindow.tsx
-│   │   ├── ResumeViewer.tsx
-│   │   └── ...
-│   └── ui/                    # shadcn/ui components
-├── hooks/
-│   ├── useAuth.tsx            # Authentication context & hook
-│   ├── usePortfolioData.tsx   # Data fetching hooks (TanStack Query)
-│   └── use-mobile.tsx         # Responsive detection
-├── integrations/supabase/
-│   ├── client.ts              # Auto-generated Supabase client
-│   └── types.ts               # Auto-generated TypeScript types
-├── stores/
-│   ├── windowStore.ts         # Zustand store for window management
-│   └── locationStore.ts       # Navigation state
-├── pages/
-│   ├── Index.tsx              # Main portfolio page
-│   ├── Admin.tsx              # Admin route
-│   └── NotFound.tsx
-└── App.tsx                    # Root component with routing
+│   ├── ai/               # AIIntroModal, RecruiterChat
+│   ├── desktop/          # WindowWrapper, Dock, MenuBar, Desktop
+│   ├── mobile/           # MobileHome, MobileWindowSheet, SkillsRadarChart
+│   └── windows/          # AboutWindow, ProjectsWindow, ResumeViewer, …
+├── hooks/                # useGallery, useProfilePhotoUrl, useProjects, …
+├── stores/               # windowStore, aiStore  (Zustand)
+├── integrations/supabase # auto-generated client (do NOT edit)
+└── pages/                # Index, Admin, NotFound
+
+supabase/
+├── functions/
+│   ├── recruiter-chat/   # RAG chat endpoint
+│   ├── seed-knowledge/   # One-shot Pinecone seeder
+│   └── _shared/          # knowledge.ts (16 chunks), pinecone.ts
+└── migrations/           # SQL migrations (RLS, roles, tables)
 ```
 
 ---
 
-## 💻 Local Development
+## 🚀 Local Development
 
-```sh
-# Clone the repo
-git clone <YOUR_GIT_URL>
-cd <YOUR_PROJECT_NAME>
-
-# Install dependencies
+```bash
 npm install
-
-# Start dev server
-npm run dev
+npm run dev            # Vite on :8080
 ```
 
-### Environment Variables (auto-configured by Lovable Cloud)
-```
-VITE_SUPABASE_URL=https://your-project.supabase.co
-VITE_SUPABASE_PUBLISHABLE_KEY=eyJ...
-```
+Edge functions deploy automatically via Lovable. To re-seed the knowledge base after editing `_shared/knowledge.ts`, invoke the `seed-knowledge` function.
+
+### Required Secrets (Backend → Settings)
+- `LOVABLE_API_KEY` — auto-provisioned
+- `PINECONE_API_KEY`
+- `PINECONE_INDEX_HOST` — e.g. `xxx.svc.aped-xxxx.pinecone.io`
 
 ---
 
-## 🚀 Deployment
-
-- **Lovable**: Click Publish → Update
-- **Vercel**: Push to GitHub → auto-deploys (needs `vercel.json` for SPA routing)
-
-```json
-// vercel.json
-{
-  "rewrites": [
-    { "source": "/(.*)", "destination": "/index.html" }
-  ]
-}
-```
+## 🎨 Design Rules
+- Semantic color/typography tokens in `src/index.css` — never hardcode `text-white`, `bg-black`, `#hex`.
+- Desktop = macOS metaphors only. Mobile = iOS metaphors only. Do not cross-mix.
+- Z-index: Welcome (0) < Desktop folders (10) < Windows (100+) < AI modals (9990+).
 
 ---
 
-Built with ❤️ using [Lovable](https://lovable.dev)
+## 📬 Contact
+**Anjani Kumar** — venkat.kanamarlapudi1906@gmail.com
+
+Built with ❤️ on [Lovable](https://lovable.dev).
