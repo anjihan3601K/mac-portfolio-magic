@@ -16,27 +16,14 @@ const QUICK_ACTIONS = [
   { emoji: '📧', label: 'Contact', prompt: 'How can a recruiter reach you?' },
 ];
 
-const STORAGE_KEY = 'recruiter_chat_history_v1';
-
 export const RecruiterChat = () => {
   const { chatOpen, toggleChat, closeChat, introCompleted } = useAIStore();
-  const [messages, setMessages] = useState<Msg[]>(() => {
-    if (typeof window === 'undefined') return [];
-    try {
-      const saved = localStorage.getItem(STORAGE_KEY);
-      return saved ? JSON.parse(saved) : [];
-    } catch {
-      return [];
-    }
-  });
+  const [messages, setMessages] = useState<Msg[]>([]);
   const [input, setInput] = useState('');
   const [loading, setLoading] = useState(false);
   const scrollRef = useRef<HTMLDivElement>(null);
   const inputRef = useRef<HTMLInputElement>(null);
 
-  useEffect(() => {
-    try { localStorage.setItem(STORAGE_KEY, JSON.stringify(messages)); } catch {}
-  }, [messages]);
 
   useEffect(() => {
     if (scrollRef.current) scrollRef.current.scrollTop = scrollRef.current.scrollHeight;
