@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { useWindowStore, WindowId } from '@/stores/windowStore';
 import { useAIStore } from '@/stores/aiStore';
-import { Battery, Wifi, Signal } from 'lucide-react';
+import { Battery, Wifi, Signal, Bot } from 'lucide-react';
 import { haptics } from '@/lib/haptics';
 
 // Import dock icons
@@ -14,10 +14,12 @@ import mailIcon from '@/assets/dock-icons/mail.png';
 import galleryIcon from '@/assets/dock-icons/gallery.png';
 import achievementsIcon from '@/assets/dock-icons/achievements.png';
 
+type AppId = WindowId | 'ai-assistant';
+
 interface AppItem {
-  id: WindowId;
+  id: AppId;
   name: string;
-  icon: string;
+  icon: string | 'ai';
 }
 
 const apps: AppItem[] = [
@@ -29,37 +31,45 @@ const apps: AppItem[] = [
   { id: 'contact', name: 'Contact', icon: contactsIcon },
   { id: 'about', name: 'About Me', icon: aboutIcon },
   { id: 'resume', name: 'Resume', icon: mailIcon },
+  { id: 'ai-assistant', name: 'AI Assistant', icon: 'ai' },
 ];
 
 const dockApps: AppItem[] = [
   { id: 'finder', name: 'Finder', icon: finderIcon },
-  { id: 'safari', name: 'Blog', icon: safariIcon },
+  { id: 'ai-assistant', name: 'AI Assistant', icon: 'ai' },
   { id: 'contact', name: 'Contact', icon: contactsIcon },
   { id: 'notes', name: 'Notes', icon: notesIcon },
 ];
 
 export const MobileHomeScreen = () => {
   const { openWindow } = useWindowStore();
-  const { openIntro } = useAIStore();
+  const { openIntro, openChat } = useAIStore();
   const [currentTime] = useState(() => {
     const now = new Date();
     return now.toLocaleTimeString('en-US', { hour: 'numeric', minute: '2-digit' });
   });
 
-  const handleAppTap = (e: React.MouseEvent | React.TouchEvent, id: WindowId) => {
-    e.stopPropagation(); // prevent carousel from stealing the tap
+  const handleAppTap = (e: React.MouseEvent | React.TouchEvent, id: AppId) => {
+    e.stopPropagation();
     haptics.light();
-    if (id === 'about') {
-      openIntro();
-      return;
-    }
+    if (id === 'ai-assistant') { openChat(); return; }
+    if (id === 'about') { openIntro(); return; }
     openWindow(id);
+  };
+
+  const renderIcon = (app: AppItem) => {
+    if (app.icon === 'ai') {
+      return (
+        <div className="w-full h-full flex items-center justify-center bg-gradient-to-br from-blue-500 via-purple-500 to-pink-500">
+          <Bot className="w-7 h-7 text-white" />
+        </div>
+      );
+    }
+    return <img src={app.icon as string} alt={app.name} className="w-full h-full object-cover" />;
   };
 
   return (
     <div className="relative w-full h-full flex flex-col overflow-hidden">
-      {/* Wallpaper is handled by MobilePageCarousel parent */}
-
       {/* iOS Status Bar */}
       <div className="relative z-50 flex items-center justify-between px-6 pt-3 pb-2 shrink-0">
         <span className="text-sm font-semibold text-foreground">{currentTime}</span>
@@ -71,7 +81,6 @@ export const MobileHomeScreen = () => {
         </div>
       </div>
 
-      {/* Welcome Message */}
       <div className="relative z-10 px-6 pt-6 pb-4 text-center shrink-0">
         <p className="text-sm text-foreground/60 mb-1">Hey, I'm Anjani!</p>
         <h1 className="text-2xl font-bold text-foreground">
@@ -79,11 +88,7 @@ export const MobileHomeScreen = () => {
         </h1>
       </div>
 
-      {/* App Grid - iOS Style */}
-      <div
-        className="relative z-10 flex-1 px-6 overflow-auto"
-        style={{ touchAction: 'pan-y' }}
-      >
+      <div className="relative z-10 flex-1 px-6 overflow-auto" style={{ touchAction: 'pan-y' }}>
         <div className="grid grid-cols-4 gap-4 gap-y-6">
           {apps.map((app) => (
             <button
@@ -93,11 +98,7 @@ export const MobileHomeScreen = () => {
               className="flex flex-col items-center gap-1.5 active:scale-95 transition-transform"
             >
               <div className="w-14 h-14 rounded-[16px] overflow-hidden shadow-lg bg-white/10 backdrop-blur-xl border border-white/20">
-                <img
-                  src={app.icon}
-                  alt={app.name}
-                  className="w-full h-full object-cover"
-                />
+                {renderIcon(app)}
               </div>
               <span className="text-[10px] text-foreground/90 font-medium text-center leading-tight">
                 {app.name}
@@ -107,7 +108,6 @@ export const MobileHomeScreen = () => {
         </div>
       </div>
 
-      {/* iOS Dock - Fixed at bottom */}
       <div
         className="relative z-10 px-4 pb-6 shrink-0"
         onTouchStart={(e) => e.stopPropagation()}
@@ -129,11 +129,7 @@ export const MobileHomeScreen = () => {
                 onTouchEnd={(e) => e.stopPropagation()}
                 className="w-14 h-14 rounded-[16px] overflow-hidden shadow-lg active:scale-95 transition-transform"
               >
-                <img
-                  src={app.icon}
-                  alt={app.name}
-                  className="w-full h-full object-cover"
-                />
+                {renderIcon(app)}
               </button>
             ))}
           </div>

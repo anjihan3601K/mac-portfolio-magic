@@ -4,6 +4,7 @@ import { useProjects, useAchievements, useGallery } from '@/hooks/usePortfolioDa
 import { X, ChevronLeft, ExternalLink, Calendar, Download, FileText, Briefcase, GraduationCap, Code2, Brain, Database, Cloud, MapPin, Mail, Github, Linkedin, Image, Award, Trophy, Medal, Star, ChevronRight, ZoomIn, Phone, Loader2 } from 'lucide-react';
 import defaultProfilePhoto from '@/assets/profile-photo.png';
 import { useProfilePhotoUrl } from '@/components/admin/ProfilePhotoManager';
+import { useResumeUrl } from '@/components/admin/ResumeManager';
 import { haptics } from '@/lib/haptics';
 
 const windowTitles: Record<WindowId, string> = {
@@ -830,35 +831,56 @@ const MobileNotesContent = () => {
 
 // Mobile Resume Viewer
 const MobileResumeContent = () => {
-  const resumeUrl = '/resume/Resume_Data_Scientist.pdf';
+  const { data: resumeUrl } = useResumeUrl();
+  const currentUrl = resumeUrl || '/resume/Resume_Data_Scientist.pdf';
+  const isExternal = /^https?:\/\//i.test(currentUrl);
+  const viewerSrc = isExternal
+    ? `https://docs.google.com/gview?url=${encodeURIComponent(currentUrl)}&embedded=true`
+    : currentUrl;
 
   const handleDownload = () => {
     const link = document.createElement('a');
-    link.href = resumeUrl;
+    link.href = currentUrl;
     link.download = 'Resume_Anjani_Kumar.pdf';
     document.body.appendChild(link);
     link.click();
     document.body.removeChild(link);
   };
 
+  const handleOpen = () => window.open(currentUrl, '_blank');
+
   return (
     <div className="flex flex-col h-full bg-background">
-      {/* Toolbar */}
-      <div className="flex items-center justify-between px-4 py-3 bg-secondary/30 border-b border-border">
-        <span className="text-sm font-medium text-foreground">Resume_Anjani_Kumar.pdf</span>
+      {/* Preview card — always works, no browser-embed issues */}
+      <div className="p-5 border-b border-border/40 flex items-center gap-3 bg-gradient-to-br from-red-500/10 to-orange-500/10">
+        <div className="w-14 h-14 rounded-2xl bg-red-500/20 flex items-center justify-center shrink-0">
+          <FileText className="w-7 h-7 text-red-500" />
+        </div>
+        <div className="flex-1 min-w-0">
+          <div className="font-semibold text-foreground text-sm truncate">Resume_Anjani_Kumar.pdf</div>
+          <div className="text-xs text-foreground/60">Tap Open to view in a new tab</div>
+        </div>
+      </div>
+
+      <div className="px-4 py-3 flex gap-2">
+        <button
+          onClick={handleOpen}
+          className="flex-1 flex items-center justify-center gap-1.5 px-3 py-2.5 rounded-xl bg-secondary text-foreground text-sm font-medium"
+        >
+          <ExternalLink className="w-4 h-4" /> Open
+        </button>
         <button
           onClick={handleDownload}
-          className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-primary hover:bg-primary/80 text-primary-foreground text-sm transition-colors"
+          className="flex-1 flex items-center justify-center gap-1.5 px-3 py-2.5 rounded-xl bg-primary text-primary-foreground text-sm font-medium"
         >
-          <Download className="w-4 h-4" />
-          Download
+          <Download className="w-4 h-4" /> Download
         </button>
       </div>
-      
-      {/* PDF Viewer */}
-      <div className="flex-1 overflow-hidden">
+
+      {/* Best-effort inline preview via Google viewer (works cross-origin) */}
+      <div className="flex-1 overflow-hidden bg-secondary/10 mx-4 mb-4 rounded-xl border border-border/40">
         <iframe
-          src={`${resumeUrl}#toolbar=0`}
+          src={viewerSrc}
           className="w-full h-full border-0"
           title="Resume PDF"
         />
