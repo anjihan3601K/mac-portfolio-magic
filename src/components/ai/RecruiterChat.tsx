@@ -54,7 +54,9 @@ export const RecruiterChat = () => {
     }
   };
 
-  if (!introCompleted) return null;
+  if (!introCompleted && !chatOpen) return null;
+
+
 
   return createPortal(
     <>
