@@ -4,6 +4,7 @@ import { useProjects, useAchievements, useGallery } from '@/hooks/usePortfolioDa
 import { X, ChevronLeft, ExternalLink, Calendar, Download, FileText, Briefcase, GraduationCap, Code2, Brain, Database, Cloud, MapPin, Mail, Github, Linkedin, Image, Award, Trophy, Medal, Star, ChevronRight, ZoomIn, Phone, Loader2 } from 'lucide-react';
 import defaultProfilePhoto from '@/assets/profile-photo.png';
 import { useProfilePhotoUrl } from '@/components/admin/ProfilePhotoManager';
+import { useResumeUrl } from '@/components/admin/ResumeManager';
 import { haptics } from '@/lib/haptics';
 
 const windowTitles: Record<WindowId, string> = {
