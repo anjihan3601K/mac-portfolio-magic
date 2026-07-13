@@ -58,11 +58,11 @@ export const RecruiterChat = () => {
 
   return createPortal(
     <>
-      {/* Floating Button */}
+      {/* Floating Button — hidden on mobile (AI Assistant app in dock handles it) */}
       {!chatOpen && (
         <button
           onClick={toggleChat}
-          className="fixed bottom-6 right-6 z-[9990] group flex items-center gap-2 px-4 py-3 rounded-full bg-gradient-to-r from-blue-600 to-purple-600 text-white shadow-2xl hover:shadow-[0_0_30px_rgba(139,92,246,0.6)] hover:scale-105 transition-all"
+          className="hidden sm:flex fixed bottom-6 right-6 z-[9990] group items-center gap-2 px-4 py-3 rounded-full bg-gradient-to-r from-blue-600 to-purple-600 text-white shadow-2xl hover:shadow-[0_0_30px_rgba(139,92,246,0.6)] hover:scale-105 transition-all"
         >
           <div className="relative">
             <Bot className="w-5 h-5" />
@@ -73,9 +73,10 @@ export const RecruiterChat = () => {
         </button>
       )}
 
-      {/* Chat panel */}
+      {/* Chat panel — full-screen sheet on mobile, floating card on desktop */}
       {chatOpen && (
-        <div className="fixed bottom-6 right-6 z-[9991] w-[min(92vw,400px)] h-[min(calc(100vh-80px),600px)] flex flex-col rounded-2xl overflow-hidden backdrop-blur-2xl bg-white/85 dark:bg-zinc-900/90 border border-white/30 shadow-2xl animate-scale-in">
+        <div className="fixed inset-0 sm:inset-auto sm:bottom-6 sm:right-6 z-[9991] w-full sm:w-[min(92vw,400px)] h-[100dvh] sm:h-[min(calc(100vh-80px),600px)] flex flex-col sm:rounded-2xl overflow-hidden backdrop-blur-2xl bg-white/95 dark:bg-zinc-900/95 sm:bg-white/85 sm:dark:bg-zinc-900/90 border-0 sm:border sm:border-white/30 shadow-2xl animate-scale-in">
+
             {/* Header */}
             <div className="flex items-center justify-between px-4 py-3 bg-gradient-to-r from-blue-600 to-purple-600 text-white">
               <div className="flex items-center gap-2">
