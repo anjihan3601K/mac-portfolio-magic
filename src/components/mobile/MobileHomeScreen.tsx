@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { useWindowStore, WindowId } from '@/stores/windowStore';
 import { useAIStore } from '@/stores/aiStore';
-import { Battery, Wifi, Signal } from 'lucide-react';
+import { Battery, Wifi, Signal, Bot } from 'lucide-react';
 import { haptics } from '@/lib/haptics';
 
 // Import dock icons
@@ -14,10 +14,12 @@ import mailIcon from '@/assets/dock-icons/mail.png';
 import galleryIcon from '@/assets/dock-icons/gallery.png';
 import achievementsIcon from '@/assets/dock-icons/achievements.png';
 
+type AppId = WindowId | 'ai-assistant';
+
 interface AppItem {
-  id: WindowId;
+  id: AppId;
   name: string;
-  icon: string;
+  icon: string | 'ai';
 }
 
 const apps: AppItem[] = [
@@ -29,11 +31,12 @@ const apps: AppItem[] = [
   { id: 'contact', name: 'Contact', icon: contactsIcon },
   { id: 'about', name: 'About Me', icon: aboutIcon },
   { id: 'resume', name: 'Resume', icon: mailIcon },
+  { id: 'ai-assistant', name: 'AI Assistant', icon: 'ai' },
 ];
 
 const dockApps: AppItem[] = [
   { id: 'finder', name: 'Finder', icon: finderIcon },
-  { id: 'safari', name: 'Blog', icon: safariIcon },
+  { id: 'ai-assistant', name: 'AI Assistant', icon: 'ai' },
   { id: 'contact', name: 'Contact', icon: contactsIcon },
   { id: 'notes', name: 'Notes', icon: notesIcon },
 ];
