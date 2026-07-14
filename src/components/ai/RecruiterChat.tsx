@@ -54,7 +54,7 @@ export const RecruiterChat = () => {
     }
   };
 
-  if (!introCompleted && !chatOpen) return null;
+  // Always render — floating button visible regardless of intro state
 
 
 
