@@ -32,10 +32,22 @@ An immersive, dual-paradigm portfolio built by **Anjani Kumar** (AI & Data Scien
 - **Contact** — Native `mailto:` (no server email pipeline).
 
 ### 🤖 AI Recruiter Experience
-1. **AI Avatar Intro** — Clicking *About Me* triggers a fullscreen glassmorphism modal with a stylized AI avatar (breathing/blink/glow animations) that speaks a 15-second introduction via Web Speech TTS, with subtitles, mute, and skip.
-2. **Recruiter Assistant** — Floating chatbot (`🤖 Recruiter Assistant`) with quick actions (Projects, Experience, Skills, Achievements, Resume, Contact).
-3. **RAG-grounded answers** — Every response is retrieved from a **Pinecone** vector index of 16 curated knowledge chunks, then generated via the **Lovable AI Gateway** (`google/gemini-2.5-flash`).
-4. **Fresh session** — Chat history clears on every page refresh; no persistence.
+1. **AI Avatar Intro** — Clicking *About Me* triggers a fullscreen glassmorphism modal with a stylized AI avatar (breathing/blink/glow animations) that speaks a ~15-second introduction via Web Speech TTS, with subtitles, mute, and skip. Implemented in `src/components/ai/AIIntroModal.tsx` using a generated portrait (`src/assets/ai-avatar.png`) and the browser's `SpeechSynthesis` API — a natural human-sounding voice is picked automatically (Google/Samantha/Natural voices preferred).
+2. **Recruiter Assistant** — Floating chatbot (`🤖 Recruiter Assistant`) with quick-action chips (Projects, Experience, Skills, Achievements, Resume, Contact). Lives in `src/components/ai/RecruiterChat.tsx`.
+   - **Desktop:** always-visible floating button anchored below the menubar so it never sits under the notch or dock.
+   - **Mobile:** promoted to a first-class **AI Assistant app** on the iOS home grid + dock; opens as a full-screen bottom sheet instead of a floating bubble.
+   - Intro-gating removed — users can open the chat directly without watching the avatar first.
+3. **RAG-grounded answers** — Every response is retrieved from a **Pinecone** vector index of 16 curated knowledge chunks, then generated via the **Lovable AI Gateway** (`google/gemini-2.5-flash`). The system prompt enforces a first-person, human-like Anjani persona (no robotic "As an AI…" phrasing).
+4. **Fresh session** — Chat history clears on every page refresh (`aiStore` intentionally does not persist to localStorage).
+
+### 📄 Resume Viewer (embed-safe)
+Some hosts (including cloud storage) send `X-Frame-Options: DENY`, which broke direct PDF embedding. `src/components/windows/ResumeViewer.tsx` and the mobile variant in `MobileWindowSheet.tsx` now:
+- Detect external URLs and load them through the **Google Docs Viewer** (`https://docs.google.com/gview?embedded=true&url=…`).
+- Fall back to a card UI with **Open in new tab** / **Download** actions if the viewer fails.
+- Keep native `<iframe>` embedding for same-origin PDFs.
+
+### 🖥 Interactive MenuBar
+`src/components/desktop/MenuBar.tsx` — each system menu (File, Edit, View, Window, Help) and status icon (Wi-Fi, Battery, Clock/Calendar, Spotlight ⌘K) opens its own dropdown with distinct actions (open windows, toggle grid, focus search, show battery/network state, live clock), instead of every item firing the same handler.
 
 ---
 
