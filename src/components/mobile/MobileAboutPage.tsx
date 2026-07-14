@@ -172,7 +172,7 @@ export const MobileAboutPage = () => {
         {[
           { icon: Github, url: 'https://github.com/anjihan3601K', label: 'GitHub' },
           { icon: Linkedin, url: 'https://www.linkedin.com/in/anjani-kumar-kanamarlapudi-3b5a002b9', label: 'LinkedIn' },
-          { icon: Mail, url: 'mailto:venkat.kanamariapudi906@gmail.com', label: 'Email' },
+          { icon: Mail, url: 'mailto:venkat.kanamarlapudi1906@gmail.com', label: 'Email' },
         ].map((link) => (
           <a
             key={link.label}

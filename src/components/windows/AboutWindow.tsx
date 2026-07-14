@@ -83,7 +83,7 @@ export const AboutWindow = () => {
                   <Phone className="w-3 h-3" /> +91-9381861326
                 </div>
                 <div className="flex items-center gap-1.5">
-                  <Mail className="w-3 h-3" /> venkat.kanamariapudi906@gmail.com
+                  <Mail className="w-3 h-3" /> venkat.kanamarlapudi1906@gmail.com
                 </div>
               </div>
             </div>
