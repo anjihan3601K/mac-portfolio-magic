@@ -18,7 +18,7 @@ export const MobileContactPage = () => {
 
   const handleSend = () => {
     if (!name.trim() || !email.trim() || !message.trim()) return;
-    const mailto = `mailto:venkat.kanamariapudi906@gmail.com?subject=${encodeURIComponent(`Message from ${name}`)}&body=${encodeURIComponent(`Name: ${name}\nEmail: ${email}\n\n${message}`)}`;
+    const mailto = `mailto:venkat.kanamarlapudi1906@gmail.com?subject=${encodeURIComponent(`Message from ${name}`)}&body=${encodeURIComponent(`Name: ${name}\nEmail: ${email}\n\n${message}`)}`;
     window.open(mailto, '_blank');
   };
 
@@ -44,7 +44,7 @@ export const MobileContactPage = () => {
           </div>
           <div>
             <p className="text-[10px] text-foreground/40">Email</p>
-            <p className="text-xs text-foreground">venkat.kanamariapudi906@gmail.com</p>
+            <p className="text-xs text-foreground">venkat.kanamarlapudi1906@gmail.com</p>
           </div>
         </div>
         <div className="flex items-center gap-3">

@@ -557,7 +557,7 @@ const MobileAboutContent = () => {
               <Phone className="w-2.5 h-2.5" /> +91-9381861326
             </div>
             <div className="flex items-center gap-1">
-              <Mail className="w-2.5 h-2.5" /> venkat.kanamariapudi906@gmail.com
+              <Mail className="w-2.5 h-2.5" /> venkat.kanamarlapudi1906@gmail.com
             </div>
           </div>
         </div>
